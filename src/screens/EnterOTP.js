@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   centerContainer,
   fontSize,
@@ -48,9 +49,11 @@ const EnterOTP = ({navigation}) => {
         </View>
         <View style={styles.passwordContainer}>
             </View>
-			<View style={styles.loginButton}>
+		<TouchableOpacity onPress={()=> navigation.navigate('Reset Password')}>
+    <View style={styles.loginButton}>
 									<Text style={styles.loginTxt}>Submit</Text>
         </View>
+    </TouchableOpacity>
       </View>
     </View>
   );

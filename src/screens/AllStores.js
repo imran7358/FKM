@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
+import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {centerContainer} from '../assets/styles/common';
 
-const AllStores = () => {
+const AllStores = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.container}>
@@ -12,6 +12,7 @@ const AllStores = () => {
 
                     <View style={styles.storeInner}>
                         <View style={styles.storeBox}>
+                        <TouchableOpacity onPress={()=> navigation.navigate('Store Details')}>
                             <View style={styles.logoContinaer}>
                                 <View>
                                     <Image source={require('../assets/images/fresHome.png')}  style={styles.logo}/>
@@ -21,7 +22,9 @@ const AllStores = () => {
                             <Text style={styles.cbBtn}>₹120 Cashback</Text>
                         </View>
                             </View>
+                            </TouchableOpacity>
                             </View>
+                       
                             <View style={styles.storeBox}>
                             <View style={styles.logoContinaer}>
                                 <View>

@@ -1,21 +1,12 @@
 import React from "react";
-import {
-    createDrawerNavigator,
-    DrawerContentScrollView,
-    DrawerItemList,
-    DrawerItem,
-  } from '@react-navigation/drawer';
-import { View, Text, TouchableOpacity, StyleSheet} from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { View, Text, TouchableOpacity, StyleSheet, Image} from "react-native";
 import { Grid,ShoppingBag, Percent, Scissors, Briefcase, BookOpen, PhoneCall, HelpCircle, LogOut} from "react-native-feather";
-  
 
 const CustomDrawer = ({navigation}) => {
-   
     return (
 
         <View style={{}}>
-            <TouchableOpacity onPress={()=> navigation.navigate('Login')}>
+            <TouchableOpacity onPress={(props)=> navigation.navigate('Login')}>
             <View style={{backgroundColor: '#f27935', height: 120,}}>
             </View>
             </TouchableOpacity>
@@ -26,7 +17,7 @@ const CustomDrawer = ({navigation}) => {
               <View style={styles.profileInfo}>
                 <View style={styles.profileimage}>
                    <View style={styles.profileImg}>
-                    
+                    <Image source={require('../assets/images/profile-icon.png')} style={styles.imgProfile}/>
                    </View>
                 </View>
                 <View style={styles.profileName}>
@@ -44,36 +35,46 @@ const CustomDrawer = ({navigation}) => {
                     <Text style={styles.menuTxt}>Dashboard</Text>
                 </View>
                </View>
+               <TouchableOpacity onPress={()=> navigation.navigate('Stores')}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <ShoppingBag style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Store</Text>
+                    <Text style={styles.menuTxt}>Stores</Text>
                 </View>
                </View>
+               </TouchableOpacity>
+               <TouchableOpacity onPress={()=> navigation.navigate('Categories')}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Grid style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Category</Text>
+                    <Text style={styles.menuTxt}>Categories</Text>
                 </View>
                </View>
-               <View style={styles.menuListCon}>
+               </TouchableOpacity>
+
+              <TouchableOpacity onPress={()=> navigation.navigate('Coupons')}>
+              <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Percent style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Coupons</Text>
+                <Text style={styles.menuTxt}>Coupons</Text>
                 </View>
                </View>
+              </TouchableOpacity>
+
+
+            
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Scissors style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Festivals</Text>
+                    <Text style={styles.menuTxt}>Festivals</Text>
                 </View>
                </View>
                <View style={styles.menuListCon}>
@@ -81,7 +82,7 @@ const CustomDrawer = ({navigation}) => {
                 <Briefcase style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>100% Cashback</Text>
+                    <Text style={styles.menuTxt}>100% Cashback</Text>
                 </View>
                </View>
                <View style={styles.menuListCon}>
@@ -89,7 +90,7 @@ const CustomDrawer = ({navigation}) => {
                 <BookOpen style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Hindi Articles</Text>
+                    <Text style={styles.menuTxt}>Hindi Articles</Text>
                 </View>
                </View>
                <View style={styles.menuListCon}>
@@ -97,7 +98,7 @@ const CustomDrawer = ({navigation}) => {
                 <Briefcase style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Career</Text>
+                    <Text style={styles.menuTxt}>Career</Text>
                 </View>
                </View>
                <View style={styles.menuListCon}>
@@ -105,7 +106,7 @@ const CustomDrawer = ({navigation}) => {
                 <PhoneCall style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Conatc Us</Text>
+                    <Text style={styles.menuTxt}>Conatc Us</Text>
                 </View>
                </View>
                <View style={styles.menuListCon}>
@@ -113,7 +114,7 @@ const CustomDrawer = ({navigation}) => {
                 <HelpCircle style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Help & Support</Text>
+                    <Text style={styles.menuTxt}>Help & Support</Text>
                 </View>
                </View>
                <View style={styles.menuListCon}>
@@ -121,7 +122,7 @@ const CustomDrawer = ({navigation}) => {
                 <LogOut style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text>Logout</Text>
+                    <Text style={styles.menuTxt}>Logout</Text>
                 </View>
                </View>
                
@@ -150,9 +151,12 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50,
-        borderWidth: 1,
-        borderColor: '#333',
+        borderWidth: 2,
+        borderColor: '#fff',
         marginRight: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     editProfile: {
         position: 'absolute', 
@@ -199,6 +203,11 @@ const styles = StyleSheet.create({
         color: '#333',
         marginRight: 10,
 
+    },
+    imgProfile: {
+        width: 45,
+        height: 45,
+        resizeMode: 'contain'
     }
 
 })

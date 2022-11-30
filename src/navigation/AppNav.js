@@ -7,7 +7,7 @@ const AppNav = ({navigation}) => {
   return (
 
       // <AuthStack navigation= {navigation} />
-      <NavigationContainer>
+      <NavigationContainer navigation={navigation}>
         <Humburger />
       </NavigationContainer>
   );

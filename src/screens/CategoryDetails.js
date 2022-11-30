@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {centerContainer} from '../assets/styles/common';
 import Coupons from '../components/Coupons';
 import Deals from '../components/Deals';
 
-const CategoryDetails = () => {
+const CategoryDetails = ({navigation}) => {
   const [deals, setShowDeals] = useState(true);
   const [coupons, setShowCoupons] = useState(false);
   const showDeals = () => {

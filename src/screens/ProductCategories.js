@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {centerContainer} from '../assets/styles/common';
 
-const ProductCategories = () => {
+const ProductCategories = ({navigation}) => {
     return (
 
         <SafeAreaView style={styles.container}>
@@ -25,9 +25,11 @@ const ProductCategories = () => {
                                      <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
                                     </View>
                             </View>
+                            <TouchableOpacity onPress={()=> navigation.navigate('Category Details')}>
                             <View style={styles.viewDetails}>
                                 <Text style={styles.viewDetailsBtn}>View Deals</Text>
                             </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.productBox}>
                             <View style={styles.catImage}>

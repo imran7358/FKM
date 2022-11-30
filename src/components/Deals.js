@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
 
-const Deals = () => {
+const Deals = ({navigation}) => {
     return (
         <View style={styles.dealsContainer}>
            <View style={styles.productContainer}>

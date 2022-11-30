@@ -2,6 +2,7 @@ import * as React from 'react';
 import {View, Text, StyleSheet, Image, TouchableHighlight} from 'react-native';
 import {Menu} from 'react-native-feather';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {User} from 'react-native-feather';
 
 const Header = ({navigation}) => {
   return (
@@ -22,7 +23,9 @@ const Header = ({navigation}) => {
         <Image source={require('../assets/images/search.png')} style={styles.searchIcon}/>
       </View>
       <View>
-      <Image source={require('../assets/images/notification.png')} style={styles.notifaction}/>
+      <TouchableOpacity onPress={()=> navigation.navigate('Login')}>
+      <User style={{color: '#fff', width: 100,}} width={35} height={30}/>
+      </TouchableOpacity>
       </View>
       </View>
     </View>

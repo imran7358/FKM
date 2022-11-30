@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 're
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-const Profile = () => {
+const Profile = ({navigation}) => {
 
     return(
        

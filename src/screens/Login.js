@@ -46,7 +46,7 @@ const Login = ({navigation}) => {
           />
         </View>
         <View style={styles.passwordContainer}>
-									<Text onPress={()=> navigation.navigate('Home')} 
+									<Text onPress={()=> navigation.navigate('Forgot Paasword')} 
 									style={styles.forgotPassword}> Forgot Password ?</Text></View>
 									<View style={styles.loginButton}>
 										<Text style={styles.loginTxt}>Login</Text>
