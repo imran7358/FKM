@@ -21,7 +21,7 @@ order value must be Rs.969 or more Valid for all users
             </Text>
             <View style={styles.apllyCp}>
             <Text style={styles.cpCode}>FKMXYXX300</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={(()=> navigation.navigate('Activated'))}>
                 <View style={styles.btnCode}>
                     <Text style={styles.copIn}>Copy</Text>
                 </View>

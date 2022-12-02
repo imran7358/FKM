@@ -46,7 +46,7 @@ const Home = ({navigation}) => {
                 </View>
                 <Text>View All</Text>
               </View>
-              <AllDeals style={styles.margin20} />
+              <AllDeals style={styles.margin20} navigation={navigation} />
               <View style={styles.loadmoreCont}>
                 <LoadMore />
               </View>

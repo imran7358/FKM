@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const AllDeals = () => {
+const AllDeals = ({navigation}) => {
     return (
         <View style={styles.dealsContainer}>
            <View style={styles.productContainer}>
+           
                 <View style={styles.productBox}>
+                <TouchableOpacity onPress={()=> navigation.navigate('Details')}>
                     <View style={styles.productImageCon}>
                        <View  style={styles.productImage}>
                        <Image source={require('../assets/images/prod_image.png')} />
@@ -32,7 +35,10 @@ const AllDeals = () => {
                             <Text style={[styles.priceTxt, styles.cutprice]}>500</Text>
                         </View>
                     </View>
+                    </TouchableOpacity>
                     </View>
+                  
+
                     <View style={styles.productBox}>
                     <View style={styles.productImageCon}>
                        <View  style={styles.productImage}>
