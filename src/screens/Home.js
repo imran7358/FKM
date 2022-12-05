@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Header from '../components/Header';
 import DealsDay from '../components/dealDay';
@@ -44,7 +44,9 @@ const Home = ({navigation}) => {
                   <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
                   <Text style={styles.topHeading}>Hot<Text style={{ fontWeight: '900' }}> Deals</Text></Text>
                 </View>
-                <Text>View All</Text>
+              <TouchableOpacity onPress={()=> navigation.navigate('Deal List')}>
+              <Text>View All</Text>
+              </TouchableOpacity>
               </View>
               <AllDeals style={styles.margin20} navigation={navigation} />
               <View style={styles.loadmoreCont}>

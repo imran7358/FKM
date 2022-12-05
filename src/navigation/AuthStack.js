@@ -17,6 +17,7 @@ import TopCoupons from '../screens/Coupons';
 import CouponsDetails from '../screens/CouponsDetail';
 import CouponsActivated from '../screens/CouponActivated';
 import ProductDetails from '../screens/ProductDetials';
+import AllDeals from '../components/AllDeals';
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = ({navigation}) => {
@@ -47,6 +48,7 @@ const AuthStack = ({navigation}) => {
       <Stack.Screen name="coupnsDetails" component={CouponsDetails} />
       <Stack.Screen name="Activated" component={CouponsActivated} />
       <Stack.Screen name="Details" component={ProductDetails} />
+      <Stack.Screen name="Deal List" component={AllDeals} />
     </Stack.Navigator>
   );
 };

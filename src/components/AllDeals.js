@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 const AllDeals = ({navigation}) => {
     return (
+        <ScrollView style={{backgroundColor: '#fff'}}>
         <View style={styles.dealsContainer}>
            <View style={styles.productContainer}>
-           
                 <View style={styles.productBox}>
                 <TouchableOpacity onPress={()=> navigation.navigate('Details')}>
                     <View style={styles.productImageCon}>
@@ -123,8 +123,121 @@ const AllDeals = ({navigation}) => {
                         </View>
                     </View>
                     </View>
+                    <View style={styles.productBox}>
+                    <View style={styles.productImageCon}>
+                       <View  style={styles.productImage}>
+                       <Image source={require('../assets/images/prod_image.png')} />
+                       </View>
+                    </View>
+                    <View style={styles.brandLogo}>
+                        <Image source={require('../assets/images/brandLogo.png')} />
+                    </View>
+                    <View style={styles.prodDescr}>
+                        <Text style={styles.prdLine}>
+                        Festive Sale - Up To 50% 
+                        Off + Flat Rs.100 Cashback
+                        </Text>
+
+                    </View>
+                    <View style={styles.priceContainer}>
+                        <View style={styles.innerPrice}>
+                            <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={styles.priceTxt}>500</Text>
+                        </View>
+                        <View style={styles.innerPrice}>
+                            <Text style={styles.cutLine}></Text>
+                        <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={[styles.priceTxt, styles.cutprice]}>500</Text>
+                        </View>
+                    </View>
+                    </View>
+                    <View style={styles.productBox}>
+                    <View style={styles.productImageCon}>
+                       <View  style={styles.productImage}>
+                       <Image source={require('../assets/images/prod_image.png')} />
+                       </View>
+                    </View>
+                    <View style={styles.brandLogo}>
+                        <Image source={require('../assets/images/brandLogo.png')} />
+                    </View>
+                    <View style={styles.prodDescr}>
+                        <Text style={styles.prdLine}>
+                        Festive Sale - Up To 50% 
+                        Off + Flat Rs.100 Cashback
+                        </Text>
+
+                    </View>
+                    <View style={styles.priceContainer}>
+                        <View style={styles.innerPrice}>
+                            <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={styles.priceTxt}>500</Text>
+                        </View>
+                        <View style={styles.innerPrice}>
+                            <Text style={styles.cutLine}></Text>
+                        <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={[styles.priceTxt, styles.cutprice]}>500</Text>
+                        </View>
+                    </View>
+                    </View>
+                    <View style={styles.productBox}>
+                    <View style={styles.productImageCon}>
+                       <View  style={styles.productImage}>
+                       <Image source={require('../assets/images/prod_image.png')} />
+                       </View>
+                    </View>
+                    <View style={styles.brandLogo}>
+                        <Image source={require('../assets/images/brandLogo.png')} />
+                    </View>
+                    <View style={styles.prodDescr}>
+                        <Text style={styles.prdLine}>
+                        Festive Sale - Up To 50% 
+                        Off + Flat Rs.100 Cashback
+                        </Text>
+
+                    </View>
+                    <View style={styles.priceContainer}>
+                        <View style={styles.innerPrice}>
+                            <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={styles.priceTxt}>500</Text>
+                        </View>
+                        <View style={styles.innerPrice}>
+                            <Text style={styles.cutLine}></Text>
+                        <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={[styles.priceTxt, styles.cutprice]}>500</Text>
+                        </View>
+                    </View>
+                    </View>
+                    <View style={styles.productBox}>
+                    <View style={styles.productImageCon}>
+                       <View  style={styles.productImage}>
+                       <Image source={require('../assets/images/prod_image.png')} />
+                       </View>
+                    </View>
+                    <View style={styles.brandLogo}>
+                        <Image source={require('../assets/images/brandLogo.png')} />
+                    </View>
+                    <View style={styles.prodDescr}>
+                        <Text style={styles.prdLine}>
+                        Festive Sale - Up To 50% 
+                        Off + Flat Rs.100 Cashback
+                        </Text>
+
+                    </View>
+                    <View style={styles.priceContainer}>
+                        <View style={styles.innerPrice}>
+                            <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={styles.priceTxt}>500</Text>
+                        </View>
+                        <View style={styles.innerPrice}>
+                            <Text style={styles.cutLine}></Text>
+                        <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
+                            <Text style={[styles.priceTxt, styles.cutprice]}>500</Text>
+                        </View>
+                    </View>
+                    </View>
            </View>
         </View>
+        </ScrollView>
     )
 
 }
