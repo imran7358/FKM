@@ -18,6 +18,7 @@ import CouponsDetails from '../screens/CouponsDetail';
 import CouponsActivated from '../screens/CouponActivated';
 import ProductDetails from '../screens/ProductDetials';
 import AllDeals from '../components/AllDeals';
+import ReferEarn from '../screens/ReferEarn';
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = ({navigation}) => {
@@ -25,7 +26,7 @@ const BottomTabs = ({navigation}) => {
     <Tab.Navigator navigation={navigation}>
       <Tab.Screen name="My Home" component={Home} options={{headerShown: false}} />
       <Tab.Screen name="Store" component={AllStores} options={{BottomTabs: false}}/>
-      <Tab.Screen name="Refer & Earn" component={AllStores} />
+      <Tab.Screen name="Refer & Earn" component={ReferEarn} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
