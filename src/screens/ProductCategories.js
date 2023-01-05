@@ -1,136 +1,67 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import {centerContainer} from '../assets/styles/common';
+import { centerContainer } from '../assets/styles/common';
+import axios from 'axios';
+import Loader from '../components/Loader';
+import Config from 'react-native-config';
+const apiAuth = 'u636a0295845eb68x';
+const deviceType = '4';
 
-const ProductCategories = ({navigation}) => {
-    return (
+const ProductCategories = ({ navigation }) => {
+  const [categories, allCategrioes] = useState([]);
+  useEffect(() => {
+    getCategories();
+  }, [])
 
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={styles.container}>
-                    <View style={styles.productList}>
-                        <View style={styles.productBox}>
-                            <View style={styles.catImage}>
-                                <Image source={require('../assets/images/automobile.png')}/>
-                            </View>
-                            <Text style={styles.catHeading}>Automobile</Text>
-                            <View style={styles.dealNum}>
-                                <View style={styles.dealsInfo}>
-                                    <Text style={[styles.dealsSize,styles.couponColor]}>Deals</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                     </View>
-                                <View style={styles.dealsInfo}>
-                                <Text style={[styles.dealsSize,styles.couponColor]}>Coupons</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                    </View>
-                            </View>
-                            <TouchableOpacity onPress={()=> navigation.navigate('Category Details')}>
-                            <View style={styles.viewDetails}>
-                                <Text style={styles.viewDetailsBtn}>View Deals</Text>
-                            </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.productBox}>
-                            <View style={styles.catImage}>
-                                <Image source={require('../assets/images/automobile.png')}/>
-                            </View>
-                            <Text style={styles.catHeading}>Automobile</Text>
-                            <View style={styles.dealNum}>
-                                <View style={styles.dealsInfo}>
-                                    <Text style={[styles.dealsSize,styles.couponColor]}>Deals</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                     </View>
-                                <View style={styles.dealsInfo}>
-                                <Text style={[styles.dealsSize,styles.couponColor]}>Coupons</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                    </View>
-                            </View>
-                            <View style={styles.viewDetails}>
-                                <Text style={styles.viewDetailsBtn}>View Deals</Text>
-                            </View>
-                        </View>
-                        <View style={styles.productBox}>
-                            <View style={styles.catImage}>
-                                <Image source={require('../assets/images/automobile.png')}/>
-                            </View>
-                            <Text style={styles.catHeading}>Automobile</Text>
-                            <View style={styles.dealNum}>
-                                <View style={styles.dealsInfo}>
-                                    <Text style={[styles.dealsSize,styles.couponColor]}>Deals</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                     </View>
-                                <View style={styles.dealsInfo}>
-                                <Text style={[styles.dealsSize,styles.couponColor]}>Coupons</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                    </View>
-                            </View>
-                            <View style={styles.viewDetails}>
-                                <Text style={styles.viewDetailsBtn}>View Deals</Text>
-                            </View>
-                        </View>
-                        <View style={styles.productBox}>
-                            <View style={styles.catImage}>
-                                <Image source={require('../assets/images/automobile.png')}/>
-                            </View>
-                            <Text style={styles.catHeading}>Automobile</Text>
-                            <View style={styles.dealNum}>
-                                <View style={styles.dealsInfo}>
-                                    <Text style={[styles.dealsSize,styles.couponColor]}>Deals</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                     </View>
-                                <View style={styles.dealsInfo}>
-                                <Text style={[styles.dealsSize,styles.couponColor]}>Coupons</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                    </View>
-                            </View>
-                            <View style={styles.viewDetails}>
-                                <Text style={styles.viewDetailsBtn}>View Deals</Text>
-                            </View>
-                        </View>
-                        <View style={styles.productBox}>
-                            <View style={styles.catImage}>
-                                <Image source={require('../assets/images/automobile.png')}/>
-                            </View>
-                            <Text style={styles.catHeading}>Automobile</Text>
-                            <View style={styles.dealNum}>
-                                <View style={styles.dealsInfo}>
-                                    <Text style={[styles.dealsSize,styles.couponColor]}>Deals</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                     </View>
-                                <View style={styles.dealsInfo}>
-                                <Text style={[styles.dealsSize,styles.couponColor]}>Coupons</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                    </View>
-                            </View>
-                            <View style={styles.viewDetails}>
-                                <Text style={styles.viewDetailsBtn}>View Deals</Text>
-                            </View>
-                        </View>
-                        <View style={styles.productBox}>
-                            <View style={styles.catImage}>
-                                <Image source={require('../assets/images/automobile.png')}/>
-                            </View>
-                            <Text style={styles.catHeading}>Automobile</Text>
-                            <View style={styles.dealNum}>
-                                <View style={styles.dealsInfo}>
-                                    <Text style={[styles.dealsSize,styles.couponColor]}>Deals</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                     </View>
-                                <View style={styles.dealsInfo}>
-                                <Text style={[styles.dealsSize,styles.couponColor]}>Coupons</Text>
-                                     <Text style={[styles.dealNumber,styles.dealsSize,styles.marginLeft10]}>100</Text>
-                                    </View>
-                            </View>
-                            <View style={styles.viewDetails}>
-                                <Text style={styles.viewDetailsBtn}>View Deals</Text>
-                            </View>
-                        </View>
+  const getCategories = () => {
+    axios.post('https://fkmdata.freekaamaal.com/category/all-category', {apiAuth: Config.API_AUTH}
+    ).then(({ data }) => {
+      allCategrioes((data.response.allcategory));
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+  return (
+
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.productList}>
+            {
+              categories.length ? categories.map((item, i) => {
+                return <View style={styles.productBox} key={i}>
+                  <View style={styles.catImage}>
+                    <Image source={{ uri: item.img_url }} style={{ height: 67, width: 67 }} />
+                  </View>
+                  <Text style={styles.catHeading}>{item.name}</Text>
+                  <View style={styles.dealNum}>
+                    <View style={styles.dealsInfo}>
+                      <Text style={[styles.dealsSize, styles.couponColor]}>Deals</Text>
+                      <Text style={[styles.dealNumber, styles.dealsSize, styles.marginLeft10]}>{item.deals_count}</Text>
+                    </View>
+                    <View style={styles.dealsInfo}>
+                      <Text style={[styles.dealsSize, styles.couponColor]}>Coupons</Text>
+                      <Text style={[styles.dealNumber, styles.dealsSize, styles.marginLeft10]}>{item.coupons_count}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.viewDetails}>
+                  <TouchableOpacity onPress={() => navigation.navigate({name:'CategoryDetails',params:{catSlug:item.cate_slug}})}>
+                      <Text style={styles.viewDetailsBtn}>View Deals</Text>
+                      </TouchableOpacity>
                     </View>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
-    )
+              })
+                :
+                <Text>Loading...</Text>
+            }
+
+          </View>
+        </View>
+
+      </ScrollView>
+    </SafeAreaView>
+  )
 
 };
 const styles = StyleSheet.create({
@@ -181,9 +112,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 15,
+    textAlign:'center',
   },
   dealNum: {
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexDirection: 'row',
     width: '100%',
   },
@@ -192,15 +124,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginTop: 10,
+    marginRight: 7,
   },
   couponColor: {
     color: '#525252',
   },
   dealsSize: {
-    fontSize: 11,
+    fontSize: 10,
   },
   dealNumber: {
     fontWeight: 'bold',
+    fontSize: 10,
   },
   marginLeft10: {
     marginLeft: 1.5,
@@ -216,7 +150,7 @@ const styles = StyleSheet.create({
   viewDetailsBtn: {
     color: '#f27935',
     fontWeight: '600',
-    fontSize: 18,
+    fontSize: 15,
     padding: 8,
     textAlign: 'center',
     textTransform: 'uppercase',

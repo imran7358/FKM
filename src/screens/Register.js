@@ -1,4 +1,8 @@
-import React, {useState} from 'react';
+// import {API_URL} from "@env";
+
+import Config from "react-native-config";
+
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,6 +12,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   centerContainer,
@@ -16,14 +21,53 @@ import {
   fontColor,
   commonMargin,
 } from '../assets/styles/common';
-
-const Register = ({navigation}) => {
+import { TouchableOpacity } from "react-native-gesture-handler";
+import axios from "axios";
+import OTPin from "../components/OTPin";
+import { json } from "react-router-native";
+const ENDPOINT = "/user/register";
+const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    pass: '',
+    phone: '',
+    referral_code: '99361389',
+  });
+  const [err, setErr] = useState(null);
+  const handleChange = (value, name) => {
+    let obj = Object.assign({}, formData);
+    obj[name] = value;
+    setFormData(obj);
+  };
+  const handleSubmit = async (event) => {
+    try {
+      const {data} = await axios.post('https://fkmdata.freekaamaal.com/user/register',{
+        apiAuth : Config.API_AUTH,
+        device_type: Config.DEVICE_TYPE,
+        ...formData,
+      });
+      // console.log("response back -->>>",data);
+      if (data.token) {
+
+        await AsyncStorage.setItem('registerToken', data.token);
+        await AsyncStorage.setItem('phone', formData.phone);
+        navigation.navigate('Verify');
+      }
+      else {
+        setErr(data.message);
+      }
+    } catch (e) {
+      console.log('Error--> ', e);
+    }
+  };
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
+
           <View style={styles.imageContainer}>
             <Image source={require('../assets/images/login-image.png')} />
           </View>
@@ -37,10 +81,13 @@ const Register = ({navigation}) => {
                 style={styles.icon}
               />
               <TextInput
+                autoCapitalize="none"
                 style={[styles.inputText, styles.lableFont]}
                 placeholder="Name"
+                name="name"
                 placeholderTextColor="#003f5c"
-                onChangeText={(email) => setEmail(email)} />
+                value={formData["name"]}
+                onChangeText={(value) => { handleChange(value, "name") }} />
             </View>
             <View style={styles.inputBoxContainer}>
               <Image
@@ -48,10 +95,13 @@ const Register = ({navigation}) => {
                 style={styles.icon}
               />
               <TextInput
+                autoCapitalize="none"
                 style={[styles.inputText, styles.lableFont]}
+                name="email"
                 placeholder="Email ID"
                 placeholderTextColor="#003f5c"
-                onChangeText={(email) => setEmail(email)} />
+                value={formData['email']}
+                onChangeText={(value) => { handleChange(value, 'email') }} />
             </View>
             <View style={styles.inputBoxContainer}>
               <Image
@@ -59,10 +109,14 @@ const Register = ({navigation}) => {
                 style={styles.icon}
               />
               <TextInput
+                autoCapitalize="none"
                 style={[styles.inputText, styles.lableFont]}
                 placeholder="Phone"
+                name="phone"
                 placeholderTextColor="#003f5c"
-                onChangeText={(email) => setEmail(email)} />
+                value={formData["phone"]}
+                onChangeText={(value) => { handleChange(value, "phone") }} />
+
             </View>
             <View style={styles.inputBoxContainer}>
               <Image
@@ -70,16 +124,24 @@ const Register = ({navigation}) => {
                 style={styles.icon}
               />
               <TextInput
+                autoCapitalize="none"
                 style={styles.inputText}
                 placeholder="Password"
+                name="pass"
                 placeholderTextColor="#003f5c"
-                onChangeText={(password) => setEmail(password)}
-              />
+                value={formData["pass"]}
+                secureTextEntry={true}
+                onChangeText={(value) => { handleChange(value, "pass") }} />
             </View>
+            <TouchableOpacity
+              // onPress={()=>{navigation.navigate("Enter OTP")}} 
+              onPress={handleSubmit}>
+              <View style={styles.loginButton} >
+                <Text style={styles.loginTxt}>Sign Up</Text>
+              </View>
+              {err ? <Text>{err}</Text> : null}
 
-            <View style={styles.loginButton}>
-              <Text style={styles.loginTxt}>Sign Up</Text>
-            </View>
+            </TouchableOpacity>
             <View style={styles.socialLogin}>
               <View style={styles.googleLogin}>
                 <Image source={require('../assets/images/google.png')} />
@@ -94,7 +156,7 @@ const Register = ({navigation}) => {
             </View>
             <View style={styles.newLogin}>
               <Text style={styles.font16}>New to FreeKaaMaal ?</Text>
-              <Text style={[styles.font16, styles.RegisterLink]}>Register</Text>
+              <Text style={[styles.font16, styles.RegisterLink]} onPress={() => navigation.navigate('Verify')}>Register</Text>
             </View>
           </View>
         </View>
@@ -181,60 +243,60 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 
-borderLeft: {
-borderColor: '#AAAAAA',
-borderTopWidth: 1,
-width: '40%',
-marginTop: 15,
-},
+  borderLeft: {
+    borderColor: '#AAAAAA',
+    borderTopWidth: 1,
+    width: '40%',
+    marginTop: 15,
+  },
 
-socialLogin: {
-flexDirection: 'row',
-justifyContent: 'space-between',
-marginTop: 30,
-width: '100%',
-},
+  socialLogin: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 30,
+    width: '100%',
+  },
 
-googleLogin: {
-backgroundColor: '#FFF3F0',
-padding: 10,
-width: '47%',
-borderRadius: 6,
-fontSize: 14,
-alignItems: 'center',
-justifyContent: 'flex-start',
-flexDirection: 'row',
-paddingLeft: 15,
-height: 50,
-},
+  googleLogin: {
+    backgroundColor: '#FFF3F0',
+    padding: 10,
+    width: '47%',
+    borderRadius: 6,
+    fontSize: 14,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    paddingLeft: 15,
+    height: 50,
+  },
 
-width50: {
-width: '40%',
-},
+  width50: {
+    width: '40%',
+  },
 
-font14: {
-fontSize: 14,
-},
-font16: {
-fontSize: 16,
-},
-googleLoginTxt: {
-fontSize: 16,
-marginLeft: 20,
-},
-newLogin: {
-justifyContent: 'center',
-flexDirection: 'row',
-marginTop: 30,
-},
-RegisterLink: {
-marginLeft: 10,
-fontWeight: '600',
-color: '#2453C6',
-},
-facebookLogin: {
-backgroundColor: '#e5f1ff'
-}
+  font14: {
+    fontSize: 14,
+  },
+  font16: {
+    fontSize: 16,
+  },
+  googleLoginTxt: {
+    fontSize: 16,
+    marginLeft: 20,
+  },
+  newLogin: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginTop: 30,
+  },
+  RegisterLink: {
+    marginLeft: 10,
+    fontWeight: '600',
+    color: '#2453C6',
+  },
+  facebookLogin: {
+    backgroundColor: '#e5f1ff'
+  }
 });
 
 export default Register;

@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput, Button} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import axios from 'axios';
+import Config from 'react-native-config';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+
 import {
   centerContainer,
   fontSize,
@@ -8,12 +11,48 @@ import {
   fontColor,
   commonMargin,
 } from '../assets/styles/common';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const ENDPOINT = '/user/login';
 
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error,setError] = useState(null);
+  const handleLogin = async()=>{
+    try {
+      console.log(Config.API_URL + ENDPOINT,{
+        apiAuth:Config.API_AUTH,
+        device_type:Config.DEVICE_TYPE,
+        app_device_id:'',
+        password:password,
+        email:email,
+      });
+    const { data } = await axios.post(Config.API_URL + ENDPOINT,{
+      apiAuth:Config.API_AUTH,
+      device_type:Config.device_type,
+      app_device_id:'',
+      password:password,
+      email:email,
+    });
+    console.log(data);
+    if(data.status == '1' && data.error == '0'){
+      await AsyncStorage.setItem('userToken',data.token);
+      navigation.navigate('Home');
+    }
+    else{
+      setError(data.message);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  };
+
+  useEffect(()=>{
+    // storeUser();
+  })
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={require('../assets/images/login-image.png')} />
@@ -28,10 +67,11 @@ const Login = ({navigation}) => {
             style={styles.icon}
           />
           <TextInput
+            autoCapitalize="none"
             style={[styles.inputText, styles.lableFont]}
             placeholder="Email ID"
             placeholderTextColor="#003f5c"
-            onChangeText={(email) => setEmail(email)} />
+            onChangeText={(em) => setEmail(em)} />
         </View>
         <View style={styles.inputBoxContainer}>
           <Image
@@ -39,19 +79,23 @@ const Login = ({navigation}) => {
             style={styles.icon}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.inputText}
             placeholder="Password"
             placeholderTextColor="#003f5c"
-            onChangeText={(password) => setEmail(password)}
+            secureTextEntry={true}
+
+            onChangeText={(passw) => setPassword(passw)}
           />
         </View>
         <View style={styles.passwordContainer}>
 									<Text onPress={()=> navigation.navigate('Forgot Paasword')} 
 									style={styles.forgotPassword}> Forgot Password ?</Text></View>
-									<View style={styles.loginButton}>
+									<TouchableOpacity onPress={handleLogin}>
+                  <View style={styles.loginButton}>
 										<Text style={styles.loginTxt}>Login</Text>
-        </View>
-
+                  </View>
+                  </TouchableOpacity>
 									<View style={styles.orContainer}>
 										<View style={styles.borderLeft}><Text></Text></View>
 										<Text>OR</Text>
@@ -80,7 +124,9 @@ const Login = ({navigation}) => {
 										<Text style={[styles.font16, styles.RegisterLink]} onPress = {()=>navigation.navigate('Register')}>Register</Text>
 										</View>
       </View>
+      <Text>{error}</Text>
     </View>
+    </ScrollView>
   );
 };
 

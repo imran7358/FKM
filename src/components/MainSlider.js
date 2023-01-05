@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, StyleSheet} from 'react-native';
 import {FlatListSlider, indicatorContainerStyle} from 'react-native-flatlist-slider';
+import Config from 'react-native-config';
+const END_URL = "/home/home";
+import axios from 'axios';
 
-const MianSlider = () => {
+const MianSlider = ({navigation,slideImage}) => {
+  
   const images = [
     {
       image: 'https://images.freekaamaal.com/home-slider/site/mobile_black-friday-sale-banner-2-(24-nov)-mobilejpg.webp'
@@ -19,14 +23,17 @@ const MianSlider = () => {
   ];
 
   return (
-    <FlatListSlider 
+    slideImage.length?
+    <FlatListSlider
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={images}
-        onPress={item => alert(JSON.stringify(item))}
-        indicatorContainerStyle={{position:'absolute', bottom: 20}}
-
-    />
+        data={slideImage}
+        imageKey={'app_slider_image'}
+        onPress={item => {
+          navigation.navigate({name:'Details',params:{dealSlug:slideImage[item].app_landing_url}})}
+        }
+        indicatorContainerStyle={ { position : 'absolute' , bottom: 20 } } /> : null
+    
   );
 };
 

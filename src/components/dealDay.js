@@ -1,10 +1,11 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Image} from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {FlatListSlider, indicatorContainerStyle} from 'react-native-flatlist-slider';
 import Preview from "./preview";
 
-const DealsDay = () =>{
+const DealsDay = ({navigation, stickyImages}) =>{
+
     const images = [
         {
           image:'https://images.freekaamaal.com/sticky/root-natural-dhamaka-sale-(25-nov)_(1)jpg.webp',
@@ -23,18 +24,22 @@ const DealsDay = () =>{
             desc: 'Red fort in India New Delhi is a magnificient masterpeiece of humans',
           },
       ];
+  
     return(
-    <FlatListSlider
-    data={images}
-    component={<Preview />}
+   <View>
+    { stickyImages.length?
+     <FlatListSlider
+    data={stickyImages}
+    component={<Preview imageKey={"image"} />}
+
     loop={false}
     width={200}
     indicator={false}
     autoscroll ={false}
-    onPress={item => alert(JSON.stringify(item))}
-  />
+    onPress={item => {console.log("YE ===>>>",item);navigation.navigate({name:'Details',params:{dealSlug:item.link}})}}
+  />:null}
+   </View>
     )
-
 }
 
 

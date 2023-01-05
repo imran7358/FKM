@@ -1,61 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import Config from 'react-native-config';
+const END_URL = "/home/home";
+import axios from 'axios';
 
 const MyStore = () => {
-    const data = [
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/2953.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/758.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/2953.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/758.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/2953.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/758.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/2953.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/758.jpg',
-            cashback: '20%',
-        },
-        {
-            name: '1Mg',
-            image: 'https://images.freekaamaal.com/store-images/758.jpg',
-            cashback: '20%',
-        }
-    ]
+
+    const [data, setData] = useState([])
+    const getStore = () =>{
+        axios.post(Config.API_URL + END_URL, {
+            'page': '1',
+            'apiAuth': Config.API_AUTH,
+            'device_type': 4,
+        }).then(({data})=>{
+            setData(data.response.cbstores)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+    useEffect(()=>{
+        getStore()
+    }, [])
     return (
         data.map((item, i) => {
             return <View style={styles.storeImgCon} key={i}>
                 <View style={styles.storICon} >
-                    <Image source={{ uri: item.image }} style={{ width: 92, height: 40, resizeMode: 'contain' }} />
+                    <Image source={{ uri: item.store_image }} style={{ width: 92, height: 40, resizeMode: 'contain' }} />
                 </View>
-                <Text style={styles.cbText}>{item.cashback} <Text style={styles.cbMessage}>Cashback</Text></Text>
+                <Text style={styles.cbText}>{Number(item.cashback_amount).toFixed(0)} <Text style={styles.cbMessage}>Cashback</Text></Text>
             </View>
 
         })

@@ -1,22 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  Platform,
-} from 'react-native';
+import {View, TouchableOpacity, Image, StyleSheet,Platform } from 'react-native';
 
-export default (Preview = ({
-  style,
-  item,
-  imageKey,
-  onPress,
-  index,
-  active,
-  local,
-}) => {
+export default (Preview = ({item,imageKey,onPress,active}) => {
+
   return (
     <TouchableOpacity
       style={[styles.videoContainer]}
@@ -27,7 +13,6 @@ export default (Preview = ({
           source={{uri: item[imageKey]}}
         />
       </View>
-      {/* <Text style={styles.desc}>{item.desc}</Text> */}
     </TouchableOpacity>
   );
 });

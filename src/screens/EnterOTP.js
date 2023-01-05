@@ -1,6 +1,11 @@
-import React, {useState} from 'react';
+
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Config from "react-native-config";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   centerContainer,
   fontSize,
@@ -8,10 +13,48 @@ import {
   fontColor,
   commonMargin,
 } from '../assets/styles/common';
-
+import OTPin from '../components/OTPin';
+const ENDPOINT = "/user/verifyuser";
+const BASE_URL = Config.API_URL;
+const API_AUTH = Config.API_AUTH;
 const EnterOTP = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [ Error , setError ] = useState(null);
+  const [ message , setMessage ] = useState(null); 
+  const [mobile,setMobile] = useState(null);
+  useEffect(  () =>{
+    const get = async()=>{
+      const numb = await AsyncStorage.getItem('phone');
+      setMobile(numb);
+    }
+    get();
+  },[])
+  const verifyOTP = async(otp) => {
+    const token =  await AsyncStorage.getItem("registerToken");
+    try {
+      const { data } = await axios.post(BASE_URL + ENDPOINT,{
+        apiAuth: API_AUTH,
+        phoneotp: otp,
+      },{
+        headers : {
+          Authorization:token,
+        },
+      });
+      if (data.status === '1') {
+        setMessage(data.message);
+        setTimeout(()=>{
+          navigation.navigate('Login');
+        },4000);
+      }
+      else {
+
+        setMessage( 'Wrong OTP! Please Re Check and enter' );
+      }
+    } catch (e){
+      console.log("error===>>>",e)
+      setError(e);
+      
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -22,7 +65,12 @@ const EnterOTP = ({navigation}) => {
       </View>
       <View style={styles.forgotParagraph}>
         <Text style={styles.innerPara}>An 6 digit code has been send to</Text>
-        <Text style={styles.registeredNumber}>+ 91 9718158993</Text>
+        <Text style={styles.registeredNumber}>+ 91 {mobile}</Text>
+      </View>
+      <View>
+        <OTPin in={6} onDone={(otp)=>{
+          verifyOTP(otp);
+        }}></OTPin>
       </View>
       <View style={styles.inputView}>
         <View style={[styles.inputBoxContainer, styles.otpBoxContainer]}>
@@ -49,11 +97,11 @@ const EnterOTP = ({navigation}) => {
         </View>
         <View style={styles.passwordContainer}>
             </View>
-		<TouchableOpacity onPress={()=> navigation.navigate('Reset Password')}>
+		{/* <TouchableOpacity onPress={()=> navigation.navigate('Reset Password')}>
     <View style={styles.loginButton}>
 									<Text style={styles.loginTxt}>Submit</Text>
         </View>
-    </TouchableOpacity>
+    </TouchableOpacity> */}
       </View>
     </View>
   );

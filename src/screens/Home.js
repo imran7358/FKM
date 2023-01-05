@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React,{useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Header from '../components/Header';
@@ -11,8 +11,32 @@ import LoadMore from '../components/LoadMore';
 import MyStore from '../components/StoreList';
 import VideoPlayer from '../components/Video';
 import FAQ from '../components/Faq';
-
+import Config from 'react-native-config';
+const END_URL = "/home/home";
+import axios from 'axios';
 const Home = ({navigation}) => {
+  const [slider,setSlider] = useState([]);
+  const [sticky, setSticky] = useState([]);
+  const [livedeals, setLiveDeals] = useState([])
+  const getSlider = () => {
+    axios.post(Config.API_URL + END_URL, {
+      'page': '1',
+      'sponsored_count': '0',
+      'apiAuth': Config.API_AUTH,
+      'device_type': 4,
+    }).then(({data})=>{
+        setSlider(data.response.slider);
+        setSticky(data.response.sticky);
+        setLiveDeals(data.response.live_deals);
+        console.log("liveDeals", data.response.live_deals);
+        
+    }).catch((error)=>{
+      console.log(error);
+    });
+  };
+  React.useEffect(()=>{
+    getSlider();
+  },[]);
   return (
     <SafeAreaView>
       <View>
@@ -21,21 +45,21 @@ const Home = ({navigation}) => {
       <ScrollView style={styles.bgWhite}>
         <View style={styles.mainWrapper}>
           <View style={styles.mainSlider}>
-            <MianSlider />
+            <MianSlider navigation={navigation} slideImage = {slider} />
           </View>
           <View style={[styles.dealDay]}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
               <Text style={styles.topHeading}>Deals <Text style={{ fontWeight: '900' }}>of the Day</Text></Text>
             </View>
-            <DealsDay />
+            <DealsDay stickyImages= {sticky} navigation={navigation}/>
           </View>
           <View style={styles.liveDeals}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/liveDeals.png')} style={styles.hotSale} />
               <Text style={styles.topHeading}>Live <Text style={{ fontWeight: '900' }}>Deals</Text></Text>
             </View>
-            <LiveDeals />
+            <LiveDeals navigation={navigation} livedeals = {livedeals}/>
           </View>
           <View style={styles.hotDealWrapper}>
             <View style={styles.dealDay}>

@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {View, Text, SafeAreaView, StyleSheet, Image} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import AppButton from "../components/customInputs/AppButton";
+import Config from 'react-native-config';
+const END_URL = "/deals/dealdetail";
+import axios from 'axios';
 
- const ProductDetails = ({navigation}) => {
+ const ProductDetails = ({navigation, route}) => {
+    const getDetails = () => {
+        axios.post(Config.API_URL + END_URL, {
+            "page":"1",
+            "apiAuth": Config.API_AUTH,
+            "deal_slug": route.params.dealSlug,
+            "device_type":"4",       
+        }).then(({data})=>{
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+
+    useEffect(()=>{
+        getDetails()
+    },[])
 
     return (
         <SafeAreaView style={styles.bgWhite}>

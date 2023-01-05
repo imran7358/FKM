@@ -13,16 +13,13 @@ export default (Live = ({
   item,
   imageKey,
   onPress,
-  index,
-  active,
-  local,
 }) => {
   return (
    
     <TouchableOpacity
-      style={[styles.videoContainer]}
-      onPress={() => onPress(item)}>
-         <View style={style.liveDealsCon}>
+    onPress={()=>{onPress(item)}}
+      style={[styles.videoContainer]} >
+         <View style={style.liveDealsCon} >
       <View style={[styles.imageContainer, styles.shadow]}>
        <View style={styles.liveViewer}>
         <Text style={styles.viewTxt}>{item.viewer} <Text style={styles.view}>Viewer</Text></Text>
@@ -33,7 +30,7 @@ export default (Live = ({
         />
       </View>
       <View style={styles.dealDiscription}>
-      <Text style={styles.desc}>{item.desc}</Text>
+      <Text style={styles.desc}>{item.title}</Text>
       <View style={styles.priceContainer}>
                         <View style={styles.innerPrice}>
                             <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
@@ -70,7 +67,7 @@ const styles = StyleSheet.create({
   desc: {
     fontSize: 12,
     letterSpacing: 0,
-    lineHeight: 21,
+    lineHeight: 18,
   },
   imageContainer: {
     justifyContent: 'center',
@@ -102,13 +99,13 @@ innerPrice: {
     position: 'relative',
 },
 rpImage: {
-    width: 15,
-    height: 15,
-    resizeMode: 'contain'
+    width: 12,
+    height: 12,
+    resizeMode: 'contain',
 },
 priceTxt: {
-    fontSize: 19,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '800',
     marginLeft: 3,
 },
 cutprice: {
