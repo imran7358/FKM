@@ -1,55 +1,27 @@
 import React from "react";
 
-import {View,Text, StyleSheet, Image} from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const TopCouponsList = ({navigation}) => {
-    const images = [
-        {
-          image:'https://images.freekaamaal.com/store-images/758.jpg',
-          desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-        },
+const TopCouponsList = ({ navigation, couponlist }) => {
 
-        {
-          image: 'https://images.freekaamaal.com/store-images/3254.jpg',
-          desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-        },
-        {
-            image: 'https://images.freekaamaal.com/store-images/3758.jpg',
-            desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-          },
-          {
-            image: 'https://images.freekaamaal.com/store-images/3763.jpg',
-            desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-          },
-          {
-            image:'https://images.freekaamaal.com/store-images/758.jpg',
-            desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-          },
-  
-          {
-            image: 'https://images.freekaamaal.com/store-images/3254.jpg',
-            desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-          },
-
-      ];
-    return(
-        <View style={styles.couponListCon}>
-            <View style={styles.couponListInner}>
-                {
-                    images.map((item, i)=> {
-                        return <View style={styles.CouponsBox} key={i}>
-                            <TouchableOpacity style={styles.clickContainer} onPress={()=> navigation.navigate('coupnsDetails')} >
-                        <Image source={{uri: item.image}}  style={{ width: 92, height: 40, resizeMode: 'contain' }}/>
-                        <Text style={styles.cpTxt}>{item.desc}</Text>
-                        </TouchableOpacity>
-                    </View>
-                 
-                     
-                    })
-                }
+    return (
+        couponlist.length ?
+            <View style={styles.couponListCon}>
+                <View style={styles.couponListInner}>
+                    {
+                        couponlist.map((item, i) => {
+                            return <View style={styles.CouponsBox} key={i}>
+                                <TouchableOpacity style={styles.clickContainer} onPress={() => navigation.navigate('coupnsDetails',{couponId: item.couponid })} >
+                                    <Image source={{ uri: item.img_url }} style={{ width: 92, height: 40, resizeMode: 'contain' }} />
+                                    <Text style={styles.cpTxt}>{item.description}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        })
+                    }
+                </View>
             </View>
-        </View>
+            : null
     )
 
 }
@@ -61,7 +33,7 @@ const styles = StyleSheet.create({
     couponListInner: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center', 
+        alignItems: 'center',
         flexWrap: 'wrap',
     },
     CouponsBox: {
@@ -71,7 +43,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 20,
         justifyContent: 'space-between',
-        alignItems: 'center', 
+        alignItems: 'center',
         marginBottom: 15,
     },
     cpTxt: {
@@ -82,7 +54,7 @@ const styles = StyleSheet.create({
     },
     clickContainer: {
         justifyContent: 'space-between',
-        alignItems: 'center', 
+        alignItems: 'center',
     }
 
 })

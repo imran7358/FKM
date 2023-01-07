@@ -35,7 +35,7 @@ const Login = ({navigation}) => {
       password:password,
       email:email,
     });
-    console.log(data);
+
     if(data.status == '1' && data.error == '0'){
       await AsyncStorage.setItem('userToken',data.token);
       navigation.navigate('Home');

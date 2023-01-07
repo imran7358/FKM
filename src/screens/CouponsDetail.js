@@ -1,26 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, Button, TouchableOpacity, Image} from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import Config from "react-native-config";
+import axios from 'axios';
+const ENDPOINT = '/coupons/coupon-detail';
 
-const CouponsDetails = ({navigation}) => {
+const CouponsDetails = ({navigation, route, props}) => {
+    const [couponsdetails, setCouponDetails] = useState({
+        storeImage:'',
+        description:'',
+        cpCode: '',
+
+    });
+
+    const getDetails = () =>{
+        axios.post(Config.API_URL + ENDPOINT,{
+            'apiAuth': Config.API_AUTH,
+            'device_type': 4,
+            'coupon_id': route.params.couponId,
+        }).then(({data})=>{
+            console.log('couponsDetails', data)
+            setCouponDetails({
+
+                storeImage: data.response.coupon.store_image,
+                description:data.response.coupon.description,
+                cpCode:data.response.coupon.coupon_code,
+            })
+            
+        }).catch((error)=>{
+            console.log(error);
+        });
+
+    };
+
+    useEffect(()=>{
+        getDetails();
+    },[])
 
     return (
        <ScrollView style={{backgroundColor: '#fff'}}>
          <View style={styles.container}>
            <View style={styles.cpDetailCon}>
             <View style={styles.logoCon}>
-                <Image source={require('../assets/images/licius.png')} style={styles.logoSize}/>
+                <Image source={{uri: couponsdetails.storeImage}} style={styles.logoSize}/>
             </View>
             <Text style={styles.detailsTxt}>
-            Flat Rs.300 Off On Orders Of Rs.969 Or More
-( Mandatory To Use ) + Earn Extra₹450.00 Cashback
+          {couponsdetails.description}
             </Text>
-            <Text style={styles.cpPara}>
+            {/* <Text style={styles.cpPara}>
             Through this coupon, you will get Rs.300 Off on Min 
 order value must be Rs.969 or more Valid for all users
-            </Text>
+            </Text> */}
             <View style={styles.apllyCp}>
-            <Text style={styles.cpCode}>FKMXYXX300</Text>
+            <Text style={styles.cpCode}>{couponsdetails.cpCode}</Text>
             <TouchableOpacity onPress={(()=> navigation.navigate('Activated'))}>
                 <View style={styles.btnCode}>
                     <Text style={styles.copIn}>Copy</Text>

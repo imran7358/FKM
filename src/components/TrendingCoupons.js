@@ -1,40 +1,26 @@
 import React from "react";
-import { View, StyleSheet} from "react-native";
+import { View, StyleSheet, Linking} from "react-native";
 import { FlatList, TouchableOpacity} from "react-native-gesture-handler";
 import {FlatListSlider, indicatorContainerStyle} from 'react-native-flatlist-slider';
 import Coupons from "./CouponsList";
 
-const TrendingCoupons = ({navigation}) => {
-    const images = [
-        {
-          image:'https://images.freekaamaal.com/store-images/758.jpg',
-          desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-        },
-
-        {
-          image: 'https://images.freekaamaal.com/store-images/3254.jpg',
-          desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-        },
-        {
-            image: 'https://images.freekaamaal.com/store-images/3758.jpg',
-            desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-          },
-          {
-            image: 'https://images.freekaamaal.com/store-images/3763.jpg',
-            desc: 'Festive Sale - Up To 50% Off + Flat Rs.100 Cashback',
-          },
-
-      ];
+const TrendingCoupons = ({navigation,latetscoupons}) => {
     return(
+      latetscoupons.length ?
     <FlatListSlider
-    data={images}
+    data={latetscoupons}
     component={<Coupons />}
+    imageKey={'img_url'}
     loop={false}
     width={86}
     indicator={false}
     autoscroll ={false}
-    onPress={item => alert(JSON.stringify(item))}
+    onPress={async(item) => {
+      console.log("Ye hai --->>>",item);
+      await Linking.openURL("https://"+item.url);
+    }}
   />
+  : null
     )
 
 }

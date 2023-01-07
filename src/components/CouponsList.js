@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 export default (Coupons = ({
-    style,
     item,
     imageKey,
     onPress,
@@ -28,7 +27,7 @@ export default (Coupons = ({
                         source={{ uri: item[imageKey] }}
                     />
                 </View>
-                <Text style={styles.couponDesc}>{item.desc}</Text>
+                <Text style={styles.couponDesc}>{item.description}</Text>
         </TouchableOpacity>
 
     );

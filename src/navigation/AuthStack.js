@@ -59,7 +59,7 @@ const AuthStack = ({navigation}) => {
       <Stack.Screen name="StoreDetails" component={StoreDetails} initialParams={{ storeSlug: "" }} options={{title: ''}}/>
       <Stack.Screen name="Profile" component={Profile} options={{title: ''}} />
       <Stack.Screen name="Coupons" component={TopCoupons} options={{title: ''}} />
-      <Stack.Screen name="coupnsDetails" component={CouponsDetails} />
+      <Stack.Screen name="coupnsDetails" component={CouponsDetails}/>
       <Stack.Screen name="Activated" component={CouponsActivated} />
       <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }}/>
       <Stack.Screen name="Deal List" component={AllDeals} />

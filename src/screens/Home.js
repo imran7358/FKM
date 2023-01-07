@@ -28,8 +28,6 @@ const Home = ({navigation}) => {
         setSlider(data.response.slider);
         setSticky(data.response.sticky);
         setLiveDeals(data.response.live_deals);
-        console.log("liveDeals", data.response.live_deals);
-        
     }).catch((error)=>{
       console.log(error);
     });
@@ -94,7 +92,7 @@ const Home = ({navigation}) => {
             </View>
             <View style={[styles.storCon, styles.commonPadd]}>
                 <View style={styles.catStore}>
-                <MyStore />
+                <MyStore navigation = {navigation}/>
                 </View>
             </View>
             <View style={styles.loadmoreCont}>
@@ -102,7 +100,7 @@ const Home = ({navigation}) => {
               </View>
           </View>
         </View>
-        <View style={styles.mainContainer}>
+        {/* <View style={styles.mainContainer}>
         <View style={styles.hotDealWrapper}>
             <View style={styles.dealDay}>
               <View style={styles.HotDealsInner}>
@@ -116,7 +114,7 @@ const Home = ({navigation}) => {
            </View>
             </View>
           </View>
-          </View>
+          </View> */}
 
 
           <View style={[styles.mainContainer, styles.paddingZero]}>

@@ -49,7 +49,6 @@ const Register = ({ navigation }) => {
         device_type: Config.DEVICE_TYPE,
         ...formData,
       });
-      // console.log("response back -->>>",data);
       if (data.token) {
 
         await AsyncStorage.setItem('registerToken', data.token);

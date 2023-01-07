@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import {View, Text, SafeAreaView, StyleSheet, Image} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import AppButton from "../components/customInputs/AppButton";
@@ -7,6 +7,15 @@ const END_URL = "/deals/dealdetail";
 import axios from 'axios';
 
  const ProductDetails = ({navigation, route}) => {
+    const [details, setDetails] = useState({
+
+        title: '',
+        dealImg: '',
+        description: '',
+        price: '',
+        offerPrice: '',
+
+    })
     const getDetails = () => {
         axios.post(Config.API_URL + END_URL, {
             "page":"1",
@@ -14,27 +23,37 @@ import axios from 'axios';
             "deal_slug": route.params.dealSlug,
             "device_type":"4",       
         }).then(({data})=>{
+            console.log("Deal Details", data)
+            const regex = /(<([^>]+)>)/ig;
+            const result = data.response.deal.deal_description_url.replace(regex, '');
+            setDetails({
+                title: data.response.deal.deal_title,
+                dealImg:data.response.deal.deal_img_url,
+                price: data.response.deal.price,
+                offerPrice: data.response.deal.offer_price,
+                description: result,
+            })
         }).catch((error)=>{
             console.log(error)
         })
     }
 
     useEffect(()=>{
-        getDetails()
+        getDetails();
     },[])
 
     return (
         <SafeAreaView style={styles.bgWhite}>
             <ScrollView style={styles.bgWhite}>
             <View style={styles.container}>
-            <Text style={styles.heading}>OnePlus Nord CE 2 Lite 5G</Text>
+            <Text style={styles.heading}>{details.title}</Text>
             <View style={styles.prodImage}>
                 <View style={styles.offerCon}>
                 <Text style={styles.offPrice}>50% OFF</Text>
                
                 </View>
                 <View style={styles.imgCon}>
-                   <Image source={require('../assets/images/prodimg.png')} />
+                   <Image source={{uri: details.dealImg}} style={{height:300, width:300}}/>
                 </View>
                 <Text>Choose the best price and the rertailer</Text>
                 <View style={styles.pricLogoCon}>
@@ -42,12 +61,12 @@ import axios from 'axios';
                 <View style={styles.priceContainer}>
                         <View style={styles.innerPrice}>
                             <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
-                            <Text style={styles.priceTxt}>500</Text>
+                            <Text style={styles.priceTxt}>{details.offerPrice}</Text>
                         </View>
                         <View style={styles.innerPrice}>
                             <Text style={styles.cutLine}></Text>
                         <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
-                            <Text style={[styles.priceTxt, styles.cutprice]}>500</Text>
+                            <Text style={[styles.priceTxt, styles.cutprice]}>{details.price}</Text>
                         </View>
                     </View>
                     <View style={styles.cashbckPrice}>
@@ -79,14 +98,10 @@ import axios from 'axios';
                 <Text style={styles.abtDeals}>About the Deals</Text>
                 <Text style={styles.hastag}>#Neversettle #Oneplus #Dealoftheday </Text>
                 <Text style={styles.detailsPara}>
-                Hi, Here is a must-buy offer for you, where you get
- flat Rs.9999 off on OnePlus 9 Pro 256 GB, 12 GB 
-RAM at Just Rs. 45001 after using our exclusive 
-coupon code. Use coupon code - 9_pro_9999
-( Copy This Code )
+             {details.description}
                 </Text>
-                <Text style={styles.secondHeading}>Here is how you can avail of this offer</Text>
-                <View style={styles.viewPoints}>
+                {/* <Text style={styles.secondHeading}>Here is how you can avail of this offer</Text> */}
+                {/* <View style={styles.viewPoints}>
                     <View style={styles.points}>
                         <View style={styles.circle}></View>
                         <Text>Click on Shop Now button</Text>
@@ -111,10 +126,10 @@ coupon code. Use coupon code - 9_pro_9999
                         <View style={styles.circle}></View>
                         <Text>Click on Shop Now button</Text>
                     </View>
-                </View>
+                </View> */}
 
-                <Text style={styles.secondHeading}>Highlights</Text>
-                <View style={styles.viewPoints}>
+                {/* <Text style={styles.secondHeading}>Highlights</Text> */}
+                {/* <View style={styles.viewPoints}>
                     <View style={styles.points}>
                         <View style={styles.circle}></View>
                         <Text>Click on Shop Now button</Text>
@@ -139,7 +154,7 @@ coupon code. Use coupon code - 9_pro_9999
                         <View style={styles.circle}></View>
                         <Text>Click on Shop Now button</Text>
                     </View>
-                </View>
+                </View> */}
             </View>
         </View>
             </ScrollView>
