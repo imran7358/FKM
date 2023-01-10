@@ -1,8 +1,40 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
+const END_URL = '/cashback/cashback-history';
 
-const Declined = () => {
+
+const Declined = ({setTop}) => {
+
+    const [decline, setDecline] = useState([])
+    const [desc, setDesc] = useState('');
+
+    const getDecline = async() =>{
+        const userToken = await AsyncStorage.getItem("userToken");
+        axios.post(Config.API_URL + END_URL,{
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+            option: 'decline',
+            page: '1',
+        },{
+            headers:{
+                Authorization: userToken,
+            }
+        }).then(({data})=>{
+            // console.log("confrimdata", data.response.confirm)
+            setDecline(data.response.decline);
+            setTop(data.response.top_desc);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+    useEffect(()=>{
+        getDecline();
+    },[])
+
 
  return (
         
@@ -31,16 +63,19 @@ const Declined = () => {
                 
              </View>
              <View style={styles.recordList}>
-             <View style={styles.innerReocrd}>
-                 <Text style={styles.srNo}>1</Text>
-                 <Text  style={styles.storeName}>xyxxcrew</Text>
-                 <Text style={styles.amount}>4</Text>
-                 <Text style={styles.status}>500</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-
-
-             </View>
+           {
+            decline.length ? decline.map((item, i)=>{
+                return   <View style={styles.innerReocrd}>
+                <Text style={styles.srNo}>{i + 1}</Text>
+                <Text  style={styles.storeName}>{item.store_name}</Text>
+                <Text style={styles.amount}>4</Text>
+                <Text style={styles.status}>{item.amount}</Text>
+                <Text style={styles.status}>{item.status}</Text>
+                <Text style={styles.status}>{item.transaction_date}</Text>
+            </View>
+            })
+            :null
+           }
              </View>
 
              </View>

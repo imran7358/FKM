@@ -1,8 +1,42 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import Config from 'react-native-config';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const END_URL = '/cashback/cashback-history';
 
-const Confirmed = () => {
+
+
+const Confirmed = ({setTop}) => {
+
+    const [confirmed, setConfirmed] = useState([])
+    const [desc, setDesc] = useState('');
+
+    const getConfirmed = async() =>{
+        const userToken = await AsyncStorage.getItem("userToken");
+        axios.post(Config.API_URL + END_URL,{
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+            option: 'confirm',
+            page: '1',
+        },{
+            headers:{
+                Authorization: userToken,
+
+            }
+        }).then(({data})=>{
+            // console.log("confrimdata", data.response.confirm)
+            setConfirmed(data.response.confirm);
+            setTop(data.response.top_desc);
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    useEffect(()=>{
+        getConfirmed();
+    },[])
 
     return (
         
@@ -28,15 +62,20 @@ const Confirmed = () => {
                 
              </View>
              <View style={styles.recordList}>
-             <View style={styles.innerReocrd}>
-                 <Text style={styles.srNo}>1</Text>
-                 <Text  style={styles.storeName}>xyxxcrew</Text>
-                 <Text style={styles.amount}>4</Text>
-                 <Text style={styles.status}>500</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-                 
-
-             </View>
+             {
+                confirmed.length ? confirmed.map((item, i)=>{
+                    return <View style={styles.innerReocrd} key={i}>
+                    <Text style={styles.srNo}>{i + 1}</Text>
+                    <Text  style={styles.storeName}>xyxxcrew</Text>
+                    <Text style={styles.amount}>4</Text>
+                    <Text style={styles.status}>500</Text>
+                    <Text style={styles.status}>xyxxcrew</Text>
+                    
+   
+                </View>
+                })
+                : null
+             }
              </View>
 
              </View>

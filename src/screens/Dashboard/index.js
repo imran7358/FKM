@@ -20,7 +20,7 @@ const Profile = ({ navigation }) => {
         email: '',
         phone: '',
 
-    })
+    });
     const getDetails = async()=>{
         const userToken = await AsyncStorage.getItem("userToken")
         // const token =  await AsyncStorage.getItem("registerToken");

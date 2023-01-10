@@ -10,8 +10,8 @@ const END_URL = '/cashback/click-history';
 const ClickHistory = ({navigation}) => {
     const [history, setHistory] = useState([]);
     const [description, setDescription] = useState({
-        desc: ''
-    })
+        desc: '',
+    });
 
     const getClickHistory = async()=>{
         const userToken = await AsyncStorage.getItem("userToken")
@@ -68,7 +68,7 @@ const ClickHistory = ({navigation}) => {
                     <Text style={styles.data}>{item.last_click}</Text>
                 </View>
                 })
-                :null
+                : null
             }
            </View>
           </View>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     },
     topText: {
         lineHeight: 22,
-        fontSize: 14,
+        fontSize: 12,
     },
     recordCon: {
         marginTop: 20,

@@ -1,8 +1,40 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Config from 'react-native-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+const END_URL = '/cashback/cashback-history';
+const PendingCashback = ({setTop}) => {
+    const [allcb, setAllCb] = useState([]);
+    const [desc, setAllDesc] = useState([]);
 
-const PendingCashback = () => {
+    const getPendingkHistory = async () => {
+        const userToken = await AsyncStorage.getItem("userToken");
+        axios.post(Config.API_URL + END_URL, {
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+            option: 'pending',
+            page: '1',
+        },
+            {
+                headers: {
+                    Authorization: userToken,
+                },
+            }).then(({ data }) => {
+                setAllCb(data.response.pending);
+                console.log("Hey Data=-->>>",data);
+                setTop(data.response.top_desc);
+            }).catch((error) => {
+                console.log("ye rooottt--->>>",error);
+            });
+
+    };
+
+    useEffect(() => {
+        getPendingkHistory();
+    },[]);
+
 
     return (
         

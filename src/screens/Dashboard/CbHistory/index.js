@@ -9,59 +9,14 @@ import Declined from './Declined';
 import axios from 'axios';
 import Config from 'react-native-config';
 const END_URL = '/cashback/cashback-history';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const CashbackHistory = () => {
+const OPTIONS = ["All","Pending","Confirm","Declined"];
+const CashbackHistory = ({navigation}) => {
+    const [tab, setTab] = useState('All');
     const [active, setActive] = useState(true);
-    const [status, setStatus] = useState('all');
-    const [load, setLoad] = useState(1);
-    const [allcashback, setAllCashback] = useState([]);
-    const setStatusFilter = status => {
-        setStatus(status);
-    };
-    const ListTab = [
-        {
-            status: 'all',
-        },
-        {
-            status: 'pending',
-        },
-        {
-            status: 'confirm',
-        },
-        {
-            status: 'decline',
-        },
-
-    ];
-
-    const getCashbackHistory = async () => {
-        const userToken = await AsyncStorage.getItem("userToken");
-        axios.post(Config.API_URL + END_URL, {
-            apiAuth: Config.API_AUTH,
-            device_type: Config.DEVICE_TYPE,
-            option: status,
-            page: load,
-        },
-            {
-                headers: {
-                    Authorization: userToken,
-                },
-            }).then(({ data }) => {
-                setAllCashback(data.response.all);
-                console.log('All Cashback', data.response.all);
-            }).catch((error) => {
-                console.log(error);
-            });
-
-    };
-
-    useEffect(() => {
-        getCashbackHistory();
-        console.log("tab", status);
-        console.log("Page", load);
-    }, [status]);
+    const [desc,setDesc] = useState("");
+    useEffect(()=>{
+    }, [tab]);
     return (
         <SafeAreaView style={styles.bgWhite}>
             <ScrollView style={styles.bgWhite}>
@@ -72,45 +27,45 @@ const CashbackHistory = () => {
                         }) : null
                     } */}
                     <View style={styles.topContent}>
-                        <Text style={styles.topText}>Below you will find the list of the latest stores you’ve visited.
-                            So that you can track the stores you have looked at.</Text>
+                        <Text style={styles.topText}>{desc}</Text>
                     </View>
 
                     <View style={styles.historyTab}>
-                        {
-                            ListTab.map((e, i) => (
-                                <TouchableOpacity key={i} style={status === e.status && styles.activeTab} onPress={() => setStatusFilter(e.status)}>
-                                    <Text style={[status === e.status && styles.txtActive, styles.preTab]}>{e.status}</Text>
-                                </TouchableOpacity>
-
-                            ))
-                        }
+                        {OPTIONS.map(e=><View><Text  style={e==tab?[styles.tabList,styles.activeTab]:[styles.tabList]} onPress={(ev)=>{setTab(e)}}>{e}</Text></View>)}
                     </View>
 
                     <View style={styles.recordCon}>
                         {
-                            status === 'all' ?
-                                <AllCashback allCashback = {allcashback}/>
+                            tab === 'All' ?
+                                <AllCashback setTop={(txt)=>{
+                                    setDesc(txt);
+                                }}/>
                                 : null
                         }
                         {
-                            status === 'pending' ?
+                            tab === 'Pending' ?
 
-                                <PendingCashback />
+                                <PendingCashback setTop={(txt)=>{
+                                    setDesc(txt);
+                                }}/>
 
                                 : null
                         }
                         {
-                            status === 'confirm' ?
+                            tab === 'Confirm' ?
 
-                                <Confirmed />
+                                <Confirmed setTop={(txt)=>{
+                                    setDesc(txt);
+                                }}/>
                                 : null
                         }
                     
                         {
-                            status === 'declined' ?
+                            tab === 'Declined' ?
 
-                                <Declined />
+                                <Declined setTop={(txt)=>{
+                                    setDesc(txt);
+                                }}/>
 
                                 : null
                         }
@@ -128,6 +83,10 @@ const styles = StyleSheet.create({
     container: {
         padding: 24,
         flex: 1,
+    },
+    tabList: {
+        fontSize:16,
+        fontWeight: '500',
     },
     bgWhite: {
         backgroundColor: '#fff',
