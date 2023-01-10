@@ -37,14 +37,14 @@ const AllDeals = ({ navigation}) => {
                                  <TouchableOpacity onPress={() => navigation.navigate({name:'Details',params:{dealSlug:item.slug_url}})}>
                                 <View style={styles.productImageCon}>
                                     <View style={styles.productImage}>
-                                        <Image source={{ uri: item.deal_image }} style={{ height: 80, width: 80 }} />
+                                        <Image source={{ uri: item.deal_image }} style={{ height: 70, width: 70 }} />
                                     </View>
                                 </View>
                                 <View style={styles.brandLogo}>
                                     <Image source={{ uri: item.store_img_url }} style={{ height: 16, width: 55 }} />
                                 </View>
                                 <View style={styles.prodDescr}>
-                                    <Text style={styles.prdLine}>
+                                    <Text style={styles.prdLine} numberOfLines={2}>
                                         {item.title}
                                     </Text>
 
@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
     productBox: {
         width: '47%',
         backgroundColor: '#F7F7F7',
-        padding: 20,
+        padding: 15,
         borderRadius: 9,
         borderColor: '#EDEDED',
         borderWidth: 1,
-        marginBottom: 15
+        marginBottom: 15,
 
     },
     productImage: {
@@ -98,6 +98,9 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#fff',
         borderRadius: 9,
+        justifyContent: 'center',
+        alignContent:'center',
+        alignItems: 'center',
     },
     productImageCon: {
         width: '100%',
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     prdLine: {
-        fontSize: 12,
+        fontSize: 11,
         lineHeight: 18,
     },
     priceContainer: {
@@ -130,13 +133,13 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     rpImage: {
-        width: 12,
-        height: 12,
+        width: 11,
+        height: 11,
         resizeMode: 'contain',
     },
     priceTxt: {
         fontSize: 15,
-        fontWeight: 'bold',
+        fontWeight: '800',
         marginLeft: 3,
     },
     cutprice: {

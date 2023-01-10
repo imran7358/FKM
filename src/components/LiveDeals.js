@@ -5,6 +5,7 @@ import {FlatListSlider, indicatorContainerStyle} from 'react-native-flatlist-sli
 import Live from "./livePrivew";
 
 const LiveDeals = ({navigation, livedeals}) =>{
+  
     return(
       livedeals.length ? 
       <FlatListSlider

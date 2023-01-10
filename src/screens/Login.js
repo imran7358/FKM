@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 import {
@@ -15,117 +15,121 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ENDPOINT = '/user/login';
 
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error,setError] = useState(null);
-  const handleLogin = async()=>{
+  const [error, setError] = useState(null);
+  const [show, setShow] = useState(false);
+  const handleLogin = async () => {
     try {
-      console.log(Config.API_URL + ENDPOINT,{
-        apiAuth:Config.API_AUTH,
-        device_type:Config.DEVICE_TYPE,
-        app_device_id:'',
-        password:password,
-        email:email,
+      const { data } = await axios.post(Config.API_URL + ENDPOINT, {
+        apiAuth: Config.API_AUTH,
+        device_type: Config.device_type,
+        app_device_id: '',
+        password: password,
+        email: email,
       });
-    const { data } = await axios.post(Config.API_URL + ENDPOINT,{
-      apiAuth:Config.API_AUTH,
-      device_type:Config.device_type,
-      app_device_id:'',
-      password:password,
-      email:email,
-    });
 
-    if(data.status == '1' && data.error == '0'){
-      await AsyncStorage.setItem('userToken',data.token);
-      navigation.navigate('Home');
+      if (data.status == '1' && data.error == '0') {
+        await AsyncStorage.setItem('userToken', data.token);
+        navigation.navigate('Home');
+      }
+      else {
+        setError(data.message);
+        setShow(true);
+        setTimeout(() => {
+          setShow(false);
+
+        }, 3000);
+
+      }
+    } catch (e) {
+      console.log(e);
     }
-    else{
-      setError(data.message);
-    }
-  } catch (e) {
-    console.log(e);
-  }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     // storeUser();
   })
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image source={require('../assets/images/login-image.png')} />
-      </View>
-      <View>
-        <Text style={[styles.headingSize]}>Login</Text>
-      </View>
-      <View style={styles.inputView}>
-        <View style={styles.inputBoxContainer}>
-          <Image
-            source={require('../assets/images/email.png')}
-            style={styles.icon}
-          />
-          <TextInput
-            autoCapitalize="none"
-            style={[styles.inputText, styles.lableFont]}
-            placeholder="Email ID"
-            placeholderTextColor="#003f5c"
-            onChangeText={(em) => setEmail(em)} />
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image source={require('../assets/images/login-image.png')} />
         </View>
-        <View style={styles.inputBoxContainer}>
-          <Image
-            source={require('../assets/images/padlock.png')}
-            style={styles.icon}
-          />
-          <TextInput
-            autoCapitalize="none"
-            style={styles.inputText}
-            placeholder="Password"
-            placeholderTextColor="#003f5c"
-            secureTextEntry={true}
-
-            onChangeText={(passw) => setPassword(passw)}
-          />
+        <View>
+          <Text style={[styles.headingSize]}>Login</Text>
         </View>
-        <View style={styles.passwordContainer}>
-									<Text onPress={()=> navigation.navigate('Forgot Paasword')} 
-									style={styles.forgotPassword}> Forgot Password ?</Text></View>
-									<TouchableOpacity onPress={handleLogin}>
-                  <View style={styles.loginButton}>
-										<Text style={styles.loginTxt}>Login</Text>
-                  </View>
-                  </TouchableOpacity>
-									<View style={styles.orContainer}>
-										<View style={styles.borderLeft}><Text></Text></View>
-										<Text>OR</Text>
-										<View style={styles.borderLeft}><Text></Text></View>
-									</View>
+        <View style={styles.inputView}>
+          <View style={styles.inputBoxContainer}>
+            <Image
+              source={require('../assets/images/email.png')}
+              style={styles.icon}
+            />
+            <TextInput
+              autoCapitalize="none"
+              style={[styles.inputText, styles.lableFont]}
+              placeholder="Email ID"
+              placeholderTextColor="#666"
+              onChangeText={(em) => setEmail(em)} />
+          </View>
+          <View style={styles.inputBoxContainer}>
+            <Image
+              source={require('../assets/images/padlock.png')}
+              style={styles.icon}
+            />
+            <TextInput
+              autoCapitalize="none"
+              style={styles.inputText}
+              placeholder="Password"
+              placeholderTextColor="#666"
+              secureTextEntry={true}
+              onChangeText={(passw) => setPassword(passw)}
+            />
 
-									<View style={styles.socialLogin}>
-											<View style={styles.googleLogin}>
-							 <Image
-            source={require('../assets/images/google.png')}
-          />
-											<Text style={styles.googleLoginTxt}>Goolge</Text>
-											</View>
-										<View style={[styles.googleLogin, styles.facebookLogin]}>
-							 <Image
-            source={require('../assets/images/google.png')}
-          />
-										<View style={styles.googleLoginTxt}>
-											<Text style={styles.googleLoginTxt}>Facebook</Text>
-											</View>
-										</View>
-										
-									</View>
-									<View style={styles.newLogin}>
-										<Text style={styles.font16}>New to FreeKaaMaal ?</Text>
-										<Text style={[styles.font16, styles.RegisterLink]} onPress = {()=>navigation.navigate('Register')}>Register</Text>
-										</View>
+          </View>
+
+          {
+            show ? <Text style={styles.errorLabel}>{error}</Text> : null
+          }
+
+          <View style={styles.passwordContainer}>
+            <Text onPress={() => navigation.navigate('Forgot Paasword')}
+              style={styles.forgotPassword}> Forgot Password ?</Text></View>
+          <TouchableOpacity onPress={handleLogin}>
+            <View style={styles.loginButton}>
+              <Text style={styles.loginTxt}>Login</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.orContainer}>
+            <View style={styles.borderLeft}><Text></Text></View>
+            <Text>OR</Text>
+            <View style={styles.borderLeft}><Text></Text></View>
+          </View>
+
+          <View style={styles.socialLogin}>
+            <View style={styles.googleLogin}>
+              <Image
+                source={require('../assets/images/google.png')}
+              />
+              <Text style={styles.googleLoginTxt}>Goolge</Text>
+            </View>
+            <View style={[styles.googleLogin, styles.facebookLogin]}>
+              <Image
+                source={require('../assets/images/facebook.png')}
+              />
+              <View style={styles.googleLoginTxt}>
+                <Text style={styles.googleLoginTxt}>Facebook</Text>
+              </View>
+            </View>
+
+          </View>
+          <View style={styles.newLogin}>
+            <Text style={styles.font16}>New to FreeKaaMaal ?</Text>
+            <Text style={[styles.font16, styles.RegisterLink]} onPress={() => navigation.navigate('Register')}>Register</Text>
+          </View>
+        </View>
       </View>
-      <Text>{error}</Text>
-    </View>
     </ScrollView>
   );
 };
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
   },
   headingSize: {
     fontSize: fontSize.headingFont,
-    fontWeight: '900',
+    fontWeight: '800',
   },
   logo: {
     height: 128,
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: 36,
+    top: 33,
     left: 20,
   },
   inputText: {
@@ -164,8 +168,13 @@ const styles = StyleSheet.create({
     borderRadius: inputBox.borderRadius,
     paddingLeft: inputBox.paddingLeft,
     color: '#333333',
+    fontSize: 14,
   },
-
+  errorLabel: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 10,
+  },
   lableFont: {
     fontSize: fontSize.inputFont,
   },
@@ -256,9 +265,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#2453C6',
   },
-		facebookLogin: {
-			backgroundColor: '#e5f1ff'
-		}
+  facebookLogin: {
+    backgroundColor: '#e5f1ff',
+  }
 });
 
 export default Login;

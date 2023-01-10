@@ -14,7 +14,7 @@ const StoreDetails = ({ props, route }) => {
     const [coupons, setShowCoupons] = useState(false);
     const [rate, setRate] = useState({
         cashback_tag: '',
-        rate:'',
+        rate: '',
         rate_type: '',
         tag_desc: ''
     })
@@ -54,6 +54,8 @@ const StoreDetails = ({ props, route }) => {
             'device_type': 4,
 
         }).then(({ data }) => {
+            const regex = /(<([^>]+)>)/ig;
+            const result = data.response.store_details.top_desc.replace(regex, '');
             storeDetails({
                 is_cashback: data.response.store_details.is_cashback,
                 store_name: data.response.store_details.store_name,
@@ -62,7 +64,7 @@ const StoreDetails = ({ props, route }) => {
                 confirmation: data.response.store_details.confirmation,
                 speed: data.response.store_details.speed,
                 is_missing: data.response.store_details.is_missing,
-                top_desc: data.response.store_details.top_desc,
+                top_desc: result,
 
             });
 
@@ -97,7 +99,7 @@ const StoreDetails = ({ props, route }) => {
                             <Image source={require('../assets/images/info.png')} />
                         </View>
                         <View>
-                            <Text style={show ? styles.storePara : styles.storePara}>{store.top_desc}</Text>
+                            <Text style={styles.storePara}>{store.top_desc}</Text>
                             {/* <Text onPress={showMore}>{show ? 'Read More' : 'Read Less'}</Text> */}
                         </View>
                         <View style={styles.cashbackInfo}>
@@ -123,28 +125,28 @@ const StoreDetails = ({ props, route }) => {
                         </View>
                         {
 
-                            rate.length ? rate.map((item, i)=>{
+                            rate.length ? rate.map((item, i) => {
                                 return <View style={styles.cbCardContainer} key={i}>
-                                <View style={styles.cbInner}>
-                                    <View style={styles.cbRupee}>
-                                        <View style={styles.cbInfoCon}>
-                                            {/* <Image source={require('../assets/images/wRupee.png')} /> */}
-                                            <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                    <View style={styles.cbInner}>
+                                        <View style={styles.cbRupee}>
+                                            <View style={styles.cbInfoCon}>
+                                                {/* <Image source={require('../assets/images/wRupee.png')} /> */}
+                                                <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                            </View>
+                                        </View>
+
+                                        <View style={styles.cbTxt}>
+                                            <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>{item.cashback_tag}</Text>
+                                            <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '72%', lineHeight: 18, flex: 1, }}>{item.tag_desc}</Text>
                                         </View>
                                     </View>
-    
-                                    <View style={styles.cbTxt}>
-                                        <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>{item.cashback_tag}</Text>
-                                        <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '72%', lineHeight: 18, flex: 1,}}>{item.tag_desc}</Text>
-                                    </View>
                                 </View>
-                            </View>
                             })
 
-                            :null
+                                : null
                         }
-                      
-                        
+
+
                     </View>
 
                     <View style={styles.claimForm}>
@@ -174,7 +176,7 @@ const StoreDetails = ({ props, route }) => {
                     {
                         deals ?
 
-                            <Deals deals = {storeDeals}/>
+                            <Deals deals={storeDeals} />
 
                             : null
                     }
@@ -295,7 +297,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f27935',
         flexDirection: 'row',
         alignItems: 'center',
-       
+
 
     },
     cbInner: {
@@ -345,8 +347,8 @@ const styles = StyleSheet.create({
 
     },
     storePara: {
-        fontSize: 15,
-        lineHeight: 25,
+        fontSize: 12,
+        lineHeight: 18,
         padding: 10,
     },
     confirmTime: {

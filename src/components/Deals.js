@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
 
 const Deals = ({deals, navigation, route}) => {
+
+    console.log("storeDeals", deals)
     return (
         <View style={styles.dealsContainer}>
            <View style={styles.productContainer}>
@@ -14,11 +16,11 @@ const Deals = ({deals, navigation, route}) => {
                        <Image source={{uri: item.deal_image}}  style={styles.dealImage}/>
                        </View>
                     </View>
-                    <View style={styles.brandLogo}>
+                    {/* <View style={styles.brandLogo}>
                         <Image source={{uri: item. store_img_url}} style={styles.storeImg}/>
-                    </View>
+                    </View> */}
                     <View style={styles.prodDescr}>
-                        <Text style={styles.prdLine}>
+                        <Text style={styles.prdLine} numberOfLines={2}>
                             {item.deal_title}
                         </Text>
     
@@ -88,12 +90,12 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     },
     prodDescr: {
-        fontSize:10,
+        fontSize:11,
         marginTop:10,
     },
     prdLine: {
         fontSize:10,
-        lineHeight:15,
+        lineHeight:18,
     },
     priceContainer: {
         flexDirection: 'row',
@@ -107,13 +109,13 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     rpImage: {
-        width: 15,
-        height: 15,
+        width: 11,
+        height: 11,
         resizeMode: 'contain'
     },
     priceTxt: {
         fontSize: 15,
-        fontWeight: 'bold',
+        fontWeight: '800',
         marginLeft: 3,
     },
     cutprice: {
@@ -127,13 +129,13 @@ const styles = StyleSheet.create({
 
     },
     dealImage: {
-        width: 67,
-        height: 67,
+        width: 70,
+        height: 70,
         resizeMode: 'contain',
     },
     storeImg: {
-        width: 56,
-        height: 14,
+        width: 55,
+        height: 16,
         resizeMode: 'cover',
     }
 

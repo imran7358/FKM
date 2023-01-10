@@ -73,7 +73,7 @@ const EnterOTP = ({navigation}) => {
         }}></OTPin>
       </View>
       <View style={styles.inputView}>
-        <View style={[styles.inputBoxContainer, styles.otpBoxContainer]}>
+        {/* <View style={[styles.inputBoxContainer, styles.otpBoxContainer]}>
           <TextInput
             style={[styles.inputText, styles.lableFont]}
             placeholder="*"
@@ -94,7 +94,7 @@ const EnterOTP = ({navigation}) => {
             style={[styles.inputText, styles.lableFont]}
             placeholder="*"
           />
-        </View>
+        </View> */}
         <View style={styles.passwordContainer}>
             </View>
 		{/* <TouchableOpacity onPress={()=> navigation.navigate('Reset Password')}>

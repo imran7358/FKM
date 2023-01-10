@@ -10,20 +10,22 @@ import axios from 'axios';
     const [details, setDetails] = useState({
 
         title: '',
-        dealImg: '',
+        dealImg: null,
         description: '',
         price: '',
         offerPrice: '',
 
     })
+
+    const [loading, setLoading] = useState(false);
     const getDetails = () => {
+        setLoading(true);
         axios.post(Config.API_URL + END_URL, {
             "page":"1",
             "apiAuth": Config.API_AUTH,
             "deal_slug": route.params.dealSlug,
             "device_type":"4",       
         }).then(({data})=>{
-            console.log("Deal Details", data)
             const regex = /(<([^>]+)>)/ig;
             const result = data.response.deal.deal_description_url.replace(regex, '');
             setDetails({
@@ -32,9 +34,12 @@ import axios from 'axios';
                 price: data.response.deal.price,
                 offerPrice: data.response.deal.offer_price,
                 description: result,
-            })
+            }),
+            setLoading(false);
         }).catch((error)=>{
-            console.log(error)
+            console.log(error);
+        }).finally(()=>{
+            setLoading(false);
         })
     }
 
@@ -45,118 +50,119 @@ import axios from 'axios';
     return (
         <SafeAreaView style={styles.bgWhite}>
             <ScrollView style={styles.bgWhite}>
-            <View style={styles.container}>
-            <Text style={styles.heading}>{details.title}</Text>
-            <View style={styles.prodImage}>
-                <View style={styles.offerCon}>
-                <Text style={styles.offPrice}>50% OFF</Text>
-               
-                </View>
-                <View style={styles.imgCon}>
-                   <Image source={{uri: details.dealImg}} style={{height:300, width:300}}/>
-                </View>
-                <Text>Choose the best price and the rertailer</Text>
-                <View style={styles.pricLogoCon}>
-                <View style={styles.leftPrice}>
-                <View style={styles.priceContainer}>
+            {
+                loading ? <Text>Loader</Text> : <View style={styles.container}>
+                <Text style={styles.heading}>{details.title}</Text>
+                <View style={styles.prodImage}>
+                    <View style={styles.offerCon}>
+                    <Text style={styles.offPrice}>50% OFF</Text>
+                    </View>
+                    <View style={styles.imgCon}>
+                       <Image source={{ uri: details.dealImg}} style={{height:300, width:300}}/>
+                    </View>
+                    <Text>Choose the best price and the rertailer</Text>
+                    <View style={styles.pricLogoCon}>
+                    <View style={styles.leftPrice}>
+                    <View style={styles.priceContainer}>
+                            <View style={styles.innerPrice}>
+                                <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
+                                <Text style={styles.priceTxt}>{details.offerPrice}</Text>
+                            </View>
+                            <View style={styles.innerPrice}>
+                                <Text style={styles.cutLine}></Text>
+                            <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
+                                <Text style={[styles.priceTxt, styles.cutprice]}>{details.price}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.cashbckPrice}>
                         <View style={styles.innerPrice}>
-                            <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
-                            <Text style={styles.priceTxt}>{details.offerPrice}</Text>
-                        </View>
-                        <View style={styles.innerPrice}>
-                            <Text style={styles.cutLine}></Text>
-                        <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
-                            <Text style={[styles.priceTxt, styles.cutprice]}>{details.price}</Text>
+                                <Image source={require('../assets/images/rupee-icon.png')} style={styles.cbSize}/>
+                                <Text style={styles.cbTxt}>250</Text>
+                                <Text>Cashback</Text>
+                                <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
+                            </View>
                         </View>
                     </View>
-                    <View style={styles.cashbckPrice}>
-                    <View style={styles.innerPrice}>
-                            <Image source={require('../assets/images/rupee-icon.png')} style={styles.cbSize}/>
-                            <Text style={styles.cbTxt}>250</Text>
-                            <Text>Cashback</Text>
-                            <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
+                        <View style={styles.logoImages}>
+                            <Image source={require('../assets/images/amzonLogo.png')} style={styles.prodLogo}/>
                         </View>
                     </View>
                 </View>
-                    <View style={styles.logoImages}>
-                        <Image source={require('../assets/images/amzonLogo.png')} style={styles.prodLogo}/>
-                    </View>
+    
+                <View style={styles.claimForm}>
+                   <View>
+                    <Text style={styles.claimHead}>cashback claim form</Text>
+                    <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
+                   </View>
+                   <View style={styles.FormBtn}>
+                    <Text style={styles.submitBtn}>Submit</Text>
+                   </View>
+                </View>
+    
+                <View style={styles.prodDetails}>
+                    <Text style={styles.abtDeals}>About the Deals</Text>
+                    <Text style={styles.hastag}>#Neversettle #Oneplus #Dealoftheday </Text>
+                    <Text style={styles.detailsPara}>
+                 {details.description}
+                    </Text>
+                    {/* <Text style={styles.secondHeading}>Here is how you can avail of this offer</Text> */}
+                    {/* <View style={styles.viewPoints}>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                    </View> */}
+    
+                    {/* <Text style={styles.secondHeading}>Highlights</Text> */}
+                    {/* <View style={styles.viewPoints}>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                        <View style={styles.points}>
+                            <View style={styles.circle}></View>
+                            <Text>Click on Shop Now button</Text>
+                        </View>
+                    </View> */}
                 </View>
             </View>
-
-            <View style={styles.claimForm}>
-               <View>
-                <Text style={styles.claimHead}>cashback claim form</Text>
-                <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
-               </View>
-               <View style={styles.FormBtn}>
-                <Text style={styles.submitBtn}>Submit</Text>
-               </View>
-            </View>
-
-            <View style={styles.prodDetails}>
-                <Text style={styles.abtDeals}>About the Deals</Text>
-                <Text style={styles.hastag}>#Neversettle #Oneplus #Dealoftheday </Text>
-                <Text style={styles.detailsPara}>
-             {details.description}
-                </Text>
-                {/* <Text style={styles.secondHeading}>Here is how you can avail of this offer</Text> */}
-                {/* <View style={styles.viewPoints}>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                </View> */}
-
-                {/* <Text style={styles.secondHeading}>Highlights</Text> */}
-                {/* <View style={styles.viewPoints}>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                    <View style={styles.points}>
-                        <View style={styles.circle}></View>
-                        <Text>Click on Shop Now button</Text>
-                    </View>
-                </View> */}
-            </View>
-        </View>
+            }
             </ScrollView>
             <View style ={styles.container}>
                 <AppButton />

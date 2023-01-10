@@ -22,7 +22,7 @@ export default (Live = ({
          <View style={style.liveDealsCon} >
       <View style={[styles.imageContainer, styles.shadow]}>
        <View style={styles.liveViewer}>
-        <Text style={styles.viewTxt}>{item.viewer} <Text style={styles.view}>Viewer</Text></Text>
+        <Text style={styles.viewTxt}>{item.views}</Text>
        </View>
         <Image
           style={styles.videoPreview}
@@ -30,16 +30,16 @@ export default (Live = ({
         />
       </View>
       <View style={styles.dealDiscription}>
-      <Text style={styles.desc}>{item.title}</Text>
+      <Text style={styles.desc} numberOfLines={3}>{item.title}</Text>
       <View style={styles.priceContainer}>
                         <View style={styles.innerPrice}>
                             <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
-                            <Text style={styles.priceTxt}>500</Text>
+                            <Text style={styles.priceTxt}>{item.offer_price}</Text>
                         </View>
                         <View style={styles.innerPrice}>
                             <Text style={styles.cutLine}></Text>
                         <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
-                            <Text style={[styles.priceTxt, styles.cutprice]}>500</Text>
+                            <Text style={[styles.priceTxt, styles.cutprice]}>{item.price}</Text>
                         </View>
                     </View>
       </View>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   desc: {
-    fontSize: 12,
+    fontSize: 11,
     letterSpacing: 0,
     lineHeight: 18,
   },
@@ -99,12 +99,12 @@ innerPrice: {
     position: 'relative',
 },
 rpImage: {
-    width: 12,
-    height: 12,
+    width: 11,
+    height: 11,
     resizeMode: 'contain',
 },
 priceTxt: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '800',
     marginLeft: 3,
 },
@@ -120,8 +120,8 @@ cutLine: {
 },
 liveViewer: {
     position: 'absolute',
-    width: 80,
-    height: 30,
+    width: 65,
+    height: 25,
     backgroundColor: '#F27935',
     borderRadius: 3,
     zIndex: 999,
@@ -132,8 +132,9 @@ liveViewer: {
     opacity: 0.85,
 },
 viewTxt: {
-fontWeight: '900',
+fontWeight: '500',
 color: '#fff',
+fontSize:10,
 },
 view: {
     fontWeight: '500',

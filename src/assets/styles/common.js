@@ -9,7 +9,7 @@ export const centerContainer = {
 
 export const fontSize = {
   headingFont: 20,
-  inputFont: 16,
+  inputFont: 14,
   buttonSize: 18,
   paraFont: 14,
 };
@@ -38,7 +38,7 @@ export const fontBold = {
   fontFamily: 'Poppins-Bold',
 };
 export const inputBox = {
-  height: 50,
+  height: 45,
   padding: 10,
   borderWidth: 1,
   marginTop: 20,

@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const AllCashback = () => {
+const AllCashback = ({AllCashabck}) => {
+    console.log("AllCB", AllCashabck);
 
     return (
-
         <View style={styles.container}>
              <View style={styles.recordCon}>
              <View style={styles.headingCond}>
@@ -21,14 +21,18 @@ const AllCashback = () => {
                      <Text style={styles.barTxt}>Status</Text>
                  </View>
              </View>
-             <View style={styles.recordList}>
-             <View style={styles.innerReocrd}>
-                 <Text style={styles.srNo}>1</Text>
-                 <Text style={styles.storeName}>xyxxcrew</Text>
-                 <Text style={styles.amount}>4</Text>
-                 <Text style={styles.status}>Confirmed</Text>
-             </View>
-             </View>
+            {
+               AllCashabck.map((item, i)=>{
+                    return  <View style={styles.recordList}>
+                    <View style={styles.innerReocrd}>
+                        <Text style={styles.srNo}>1</Text>
+                        <Text style={styles.storeName}>{item.store_name}</Text>
+                        <Text style={styles.amount}>4</Text>
+                        <Text style={styles.status}>Confirmed</Text>
+                    </View>
+                    </View>
+                })
+            }
 
              </View>
             

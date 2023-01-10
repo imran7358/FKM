@@ -1,15 +1,47 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
+import Config from 'react-native-config';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const END_URL = '/cashback/click-history';
+
 
 const ClickHistory = ({navigation}) => {
+    const [history, setHistory] = useState([]);
+    const [description, setDescription] = useState({
+        desc: ''
+    })
+
+    const getClickHistory = async()=>{
+        const userToken = await AsyncStorage.getItem("userToken")
+        axios.post(Config.API_URL + END_URL,{
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+        },
+        {
+            headers : {
+              Authorization:userToken,
+            },
+        }).then(({data})=>{
+            setHistory(data.response.click_history);
+            setDescription({
+                desc: data.response.top_desc,
+            });
+        }).catch((error)=>{
+            console.log(error);
+        });
+    };
+
+    useEffect(()=>{
+        getClickHistory();
+    }, [])
     return (
        <SafeAreaView style={styles.bgWhite}>
         <ScrollView style={styles.bgWhite}>
         <View style={styles.container}>
          <View style={styles.topContent}>
-            <Text style={styles.topText}>Below you will find the list of the latest stores you’ve visited. 
-So that you can track the stores you have looked at.</Text>
+            <Text style={styles.topText}>{description.desc}</Text>
          </View>
          <View style={styles.recordCon}>
             <View style={styles.headingCond}>
@@ -27,90 +59,17 @@ So that you can track the stores you have looked at.</Text>
                 </View>
             </View>
            <View style={styles.recordList}>
-            <View style={styles.innerReocrd}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={[styles.innerReocrd, styles.alterColor]}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={styles.innerReocrd}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={[styles.innerReocrd, styles.alterColor]}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={styles.innerReocrd}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={[styles.innerReocrd, styles.alterColor]}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={styles.innerReocrd}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={[styles.innerReocrd, styles.alterColor]}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={styles.innerReocrd}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={[styles.innerReocrd, styles.alterColor]}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={styles.innerReocrd}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={[styles.innerReocrd, styles.alterColor]}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={styles.innerReocrd}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
-            <View style={[styles.innerReocrd, styles.alterColor]}>
-                <Text style={styles.srNo}>1</Text>
-                <Text style={styles.storeName}>xyxxcrew</Text>
-                <Text style={styles.click}>4</Text>
-                <Text style={styles.data}>01-Nov-22 :23:38</Text>
-            </View>
+            {
+                history .length ? history.map((item, i )=>{
+                    return <View style={styles.innerReocrd} key={i}>
+                    <Text style={styles.srNo}>1</Text>
+                    <Text style={styles.storeName}>{item.store}</Text>
+                    <Text style={styles.click}>{item.num_of_time}</Text>
+                    <Text style={styles.data}>{item.last_click}</Text>
+                </View>
+                })
+                :null
+            }
            </View>
           </View>
         </View>

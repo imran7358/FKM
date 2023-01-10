@@ -1,6 +1,6 @@
-import  React,{useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../components/Header';
 import DealsDay from '../components/dealDay';
 import MianSlider from '../components/MainSlider';
@@ -14,8 +14,8 @@ import FAQ from '../components/Faq';
 import Config from 'react-native-config';
 const END_URL = "/home/home";
 import axios from 'axios';
-const Home = ({navigation}) => {
-  const [slider,setSlider] = useState([]);
+const Home = ({ navigation }) => {
+  const [slider, setSlider] = useState([]);
   const [sticky, setSticky] = useState([]);
   const [livedeals, setLiveDeals] = useState([])
   const getSlider = () => {
@@ -24,17 +24,17 @@ const Home = ({navigation}) => {
       'sponsored_count': '0',
       'apiAuth': Config.API_AUTH,
       'device_type': 4,
-    }).then(({data})=>{
-        setSlider(data.response.slider);
-        setSticky(data.response.sticky);
-        setLiveDeals(data.response.live_deals);
-    }).catch((error)=>{
+    }).then(({ data }) => {
+      setSlider(data.response.slider);
+      setSticky(data.response.sticky);
+      setLiveDeals(data.response.live_deals);
+    }).catch((error) => {
       console.log(error);
     });
   };
-  React.useEffect(()=>{
+  React.useEffect(() => {
     getSlider();
-  },[]);
+  }, []);
   return (
     <SafeAreaView>
       <View>
@@ -43,32 +43,32 @@ const Home = ({navigation}) => {
       <ScrollView style={styles.bgWhite}>
         <View style={styles.mainWrapper}>
           <View style={styles.mainSlider}>
-            <MianSlider navigation={navigation} slideImage = {slider} />
+            <MianSlider navigation={navigation} slideImage={slider} />
           </View>
           <View style={[styles.dealDay]}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
-              <Text style={styles.topHeading}>Deals <Text style={{ fontWeight: '900' }}>of the Day</Text></Text>
+              <Text style={styles.topHeading}>Deals <Text style={{ fontWeight: '800' }}>of the Day</Text></Text>
             </View>
-            <DealsDay stickyImages= {sticky} navigation={navigation}/>
+            <DealsDay stickyImages={sticky} navigation={navigation} />
           </View>
           <View style={styles.liveDeals}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/liveDeals.png')} style={styles.hotSale} />
-              <Text style={styles.topHeading}>Live <Text style={{ fontWeight: '900' }}>Deals</Text></Text>
+              <Text style={styles.topHeading}>Live <Text style={{ fontWeight: '800' }}>Deals</Text></Text>
             </View>
-            <LiveDeals navigation={navigation} livedeals = {livedeals}/>
+            <LiveDeals navigation={navigation} livedeals={livedeals} />
           </View>
           <View style={styles.hotDealWrapper}>
             <View style={styles.dealDay}>
               <View style={styles.HotDealsInner}>
                 <View style={styles.headingArea}>
                   <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
-                  <Text style={styles.topHeading}>Hot<Text style={{ fontWeight: '900' }}> Deals</Text></Text>
+                  <Text style={styles.topHeading}>Hot<Text style={{ fontWeight: '800' }}> Deals</Text></Text>
                 </View>
-              <TouchableOpacity onPress={()=> navigation.navigate('Deal List')}>
-              <Text>View All</Text>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Deal List')}>
+                  <Text>View All</Text>
+                </TouchableOpacity>
               </View>
               <AllDeals style={styles.margin20} navigation={navigation} />
               <View style={styles.loadmoreCont}>
@@ -81,7 +81,7 @@ const Home = ({navigation}) => {
           <View style={[styles.dealDay, styles.commonPadd]}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
-              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '900' }}>Store</Text></Text>
+              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '800' }}>Store</Text></Text>
             </View>
           </View>
           <View style={styles.storeCat}>
@@ -91,13 +91,13 @@ const Home = ({navigation}) => {
               </ScrollView>
             </View>
             <View style={[styles.storCon, styles.commonPadd]}>
-                <View style={styles.catStore}>
-                <MyStore navigation = {navigation}/>
-                </View>
+              <View style={styles.catStore}>
+                <MyStore navigation={navigation} />
+              </View>
             </View>
             <View style={styles.loadmoreCont}>
-                <LoadMore />
-              </View>
+              <LoadMore />
+            </View>
           </View>
         </View>
         {/* <View style={styles.mainContainer}>
@@ -117,18 +117,18 @@ const Home = ({navigation}) => {
           </View> */}
 
 
-          <View style={[styles.mainContainer, styles.paddingZero]}>
+        <View style={[styles.mainContainer, styles.paddingZero, styles.margin20, styles.marginBottom50]}>
           <FAQ />
-          </View>
-         
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   mainWrapper: {
-    marginTop: 10,
-    padding: 24,
+    marginTop: 20,
+    paddingLeft:20,
+    paddingRight:20,
     paddingBottom: 0,
   },
   mainContainer: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   topHeading: {
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 10,
   },
   HotDealsInner: {
@@ -213,5 +213,8 @@ const styles = StyleSheet.create({
   paddingZero: {
     paddingTop: 0,
   },
+  marginBottom50: {
+    marginBottom:50,
+  }
 });
 export default Home;

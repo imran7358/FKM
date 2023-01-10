@@ -50,7 +50,6 @@ const Register = ({ navigation }) => {
         ...formData,
       });
       if (data.token) {
-
         await AsyncStorage.setItem('registerToken', data.token);
         await AsyncStorage.setItem('phone', formData.phone);
         navigation.navigate('Verify');
@@ -60,6 +59,7 @@ const Register = ({ navigation }) => {
       }
     } catch (e) {
       console.log('Error--> ', e);
+      
     }
   };
   return (
@@ -84,7 +84,7 @@ const Register = ({ navigation }) => {
                 style={[styles.inputText, styles.lableFont]}
                 placeholder="Name"
                 name="name"
-                placeholderTextColor="#003f5c"
+                placeholderTextColor="#666"
                 value={formData["name"]}
                 onChangeText={(value) => { handleChange(value, "name") }} />
             </View>
@@ -98,7 +98,7 @@ const Register = ({ navigation }) => {
                 style={[styles.inputText, styles.lableFont]}
                 name="email"
                 placeholder="Email ID"
-                placeholderTextColor="#003f5c"
+                placeholderTextColor="#666"
                 value={formData['email']}
                 onChangeText={(value) => { handleChange(value, 'email') }} />
             </View>
@@ -112,7 +112,7 @@ const Register = ({ navigation }) => {
                 style={[styles.inputText, styles.lableFont]}
                 placeholder="Phone"
                 name="phone"
-                placeholderTextColor="#003f5c"
+                placeholderTextColor="#666"
                 value={formData["phone"]}
                 onChangeText={(value) => { handleChange(value, "phone") }} />
 
@@ -127,19 +127,19 @@ const Register = ({ navigation }) => {
                 style={styles.inputText}
                 placeholder="Password"
                 name="pass"
-                placeholderTextColor="#003f5c"
+                placeholderTextColor="#666"
                 value={formData["pass"]}
                 secureTextEntry={true}
                 onChangeText={(value) => { handleChange(value, "pass") }} />
             </View>
+            {<Text>{err}</Text>}
             <TouchableOpacity
               // onPress={()=>{navigation.navigate("Enter OTP")}} 
               onPress={handleSubmit}>
               <View style={styles.loginButton} >
                 <Text style={styles.loginTxt}>Sign Up</Text>
               </View>
-              {err ? <Text>{err}</Text> : null}
-
+            
             </TouchableOpacity>
             <View style={styles.socialLogin}>
               <View style={styles.googleLogin}>
@@ -155,7 +155,7 @@ const Register = ({ navigation }) => {
             </View>
             <View style={styles.newLogin}>
               <Text style={styles.font16}>New to FreeKaaMaal ?</Text>
-              <Text style={[styles.font16, styles.RegisterLink]} onPress={() => navigation.navigate('Verify')}>Register</Text>
+              <Text style={[styles.font16, styles.RegisterLink]} onPress={() => navigation.navigate('Login')}>Login</Text>
             </View>
           </View>
         </View>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: 36,
+    top: 33,
     left: 20,
   },
 

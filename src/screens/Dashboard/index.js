@@ -1,7 +1,58 @@
-import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+import Config from 'react-native-config';
 import { ScrollView } from 'react-native-gesture-handler';
+const END_URL = '/cashback/home';
 const Profile = ({ navigation }) => {
+    const [summry, setSummary] = useState({
+        confirmAmount: '',
+        widthdrawlAmount: '',
+        wPendingAmount: '',
+        pendingAmount: '',
+        avlableAmount: '',
+
+    });
+    const [userinfo, setUserInfo] = useState({
+
+        title: '',
+        email: '',
+        phone: '',
+
+    })
+    const getDetails = async()=>{
+        const userToken = await AsyncStorage.getItem("userToken")
+        // const token =  await AsyncStorage.getItem("registerToken");
+        console.log("MyToken", userToken)
+        axios.post(Config.API_URL + END_URL,{
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+        },
+        {
+            headers : {
+              Authorization:userToken,
+            },
+        }).then(({data})=>{
+            setSummary({
+                confirmAmount: data.response.user_summary.confirm_amount,
+                widthdrawlAmount: data.response.user_summary.withdrawal_amount,
+                wPendingAmount: data.response.user_summary.withdraw_pending_amount,
+                pendingAmount: data.response.user_summary.pending_amount,
+                available_amount: data.response.user_summary.available_amount,
+            });
+            setUserInfo({
+                title: data.token.title,
+            })
+            
+        }).catch((error)=>{
+            console.log(error);
+        });
+
+    };
+    useEffect(()=>{
+        getDetails();
+    }, []);
     return (
 
         <SafeAreaView style={styles.container}>
@@ -12,30 +63,30 @@ const Profile = ({ navigation }) => {
                             <Image source={require('../../assets/images/profile.png')} />
                         </View>
                         <View style={styles.profileInfoName}>
-                            <Text style={styles.pName}>Mohammad Imran</Text>
+                            <Text style={styles.pName} numberOfLines={1}>{userinfo.title}</Text>
                             <Text style={styles.profileTax}>Check Out Your Cashback Summary</Text>
                         </View>
                     </View>
                     <View style={styles.cashBackInfo}>
                         <View style={styles.cashBackBox}>
                             <View style={[styles.cbTxt, styles.margin15]}>
-                                <Text style={styles.cbRupees}>₹6734</Text>
+                                <Text style={styles.cbRupees}>₹{summry.confirmAmount}</Text>
                                 <Text style={styles.cbBottomPara}>Confirmed Cashback</Text>
                             </View>
                             <View style={[styles.cbTxt, styles.margin15]}>
-                                <Text style={styles.cbRupees}>₹6734</Text>
+                                <Text style={styles.cbRupees}>₹{summry.pendingAmount}</Text>
                                 <Text style={styles.cbBottomPara}>Cashback Pending</Text>
                             </View>
                             <View style={[styles.cbTxt, styles.margin15]}>
-                                <Text style={styles.cbRupees}>₹6734</Text>
+                                <Text style={styles.cbRupees}>₹{summry.widthdrawlAmount}</Text>
                                 <Text style={styles.cbBottomPara}>Total withdraw</Text>
                             </View>
                             <View style={[styles.cbTxt, styles.margin15]}>
-                                <Text style={styles.cbRupees}>₹6734</Text>
-                                <Text style={styles.cbBottomPara}>Total withdraw Pending</Text>
+                                <Text style={styles.cbRupees}>₹{summry.wPendingAmount}</Text>
+                                <Text style={styles.cbBottomPara}>withdraw Pending</Text>
                             </View>
                             <View style={styles.cbTxt}>
-                                <Text style={styles.cbRupees}>₹6734</Text>
+                                <Text style={styles.cbRupees}>₹{summry.avlableAmount}</Text>
                                 <Text style={styles.cbBottomPara}>Available Cashback</Text>
                             </View>
                             <View style={styles.cbTxt}>
@@ -232,21 +283,21 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                        <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Add Account')}>
-                            <View style={styles.menuName}>
-                                <View style={styles.menuIcon}>
-                                    <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Add Account')}>
+                                <View style={styles.menuName}>
+                                    <View style={styles.menuIcon}>
+                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                    </View>
+                                    <View style={styles.menuNameTxt}>
+                                        <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Add account</Text>
+                                        <Text>Add a new Bank/Paytm account to withdraw </Text>
+                                    </View>
                                 </View>
-                                <View style={styles.menuNameTxt}>
-                                    <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Add account</Text>
-                                    <Text>Add a new Bank/Paytm account to withdraw </Text>
+
+                                <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
+
+                                <View>
                                 </View>
-                            </View>
-
-                            <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
-
-                            <View>
-                            </View>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>

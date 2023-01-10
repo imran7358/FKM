@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: 36,
+    top: 33,
     left: 20,
   },
   inputText: {

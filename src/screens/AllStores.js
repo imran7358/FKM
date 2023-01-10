@@ -29,7 +29,7 @@ const AllStores = ({ navigation }) => {
                         {
                             store.length ? store.map((item, i) => {
                                 return <View style={styles.storeBox} key={i}>
-                                    <TouchableOpacity onPress={() => navigation.navigate({name:'StoreDetails',params:{storeSlug:item.store_slug}})}>
+                                    <TouchableOpacity onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.store_slug } })}>
                                         <View style={styles.logoContinaer}>
                                             <View>
                                                 <Image source={{ uri: item.store_image }} style={styles.logo} />
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     },
     storeBox: {
         borderWidth: 1,
-        borderColor: '#9D9D9D',
+        borderColor: '#D8D8D8',
         width: '47%',
         borderRadius: 6,
         padding: 20,
@@ -80,24 +80,24 @@ const styles = StyleSheet.create({
     logo: {
         width: 112,
         height: 66,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     logoTxt: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginTop: 30,
+        fontSize: 14,
+        fontWeight: '800',
+        marginTop: 20,
         marginBottom: 30,
     },
 
     cbBtn: {
         padding: 12,
         borderRadius: 6,
-        fontWeight: '900',
+        fontWeight: '800',
         color: '#fff',
-        fontSize: 14,
+        fontSize: 12,
     },
     btnContainer: {
-        width: '100%',
+        width: 112,
         backgroundColor: '#f27935',
         borderRadius: 6,
         alignItems: 'center',
