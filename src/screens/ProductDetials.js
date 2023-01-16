@@ -5,6 +5,7 @@ import AppButton from "../components/customInputs/AppButton";
 import Config from 'react-native-config';
 const END_URL = "/deals/dealdetail";
 import axios from 'axios';
+import RealtedDeals from "../components/RelatedDeals";
 
  const ProductDetails = ({navigation, route}) => {
     const [details, setDetails] = useState({
@@ -15,7 +16,8 @@ import axios from 'axios';
         price: '',
         offerPrice: '',
 
-    })
+    });
+    const [relatedProduct, setRelatedProduct] = useState([])
 
     const [loading, setLoading] = useState(false);
     const getDetails = () => {
@@ -34,7 +36,8 @@ import axios from 'axios';
                 price: data.response.deal.price,
                 offerPrice: data.response.deal.offer_price,
                 description: result,
-            }),
+            })
+            setRelatedProduct(data.response.related_deals);
             setLoading(false);
         }).catch((error)=>{
             console.log(error);
@@ -161,6 +164,7 @@ import axios from 'axios';
                         </View>
                     </View> */}
                 </View>
+                <RealtedDeals relatedProduct = {relatedProduct} navigation={navigation}/>
             </View>
             }
             </ScrollView>

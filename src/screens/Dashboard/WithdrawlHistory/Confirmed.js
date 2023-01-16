@@ -1,11 +1,59 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import Config from 'react-native-config';
+const END_URL = '/cashback/withdrawal-history';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
+import Loader from '../../../components/Loader';
+import axios from 'axios';
 
-const Confirmed = () => {
+const Confirmed = ({setTop}) => {
+
+    const [allcb, setAllCb] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loadMore, setLoadMore] = useState(true);
+    const [noData, setNoData] = useState('');
+    const [loader, setLoader] = useState(false);
+
+    const getData = async () => {
+        const userToken = await AsyncStorage.getItem("userToken");
+        setLoader(true);
+        axios.post(Config.API_URL + END_URL, {
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+            option: 'confirm',
+            page,
+        },
+            {
+                headers: {
+                    Authorization: userToken,
+                },
+            }).then(({ data }) => {
+                if (data.response.all && data.response.all.length) {
+                    setAllCb([...allcb, ...data.response.all]);
+                }
+                else {
+                    if (!data.response.all.length) {
+                        setNoData('No records found!');
+                    }
+                    setLoadMore(false);
+                }
+                setTop('empty content');
+            }).catch((error) => {
+                console.log(error);
+            }).finally(()=>{
+                setLoader(false);
+            });
+
+    };
+
+    useEffect(() => {
+        getData();
+    }, [page])
+
+
 
     return (
-        
         <ScrollView horizontal={true}>
         <View style={styles.container}>
              <View style={styles.recordCon}>

@@ -1,41 +1,45 @@
-import React from "react";
-import {View, Text, StyleSheet, Image} from "react-native";
-
+import React, { useEffect, useState } from 'react';
+import {View, StyleSheet} from 'react-native';
+import Config from 'react-native-config';
+import axios from 'axios';
+import CashbackInner from './CbInner';
+const END_URL = '/home/home';
 const FAQ = () => {
+const [cashback, setEarnCashback] = useState([]);
+    const getEarnCashback = () => {
+        axios.post(Config.API_URL + END_URL, {
+          'page': '1',
+          'sponsored_count': '0',
+          'apiAuth': Config.API_AUTH,
+          'device_type': 4,
+        }).then(({ data }) => {
+            setEarnCashback(data.response.earn_cashback);
+        }).catch((error) => {
+          console.log(error);
+        });
+      };
+
+      useEffect(()=>{
+        getEarnCashback();
+      }, []);
 
     return (
         <View style={styles.myFaq}>
-           <View style={[styles.faqList, styles.margin20]}>
-            <View style={styles.faqName}>
-                <Image source={require('../assets/images/cbWorks.png')} style={{height:35, width:35, resizeMode: 'contain', marginRight: 7,}}/>
-                <Text style={{fontSize: 14, fontWeight: '500',}}>This is how your Cashback Works!</Text>
-            </View>
-            <Image source={require('../assets/images/faqarrow.png')} style={{width: 15, height: 15, resizeMode:'contain'}}/>
-           </View>
-           <View style={[styles.faqList,styles.margin20]}>
-            <View style={styles.faqName}>
-                <Image source={require('../assets/images/cbWorks.png')} style={{height:35, width:35, resizeMode: 'contain', marginRight: 7,}}/>
-                <Text style={{fontSize: 14, fontWeight: '500',}}>This is how your Cashback Works!</Text>
-            </View>
-            <Image source={require('../assets/images/faqarrow.png')} style={{width: 15, height: 15, resizeMode:'contain'}}/>
-           </View>
-           <View style={styles.faqList}>
-            <View style={styles.faqName}>
-                <Image source={require('../assets/images/cbWorks.png')} style={{height:35, width:35, resizeMode: 'contain', marginRight: 7,}}/>
-                <Text style={{fontSize: 14, fontWeight: '500',}}>This is how your Cashback Works!</Text>
-            </View>
-            <Image source={require('../assets/images/faqarrow.png')} style={{width: 15, height: 15, resizeMode:'contain'}}/>
-           </View>
+            {
+                cashback.length ? cashback.map((item,i)=> {
+                    return <CashbackInner key={i} title={item.title} description={item.description}/>
+                })
+                : null
+            }
         </View>
-    )
-}
+    )};
 
 const styles = StyleSheet.create({
 
     myFaq: {
         backgroundColor:'#FFECE2',
         borderRadius: 6,
-        padding: 20,
+        padding: 10,
     },
     faqList: {
         backgroundColor: '#fff',
@@ -48,12 +52,12 @@ const styles = StyleSheet.create({
     faqName: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     margin20: {
         marginBottom:20,
-    }
+    },
 
-})
+});
 
 export default FAQ;

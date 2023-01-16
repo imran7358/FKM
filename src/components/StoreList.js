@@ -28,8 +28,8 @@ const MyStore = ({navigation}) => {
                 <View style={styles.storICon} >
                     <Image source={{ uri: item.store_image }} style={{ width: 92, height: 40, resizeMode: 'contain' }} />
                 </View>
-                <Text style={styles.cbText}>{Number(item.cashback_amount).toFixed(0)} <Text style={styles.cbMessage}>Cashback</Text></Text>
-            </TouchableOpacity>
+                <Text style={styles.cbText}>₹{Number(item.cashback_amount).toFixed(0)} <Text style={styles.cbMessage}>Cashback</Text></Text>
+            </TouchableOpacity>;
 
         })
 

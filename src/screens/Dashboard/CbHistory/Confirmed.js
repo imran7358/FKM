@@ -66,10 +66,10 @@ const Confirmed = ({setTop}) => {
                 confirmed.length ? confirmed.map((item, i)=>{
                     return <View style={styles.innerReocrd} key={i}>
                     <Text style={styles.srNo}>{i + 1}</Text>
-                    <Text  style={styles.storeName}>xyxxcrew</Text>
-                    <Text style={styles.amount}>4</Text>
-                    <Text style={styles.status}>500</Text>
-                    <Text style={styles.status}>xyxxcrew</Text>
+                    <Text  style={styles.storeName}>{item.store_name}</Text>
+                    <Text style={styles.amount}>{item.amount}</Text>
+                    <Text style={styles.status}>{item.status}</Text>
+                    <Text style={styles.status}>{item.transaction_date}</Text>
                     
    
                 </View>

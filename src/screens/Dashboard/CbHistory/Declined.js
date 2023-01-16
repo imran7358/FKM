@@ -65,7 +65,7 @@ const Declined = ({setTop}) => {
              <View style={styles.recordList}>
            {
             decline.length ? decline.map((item, i)=>{
-                return   <View style={styles.innerReocrd}>
+                return   <View style={styles.innerReocrd} key={i}>
                 <Text style={styles.srNo}>{i + 1}</Text>
                 <Text  style={styles.storeName}>{item.store_name}</Text>
                 <Text style={styles.amount}>4</Text>
@@ -74,7 +74,7 @@ const Declined = ({setTop}) => {
                 <Text style={styles.status}>{item.transaction_date}</Text>
             </View>
             })
-            :null
+            : null
            }
              </View>
 

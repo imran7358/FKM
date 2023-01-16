@@ -9,7 +9,6 @@ import Login from '../screens/Login';
 import ProductCategories from '../screens/ProductCategories';
 import CategoryDetails from '../screens/CategoryDetails';
 import StoreDetails from '../screens/StoreDetails';
-//import Profile from '../screens/Profile';
 import ForgotPassword from '../screens/ForgotPassword';
 import EnterOTP from '../screens/EnterOTP';
 import ResetPassword from '../screens/ResetPassword';
@@ -31,6 +30,7 @@ import ClaimForm from '../screens/Dashboard/ClaimForm';
 import ReferralMoney from '../screens/Dashboard/ReferralMoney';
 import MissingCashback from '../screens/Dashboard/MissingCashback';
 import AddAccount from '../screens/Dashboard/AddAccount';
+import EditProfile from '../screens/EditProfile';
 import { View, Image, Text, StyleSheet} from 'react-native';
 
 const Tab = createBottomTabNavigator();
@@ -142,6 +142,7 @@ const AuthStack = ({navigation}) => {
       <Stack.Screen name="Referral Money" component={ReferralMoney} />
       <Stack.Screen name="Missing Cashback" component={MissingCashback} />
       <Stack.Screen name="Add Account" component={AddAccount} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
 
     </Stack.Navigator>
   );

@@ -21,36 +21,34 @@ const Profile = ({ navigation }) => {
         phone: '',
 
     });
-    const getDetails = async()=>{
+    const getDetails = async () => {
         const userToken = await AsyncStorage.getItem("userToken")
-        // const token =  await AsyncStorage.getItem("registerToken");
-        console.log("MyToken", userToken)
-        axios.post(Config.API_URL + END_URL,{
+        axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
         },
-        {
-            headers : {
-              Authorization:userToken,
-            },
-        }).then(({data})=>{
-            setSummary({
-                confirmAmount: data.response.user_summary.confirm_amount,
-                widthdrawlAmount: data.response.user_summary.withdrawal_amount,
-                wPendingAmount: data.response.user_summary.withdraw_pending_amount,
-                pendingAmount: data.response.user_summary.pending_amount,
-                available_amount: data.response.user_summary.available_amount,
+            {
+                headers: {
+                    Authorization: userToken,
+                },
+            }).then(({ data }) => {
+                setSummary({
+                    confirmAmount: data.response.user_summary.confirm_amount,
+                    widthdrawlAmount: data.response.user_summary.withdrawal_amount,
+                    wPendingAmount: data.response.user_summary.withdraw_pending_amount,
+                    pendingAmount: data.response.user_summary.pending_amount,
+                    available_amount: data.response.user_summary.available_amount,
+                });
+                setUserInfo({
+                    title: data.token.title,
+                })
+
+            }).catch((error) => {
+                console.log(error);
             });
-            setUserInfo({
-                title: data.token.title,
-            })
-            
-        }).catch((error)=>{
-            console.log(error);
-        });
 
     };
-    useEffect(()=>{
+    useEffect(() => {
         getDetails();
     }, []);
     return (
@@ -58,7 +56,16 @@ const Profile = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.container}>
+
                     <View style={styles.profileInfo}>
+                       
+                       <View style={styles.editProfile}>
+                       <TouchableOpacity onPress={()=> navigation.navigate('EditProfile')}>
+                            <Image source={require('../../assets/images/edit.png')} style={styles.editImg} />
+                            </TouchableOpacity>
+                        </View>
+
+                      
                         <View style={styles.profilePic}>
                             <Image source={require('../../assets/images/profile.png')} />
                         </View>
@@ -67,6 +74,7 @@ const Profile = ({ navigation }) => {
                             <Text style={styles.profileTax}>Check Out Your Cashback Summary</Text>
                         </View>
                     </View>
+
                     <View style={styles.cashBackInfo}>
                         <View style={styles.cashBackBox}>
                             <View style={[styles.cbTxt, styles.margin15]}>
@@ -119,7 +127,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Cashback History')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/cbhistory.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Cashback History</Text>
@@ -138,7 +146,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Widthdrawal Money')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/whistory.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Withdrawal History</Text>
@@ -157,7 +165,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Missing Report')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/rmissing.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Report Missing</Text>
@@ -166,7 +174,6 @@ const Profile = ({ navigation }) => {
                                 </View>
 
                                 <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
-
                                 <View>
 
                                 </View>
@@ -176,7 +183,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Refer Earn')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/referearn.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Refer and earn</Text>
@@ -193,7 +200,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Referral History')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/rhistory.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Referral History</Text>
@@ -212,7 +219,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Withdrawl Money')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/wmoney.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Withdraw Money</Text>
@@ -231,7 +238,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Referral Money')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/rmoney.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Referral Money</Text>
@@ -248,7 +255,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Claim Form')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/cbform.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Cashback Claim Form</Text>
@@ -267,7 +274,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Missing Cashback')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/mhistory.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Missing Cashback History</Text>
@@ -286,7 +293,7 @@ const Profile = ({ navigation }) => {
                             <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Add Account')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
-                                        <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                        <Image source={require('../../assets/images/addacount.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Add account</Text>
@@ -303,7 +310,7 @@ const Profile = ({ navigation }) => {
                         <View style={styles.menuList}>
                             <View style={styles.menuName}>
                                 <View style={styles.menuIcon}>
-                                    <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
+                                    <Image source={require('../../assets/images/mnotification.png')} style={styles.icon} />
                                 </View>
                                 <View style={styles.menuNameTxt}>
                                     <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Notification</Text>
@@ -331,6 +338,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    editImg: {
+        width: 15,
+        height: 15,
+        resizeMode: 'contain',
+    },
+    editProfile: {
+        width: 30,
+        height: 30,
+        borderRadius: 45,
+        backgroundColor: '#fff',
+        position: 'absolute',
+        right: 15,
+        top: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     container: {
         padding: 24,
         backgroundColor: '#FFFFFF',
@@ -342,6 +365,7 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#f27935',
         borderRadius: 6,
+        position: 'relative',
     },
     profilePic: {
         width: 50,
@@ -417,7 +441,7 @@ const styles = StyleSheet.create({
     icon: {
         width: 22,
         height: 22,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     menuList: {
         flexDirection: 'row',
@@ -438,8 +462,8 @@ const styles = StyleSheet.create({
     arrowIcon: {
         width: 17,
         height: 17,
-        resizeMode: 'contain'
-    }
+        resizeMode: 'contain',
+    },
 });
 
 export default Profile;

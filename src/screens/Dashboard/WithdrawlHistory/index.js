@@ -7,71 +7,59 @@ import AllCashback from './All';
 import Confirmed from './Confirmed';
 import Declined from './Declined';
 
-const WidthdrawalMoney = () => {
-    const [active, setActive] = useState(true)
-    const [status, setStatus] = useState('All')
-    const setStatusFilter = status => {
-        setStatus(status)
-    }
-    const ListTab = [
-        {
-            status: 'All'
-        },
-        {
-            status: 'Pending'
-        },
-        {
-            status: 'Confirmed'
-        },
-        {
-            status: 'Declined'
-        },
 
-    ]
+
+const WidthdrawalMoney = () => {
+    const OPTIONS = ["All","Pending","Confirm","Declined"];
+    const [active, setActive] = useState(true)
+    const [tab, setTab] = useState('All');
+    const [desc,setDesc] = useState("");
     return (
         <SafeAreaView style={styles.bgWhite}>
          <ScrollView style={styles.bgWhite}>
          <View style={styles.container}>
           <View style={styles.topContent}>
-             <Text style={styles.topText}>Below you will find the list of the latest stores you’ve visited. 
- So that you can track the stores you have looked at.</Text>
+             <Text style={styles.topText}>{desc}</Text>
           </View>
     
             <View style={styles.historyTab}>
-                    {
-                       ListTab.map((e,i)=>(
-                        <TouchableOpacity key={i} style={status === e.status && styles.activeTab} onPress={()=> setStatusFilter(e.status)}>
-                        <Text style={status === e.status && styles.txtActive}>{e.status}</Text>
-                        </TouchableOpacity>
-                        
-                       ))
-                    }
+            <View style={styles.historyTab}>
+                        {OPTIONS.map((e,i)=><View key={i}><Text  style={e==tab?[styles.tabList,styles.activeTab]:[styles.tabList]} onPress={(ev)=>{setTab(e)}}>{e}</Text></View>)}
+                    </View>
 
             </View>
 
           <View style={styles.recordCon}>
              {
-                status === 'All' ? 
-                <AllCashback />
+                tab === 'All' ? 
+                <AllCashback setTop={(txt)=>{
+                    setDesc(txt);
+                }}/>
                 : null
              }
              {
-                status === 'Pending' ? 
+                tab === 'Pending' ? 
                 
-                <PendingCashback />
+                <PendingCashback  setTop={(txt)=>{
+                    setDesc(txt);
+                }}/>
                 
                 : null
              }
              {
-                status === 'Confirmed' ? 
+                tab === 'Confirm' ? 
                 
-                <Confirmed />
+                <Confirmed  setTop={(txt)=>{
+                    setDesc(txt);
+                }}/>
                 : null
              }
              {
-                status === 'Declined' ? 
+                tab === 'Declined' ? 
                 
-               <Declined />
+               <Declined setTop={(txt)=>{
+                setDesc(txt);
+            }}/>
                 
                 : null
              }

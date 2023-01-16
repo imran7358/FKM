@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import axios, { all } from 'axios';
 const END_URL = '/cashback/cashback-history';
 const PendingCashback = ({setTop}) => {
     const [allcb, setAllCb] = useState([]);
@@ -23,10 +23,9 @@ const PendingCashback = ({setTop}) => {
                 },
             }).then(({ data }) => {
                 setAllCb(data.response.pending);
-                console.log("Hey Data=-->>>",data);
                 setTop(data.response.top_desc);
             }).catch((error) => {
-                console.log("ye rooottt--->>>",error);
+                console.log(error);
             });
 
     };
@@ -65,16 +64,20 @@ const PendingCashback = ({setTop}) => {
                  </View>
              </View>
              <View style={styles.recordList}>
-             <View style={styles.innerReocrd}>
-                 <Text style={styles.srNo}>1</Text>
-                 <Text  style={styles.storeName}>xyxxcrew</Text>
-                 <Text style={styles.amount}>4</Text>
-                 <Text style={styles.status}>500</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-
-             </View>
+            {
+                allcb.length ? allcb.map((item, i)=>{
+                    return  <View style={styles.innerReocrd}>
+                    <Text style={styles.srNo}>1</Text>
+                    <Text  style={styles.storeName}>{item.store_name}</Text>
+                    <Text style={styles.amount}>{item.amount}</Text>
+                    <Text style={styles.status}>{item.status}</Text>
+                    <Text style={styles.status}>{item.transaction_date}</Text>
+                    <Text style={styles.status}>xyxxcrew</Text>
+                    <Text style={styles.status}>xyxxcrew</Text>
+                </View>
+                }) 
+                : null
+            }
              </View>
 
              </View>

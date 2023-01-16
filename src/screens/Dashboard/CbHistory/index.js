@@ -31,7 +31,7 @@ const CashbackHistory = ({navigation}) => {
                     </View>
 
                     <View style={styles.historyTab}>
-                        {OPTIONS.map(e=><View><Text  style={e==tab?[styles.tabList,styles.activeTab]:[styles.tabList]} onPress={(ev)=>{setTab(e)}}>{e}</Text></View>)}
+                        {OPTIONS.map((e,i)=><View key={i}><Text  style={e==tab?[styles.tabList,styles.activeTab]:[styles.tabList]} onPress={(ev)=>{setTab(e)}}>{e}</Text></View>)}
                     </View>
 
                     <View style={styles.recordCon}>
@@ -59,7 +59,6 @@ const CashbackHistory = ({navigation}) => {
                                 }}/>
                                 : null
                         }
-                    
                         {
                             tab === 'Declined' ?
 

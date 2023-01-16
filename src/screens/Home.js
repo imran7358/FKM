@@ -17,7 +17,8 @@ import axios from 'axios';
 const Home = ({ navigation }) => {
   const [slider, setSlider] = useState([]);
   const [sticky, setSticky] = useState([]);
-  const [livedeals, setLiveDeals] = useState([])
+  const [livedeals, setLiveDeals] = useState([]);
+  const [faq, setFaq] = useState([]);
   const getSlider = () => {
     axios.post(Config.API_URL + END_URL, {
       'page': '1',
@@ -28,6 +29,7 @@ const Home = ({ navigation }) => {
       setSlider(data.response.slider);
       setSticky(data.response.sticky);
       setLiveDeals(data.response.live_deals);
+      setFaq(data.response.earn_cashback);
     }).catch((error) => {
       console.log(error);
     });
@@ -118,7 +120,7 @@ const Home = ({ navigation }) => {
 
 
         <View style={[styles.mainContainer, styles.paddingZero, styles.margin20, styles.marginBottom50]}>
-          <FAQ />
+          <FAQ/>
         </View>
       </ScrollView>
     </SafeAreaView>

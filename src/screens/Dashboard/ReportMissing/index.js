@@ -36,6 +36,10 @@ const MissingReport = () => {
              <Text style={styles.topText}>Below you will find the list of the latest stores you’ve visited. 
  So that you can track the stores you have looked at.</Text>
           </View>
+            <TouchableOpacity>
+                <Text>Claim Missing Report</Text>
+            </TouchableOpacity>
+
     
             <View style={styles.historyTab}>
                     {

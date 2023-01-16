@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
+import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
 const Profile = ({navigation}) => {
 
     return(
-       
         <SafeAreaView style={styles.container}>
             <ScrollView>
             <View style={styles.container}>
             <View style={styles.profileInfo}>
-                <View style ={styles.profilePic}>
+               <TouchableOpacity onPress={()=> navigation.navigate('EditProfile')}>
+               <View style ={styles.profilePic}>
                    <Image source={require('../assets/images/profile.png')} />
                 </View>
+               </TouchableOpacity>
                 <View style={styles.profileInfoName}>
                     <Text style ={styles.pName}>Mohammad Imran</Text>
                     <Text style={styles.profileTax}>Check Out Your Cashback Summary</Text>

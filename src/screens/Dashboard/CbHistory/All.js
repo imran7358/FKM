@@ -4,15 +4,19 @@ import { View, Text, StyleSheet } from 'react-native';
 import Config from 'react-native-config';
 const END_URL = '/cashback/cashback-history';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Loader from '../../../components/Loader';
 
 
 const AllCashback = ({ setTop }) => {
     const [allcb, setAllCb] = useState([]);
-    const [desc, setAllDesc] = useState([]);
-    const [page,setPage] = useState(1);
+    const [noData, setNoData] = useState('');
+    const [loadMore, setLoadMore] = useState(true);
+    const [page, setPage] = useState(1);
+    const [loader, setLoader] = useState(false);
     const getCashbackHistory = async () => {
-        const userToken = await AsyncStorage.getItem("userToken");
+        const userToken = await AsyncStorage.getItem('userToken');
+        setLoader(true);
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
@@ -24,19 +28,26 @@ const AllCashback = ({ setTop }) => {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
-                setAllCb([...allcb,...data.response.all]);
+                if (data.response.all && data.response.all.length) {
+                    setAllCb([...allcb, ...data.response.all]);
+                } else {
+                    if (!allcb.length) {
+                        setNoData('No records found!');
+                    }
+                    setLoadMore(false);
+                }
                 setTop(data.response.top_desc);
             }).catch((error) => {
                 console.log(error);
+            }).finally(() => {
+                setLoader(false);
             });
 
     };
+
     useEffect(() => {
         getCashbackHistory();
-    }, []);
-    useEffect(()=>{
-        getCashbackHistory();
-    },[page])
+    }, [page]);
 
     return (
         <View style={styles.container}>
@@ -66,28 +77,39 @@ const AllCashback = ({ setTop }) => {
                                 <Text style={styles.status}>{item.status}</Text>
                                 <Text style={styles.srNo}>{item.transaction_date}</Text>
                             </View>
-                        </View>
+                        </View>;
 
                     })
-                        : null
+                    : null
                 }
-
-
-                
+                {
+                    loader ?
+                    <View style={styles.loadContainer}>
+                        <Loader />
+                    </View>
+                    : null
+                }
+                {
+                    <Text>{noData}</Text>
+                }
             </View>
-            <TouchableOpacity onPress={(e)=>{
-                console.log("Load More!!!")
-                setPage(page+1);
-              }}>
-            <View style={styles.loginButton}>
-              <Text style={styles.loginTxt}>Loader More</Text>
-            </View>
-          </TouchableOpacity>
+
+            {
+                loadMore ?
+                <TouchableOpacity onPress={(e) => {
+                    setPage(page + 1);
+                }}>
+                    <View style={styles.loginButton}>
+                        <Text style={styles.loginTxt}>Load More</Text>
+                    </View>
+                </TouchableOpacity>
+                : null
+            }
 
         </View>
-    )
+    );
 
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -96,6 +118,10 @@ const styles = StyleSheet.create({
     bgWhite: {
         backgroundColor: '#fff',
         flex: 1,
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
     },
     topContent: {
         backgroundColor: '#F7F7F7',
@@ -187,20 +213,20 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     loginButton: {
-        justifyContent:'center',
-        alignItems:'center',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#F27935',
         padding: 10,
         marginTop: 30,
         borderRadius: 6,
         fontWeight: 'bold',
         height: 50,
-      },
-      loginTxt: {
+    },
+    loginTxt: {
         fontWeight: '900',
         color: '#fff',
-      },
+    },
 
-})
+});
 
 export default AllCashback;

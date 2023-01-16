@@ -1,13 +1,12 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import React from 'react';
+import { View, StyleSheet, Image } from 'react-native';
 const Loader = () => {
     return (
         <View style={styles.conatiner}>
-            <Image source={require('../assets/images/loader.gif')} style={{}} style={styles.laoderimg}/>
+            <Image source={require('../assets/images/loader.gif')} style={styles.laoderimg}/>
         </View>
-    )
-
-}
+    );
+};
 const styles = StyleSheet.create({
     conatiner: {
         flex: 1,
@@ -24,6 +23,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: '50%',
 
-    }
+    },
 });
 export default Loader;
