@@ -1,44 +1,61 @@
 import React,{useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, { all } from 'axios';
+import axios from 'axios';
 const END_URL = '/cashback/cashback-history';
+import Loader from '../../../components/Loader';
+
 const PendingCashback = ({setTop}) => {
     const [allcb, setAllCb] = useState([]);
     const [desc, setAllDesc] = useState([]);
+    const [loadMore, setLoadeMore] = useState(true);
+    const [loader, setLoader] = useState(false);
+    const [page, setPage] = useState(1);
+    const [noData, setNoData] = useState('');
 
     const getPendingkHistory = async () => {
+        setLoader(false);
         const userToken = await AsyncStorage.getItem("userToken");
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'pending',
-            page: '1',
+            page,
         },
             {
                 headers: {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
-                setAllCb(data.response.pending);
+                if (data.response.pending && data.response.pending.length){
+                    setAllCb(data.response.pending);
+                }
+
+                else {
+                    if (!data.response.pending.length){
+                        setNoData('No record found !');
+                    }
+                    setLoadeMore(false);
+                }
                 setTop(data.response.top_desc);
             }).catch((error) => {
                 console.log(error);
+            }).finally(()=>{
+                setLoader(false);
             });
 
     };
 
     useEffect(() => {
         getPendingkHistory();
-    },[]);
+    },[page]);
 
 
     return (
-        
-        <ScrollView horizontal={true}>
         <View style={styles.container}>
+            <ScrollView horizontal={true}>
              <View style={styles.recordCon}>
              <View style={styles.headingCond}>
                  <View style={styles.srNo}>
@@ -78,20 +95,42 @@ const PendingCashback = ({setTop}) => {
                 }) 
                 : null
             }
+
              </View>
 
              </View>
-            
+             </ScrollView>
+             {
+                    loader ?
+                    <View style={styles.loadContainer}>
+                        <Loader />
+                    </View>
+                    : null
+                }
+                {
+                    <View style={styles.noData}>
+                    <Text>{noData}</Text>
+                  </View>
+                }
+
+            {
+                loadMore ?
+                <TouchableOpacity onPress={(e) => {
+                    setPage(page + 1);
+                }}>
+                    <View style={styles.loginButton}>
+                        <Text style={styles.loginTxt}>Load More</Text>
+                    </View>
+                </TouchableOpacity>
+                : null
+            }
         </View>
-        </ScrollView>
     )
 
 }
 
 const styles = StyleSheet.create({
-    container : {
-       
-    },
+
     bgWhite: {
         backgroundColor: '#fff',
     },
@@ -146,16 +185,16 @@ const styles = StyleSheet.create({
         width: 100,
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     storeName: {
         width: 100,
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     alterColor: {
-        backgroundColor: '#EDEDED'
+        backgroundColor: '#EDEDED',
     },
     historyTab: {
         flexDirection: 'row',
@@ -181,14 +220,35 @@ const styles = StyleSheet.create({
     },
     status: {
         width: 100,
-        textAlign: 'center'
-        
+        textAlign: 'center',
     },
     amount: {
         width: 100,
-        textAlign: 'center'
-    }
-   
-})
+        textAlign: 'center',
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+    },
+    loginButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F27935',
+        padding: 10,
+        marginTop: 30,
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
+    loginTxt: {
+        fontWeight: '900',
+        color: '#fff',
+    },
+    noData: {
+        alignContent: 'center',
+        alignItems: 'center',
+        margin: 20,
+    },
+});
 
 export default PendingCashback;

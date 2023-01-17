@@ -31,7 +31,7 @@ const AllCashback = ({ setTop }) => {
                 if (data.response.all && data.response.all.length) {
                     setAllCb([...allcb, ...data.response.all]);
                 } else {
-                    if (!allcb.length) {
+                    if (!data.response.all.length) {
                         setNoData('No records found!');
                     }
                     setLoadMore(false);
@@ -90,7 +90,9 @@ const AllCashback = ({ setTop }) => {
                     : null
                 }
                 {
+                    <View style={styles.noData}>
                     <Text>{noData}</Text>
+                  </View>
                 }
             </View>
 
@@ -114,6 +116,11 @@ const AllCashback = ({ setTop }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    noData: {
+        alignContent: 'center',
+        alignItems: 'center',
+        margin: 20,
     },
     bgWhite: {
         backgroundColor: '#fff',

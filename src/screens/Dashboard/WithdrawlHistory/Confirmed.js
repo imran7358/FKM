@@ -5,7 +5,7 @@ const END_URL = '/cashback/withdrawal-history';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import Loader from '../../../components/Loader';
-import axios from 'axios';
+import axios, { all } from 'axios';
 
 const Confirmed = ({setTop}) => {
 
@@ -21,7 +21,7 @@ const Confirmed = ({setTop}) => {
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
-            option: 'confirm',
+            option: 'debit',
             page,
         },
             {
@@ -29,16 +29,16 @@ const Confirmed = ({setTop}) => {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
-                if (data.response.all && data.response.all.length) {
-                    setAllCb([...allcb, ...data.response.all]);
+                if (data.response.debit && data.response.debit.length) {
+                    setAllCb([...allcb, ...data.response.debit]);
                 }
                 else {
-                    if (!data.response.all.length) {
+                    if (!data.response.debit.length) {
                         setNoData('No records found!');
                     }
                     setLoadMore(false);
                 }
-                setTop('empty content');
+                setTop(data.response.top_desc);
             }).catch((error) => {
                 console.log(error);
             }).finally(()=>{
@@ -62,13 +62,10 @@ const Confirmed = ({setTop}) => {
                      <Text style={styles.barTxt}>SN</Text>
                  </View>
                  <View style={styles.storeName}>
-                     <Text style={styles.barTxt}>Store</Text>
+                     <Text style={styles.barTxt}>Type</Text>
                  </View>
                  <View style={styles.amount}>
                      <Text style={styles.barTxt}>Amount</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Status</Text>
                  </View>
                  <View style={styles.status}>
                      <Text style={styles.barTxt}>Date</Text>
@@ -76,19 +73,44 @@ const Confirmed = ({setTop}) => {
                 
              </View>
              <View style={styles.recordList}>
-             <View style={styles.innerReocrd}>
-                 <Text style={styles.srNo}>1</Text>
-                 <Text  style={styles.storeName}>xyxxcrew</Text>
-                 <Text style={styles.amount}>4</Text>
-                 <Text style={styles.status}>500</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-                 
+             
+             {
+                allcb.length ? allcb.map((item,i)=>{
+                    return <View style={styles.innerReocrd} key={i}>
+                    <Text style={styles.srNo}>{i + 1}</Text>
+                    <Text  style={styles.storeName}>{item.type}</Text>
+                    <Text style={styles.amount}>{item.amount}</Text>
+                    <Text style={styles.status}>{item.date}</Text>
+                </View>
+                }): null
+
+             }
+             {
+                        loader ?
+                            <View style={styles.loadContainer}>
+                                <Loader />
+                            </View>
+                            : null
+                    }
+                    {
+                   <View style={styles.noData}>
+                     <Text>{noData}</Text>
+                   </View>
+                }
+             </View>
 
              </View>
-             </View>
-
-             </View>
-            
+             {
+                loadMore ?
+                    <TouchableOpacity onPress={(e) => {
+                        setPage(page + 1);
+                    }}>
+                        <View style={styles.loginButton}>
+                            <Text style={styles.loginTxt}>Load More</Text>
+                        </View>
+                    </TouchableOpacity>
+                    : null
+            }
         </View>
         </ScrollView>
     )
@@ -96,8 +118,10 @@ const Confirmed = ({setTop}) => {
 }
 
 const styles = StyleSheet.create({
-    container : {
-       
+    noData: {
+        alignContent: 'center',
+        alignItems: 'center',
+        margin: 20,
     },
     bgWhite: {
         backgroundColor: '#fff',
@@ -194,7 +218,22 @@ const styles = StyleSheet.create({
     amount: {
         width: 100,
         textAlign: 'center'
-    }
+    },
+    loginButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F27935',
+        padding: 10,
+        marginTop: 30,
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
+    loginTxt: {
+        fontWeight: '900',
+        color: '#fff',
+    },
+
    
 })
 

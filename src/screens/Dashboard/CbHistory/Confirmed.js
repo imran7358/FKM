@@ -2,9 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Config from 'react-native-config';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const END_URL = '/cashback/cashback-history';
+import Loader from '../../../components/Loader';
 
 
 
@@ -12,36 +13,49 @@ const Confirmed = ({setTop}) => {
 
     const [confirmed, setConfirmed] = useState([])
     const [desc, setDesc] = useState('');
+    const [page, setPage] = useState(1);
+    const [loader, setLoader] = useState(false);
+    const [loadMore, setLoadMore] = useState(true);
+    const [noData, setNoData] = useState('');
 
     const getConfirmed = async() =>{
+        setLoader(true);
         const userToken = await AsyncStorage.getItem("userToken");
         axios.post(Config.API_URL + END_URL,{
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'confirm',
-            page: '1',
+            page,
         },{
             headers:{
                 Authorization: userToken,
-
-            }
+            },
         }).then(({data})=>{
-            // console.log("confrimdata", data.response.confirm)
-            setConfirmed(data.response.confirm);
+            if (data.response.confirm && data.response.confirm.length){
+                setConfirmed([...confirmed, ...data.response.confirm]);
+            }
+            else {
+                if (!data.response.confirm.length){
+                    setNoData('No record found !');
+                }
+                setLoadMore(false);
+            }
             setTop(data.response.top_desc);
         }).catch((error)=>{
             console.log(error);
-        })
-    }
+        }).finally(()=>{
+            setLoader(false);
+        });
+    };
 
     useEffect(()=>{
         getConfirmed();
-    },[])
+    },[page])
 
     return (
         
-        <ScrollView horizontal={true}>
         <View style={styles.container}>
+            <ScrollView horizontal={true}>
              <View style={styles.recordCon}>
              <View style={styles.headingCond}>
                  <View style={styles.srNo}>
@@ -59,7 +73,6 @@ const Confirmed = ({setTop}) => {
                  <View style={styles.status}>
                      <Text style={styles.barTxt}>Date</Text>
                  </View>
-                
              </View>
              <View style={styles.recordList}>
              {
@@ -70,8 +83,6 @@ const Confirmed = ({setTop}) => {
                     <Text style={styles.amount}>{item.amount}</Text>
                     <Text style={styles.status}>{item.status}</Text>
                     <Text style={styles.status}>{item.transaction_date}</Text>
-                    
-   
                 </View>
                 })
                 : null
@@ -79,17 +90,38 @@ const Confirmed = ({setTop}) => {
              </View>
 
              </View>
-            
+            </ScrollView>
+            {
+                    loader ?
+                    <View style={styles.loadContainer}>
+                        <Loader />
+                    </View>
+                    : null
+                }
+                {
+                    <View style={styles.noData}>
+                    <Text>{noData}</Text>
+                  </View>
+                }
+
+            {
+                loadMore ?
+                <TouchableOpacity onPress={(e) => {
+                    setPage(page + 1);
+                }}>
+                    <View style={styles.loginButton}>
+                        <Text style={styles.loginTxt}>Load More</Text>
+                    </View>
+                </TouchableOpacity>
+                : null
+            }
         </View>
-        </ScrollView>
+        
     )
 
 }
 
 const styles = StyleSheet.create({
-    container : {
-       
-    },
     bgWhite: {
         backgroundColor: '#fff',
     },
@@ -144,13 +176,13 @@ const styles = StyleSheet.create({
         width: 100,
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     storeName: {
         width: 100,
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     alterColor: {
         backgroundColor: '#EDEDED'
@@ -179,15 +211,37 @@ const styles = StyleSheet.create({
     },
     status: {
         width: 100,
-        textAlign: 'center'
-        
+        textAlign: 'center',
     },
     amount: {
         width: 100,
-        textAlign: 'center'
-    }
-   
-})
+        textAlign: 'center',
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+    },
+    loginButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F27935',
+        padding: 10,
+        marginTop: 30,
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
+    loginTxt: {
+        fontWeight: '900',
+        color: '#fff',
+    },
+    noData: {
+        alignContent: 'center',
+        alignItems: 'center',
+        margin: 20,
+    },
+
+});
 
 
 export default Confirmed;

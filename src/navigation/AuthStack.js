@@ -28,7 +28,7 @@ import ReferalHistory from '../screens/Dashboard/ReferalHistory';
 import WithdrawlMoney from '../screens/Dashboard/WidthdrawMoney';
 import ClaimForm from '../screens/Dashboard/ClaimForm';
 import ReferralMoney from '../screens/Dashboard/ReferralMoney';
-import MissingCashback from '../screens/Dashboard/MissingCashback';
+import MissingCashback from '../screens/Dashboard/MissingCashbackHistory';
 import AddAccount from '../screens/Dashboard/AddAccount';
 import EditProfile from '../screens/EditProfile';
 import { View, Image, Text, StyleSheet} from 'react-native';

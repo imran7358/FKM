@@ -110,6 +110,7 @@ const AllCashback = ({ setTop }) => {
                     </TouchableOpacity>
                     : null
             }
+            
         </View>
     );
 
