@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 import Home from '../screens/Home';
 import AllStores from '../screens/AllStores';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from '../screens/Login';
 import ProductCategories from '../screens/ProductCategories';
 import CategoryDetails from '../screens/CategoryDetails';
@@ -31,12 +31,13 @@ import ReferralMoney from '../screens/Dashboard/ReferralMoney';
 import MissingCashback from '../screens/Dashboard/MissingCashbackHistory';
 import AddAccount from '../screens/Dashboard/AddAccount';
 import EditProfile from '../screens/EditProfile';
-import { View, Image, Text, StyleSheet} from 'react-native';
+import { View, Image, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
-const BottomTabs = ({navigation}) => {
+const BottomTabs = ({ navigation }) => {
   return (
-    <Tab.Navigator navigation={navigation} screenOptions ={{
+    <Tab.Navigator navigation={navigation} screenOptions={{
       tabBarShowLabel: false,
       headerStyle: {
         backgroundColor: '#f27935',
@@ -46,90 +47,99 @@ const BottomTabs = ({navigation}) => {
         fontWeight: 'bold',
       },
     }}>
-      <Tab.Screen name="MyHome" component={Home} options={{headerShown: false,
-      tabBarIcon:({focused})=>(
-        <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-          <Image source = {require('../assets/images/home.png')} style={{
-            width: 26,
-            height:26,
-            resizeMode: 'contain',
-            tintColor: focused ? '#333' : 'black',
-          }}/>
-        </View>
-       
-      ),
+      <Tab.Screen name="MyHome" component={Home} options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => (
+          <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
+            <Image source={require('../assets/images/home.png')} style={{
+              width: 26,
+              height: 26,
+              resizeMode: 'contain',
+              tintColor: focused ? '#333' : 'black',
+            }} />
+          </View>
+
+        ),
       }} />
-      <Tab.Screen name="Store" component={AllStores} options={{BottomTabs: false,
-        tabBarIcon:({focused})=>(
+      <Tab.Screen name="Store" component={AllStores} options={{
+        BottomTabs: false,
+        tabBarIcon: ({ focused }) => (
           <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-            <Image source = {require('../assets/images/store.png')} style={{
+            <Image source={require('../assets/images/store.png')} style={{
               width: 26,
-              height:26,
+              height: 26,
               resizeMode: 'contain',
               tintColor: focused ? '#333' : 'black',
-            }}/>
+            }} />
           </View>
-         
+
         ),
-      }}/>
-      <Tab.Screen name="Refer & Earn" component={ReferEarn} options={{BottomTabs: false,
-        tabBarIcon:({focused})=>(
+        headerLeft: () => (
+          <View>
+            <TouchableOpacity onPress={() => { navigation.goBack() }}><Text>Back</Text></TouchableOpacity>
+          </View>
+        )
+      }} />
+      <Tab.Screen name="Refer & Earn" component={ReferEarn} options={{
+        BottomTabs: false,
+        tabBarIcon: ({ focused }) => (
           <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-            <Image source = {require('../assets/images/earn.png')} style={{
+            <Image source={require('../assets/images/earn.png')} style={{
               width: 26,
-              height:26,
+              height: 26,
               resizeMode: 'contain',
               tintColor: focused ? '#333' : 'black',
-            }}/>
+            }} />
           </View>
-         
+
         ),
-      }}/>
-      <Tab.Screen name="Profile" component={Profile} 
-      options={{BottomTabs: false,
-        tabBarIcon:({focused})=>(
-          <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-            <Image source = {require('../assets/images/profileico.png')} style={{
-              width: 26,
-              height:26,
-              resizeMode: 'contain',
-              tintColor: focused ? '#333' : 'black',
-            }}/>
-          </View>
-         
-        ),
-      }}
+      }} />
+      <Tab.Screen name="Profile" component={Profile}
+        options={{
+          BottomTabs: false,
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
+              <Image source={require('../assets/images/profileico.png')} style={{
+                width: 26,
+                height: 26,
+                resizeMode: 'contain',
+                tintColor: focused ? '#333' : 'black',
+              }} />
+            </View>
+
+          ),
+        }}
       />
     </Tab.Navigator>
   );
 };
-const AuthStack = ({navigation}) => {
+const AuthStack = ({ navigation }) => {
   return (
 
-      <Stack.Navigator screenOptions={{
-        headerStyle: {
-          backgroundColor: '#f27935',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}>
-      <Stack.Screen name="Home" component={BottomTabs} options ={{headerShown: false, title: ''}}/>
+    <Stack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: '#f27935',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}>
+      <Stack.Screen name="Home" component={BottomTabs} options={{ headerShown: false, title: '' }} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Forgot Paasword" component={ForgotPassword} />
       <Stack.Screen name="Verify" component={EnterOTP} />
       <Stack.Screen name="Reset Password" component={ResetPassword} />
-      <Stack.Screen name="Stores" component={AllStores} screenOptions={{}}/>
-      <Stack.Screen name="Categories" component={ProductCategories} initialParams={{ catSlug: "" }} options={{title: ''}}/>
-      <Stack.Screen name="CategoryDetails" component={CategoryDetails} options={{title: ''}}/>
-      <Stack.Screen name="StoreDetails" component={StoreDetails} initialParams={{ storeSlug: "" }} options={{title: ''}}/>
-      <Stack.Screen name="Profile" component={Profile} options={{title: ''}} />
-      <Stack.Screen name="Coupons" component={TopCoupons} options={{title: ''}} />
-      <Stack.Screen name="coupnsDetails" component={CouponsDetails}/>
+      <Stack.Screen name="Stores" component={AllStores} screenOptions={{}} />
+      <Stack.Screen name="Categories" component={ProductCategories} initialParams={{ catSlug: "" }} options={{ title: 'Categories' }} />
+      <Stack.Screen name="CategoryDetails" component={CategoryDetails} options={{ title: 'Categories Details' }} />
+      <Stack.Screen name="StoreDetails" component={StoreDetails} initialParams={{ storeSlug: "" }} options={{ title: '' }} />
+      <Stack.Screen name="Profile" component={Profile} options={{ title: '' }} />
+      <Stack.Screen name="Coupons" component={TopCoupons} options={{ title: '' }} />
+      <Stack.Screen name="coupnsDetails" component={CouponsDetails} />
       <Stack.Screen name="Activated" component={CouponsActivated} />
-      <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }}/>
+      <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }} />
       <Stack.Screen name="Deal List" component={AllDeals} />
       <Stack.Screen name="Click History" component={ClickHistory} />
       <Stack.Screen name="Cashback History" component={CashbackHistory} />
@@ -148,8 +158,8 @@ const AuthStack = ({navigation}) => {
   );
 };
 const styles = StyleSheet.create({
-  active:{
-   backgroundColor: '#FFE6D8'
+  active: {
+    backgroundColor: '#FFE6D8',
   },
   tabLink: {
     height: 45,

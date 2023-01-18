@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Deals = ({deals, navigation, route}) => {
-
-    console.log("storeDeals", deals)
+const Deals = ({deals, navigation}) => {
     return (
         <View style={styles.dealsContainer}>
            <View style={styles.productContainer}>
@@ -11,14 +10,13 @@ const Deals = ({deals, navigation, route}) => {
             {
                 deals.length ? deals.map((item, i)=> {
                     return <View style={styles.productBox} key={i}>
+                         <TouchableOpacity onPress={() => navigation.navigate({name:'Details',params:{dealSlug:item.deal_slug}})}>
                     <View style={styles.productImageCon}>
                        <View  style={styles.productImage}>
                        <Image source={{uri: item.deal_image}}  style={styles.dealImage}/>
                        </View>
                     </View>
-                    {/* <View style={styles.brandLogo}>
-                        <Image source={{uri: item. store_img_url}} style={styles.storeImg}/>
-                    </View> */}
+
                     <View style={styles.prodDescr}>
                         <Text style={styles.prdLine} numberOfLines={2}>
                             {item.deal_title}
@@ -36,6 +34,7 @@ const Deals = ({deals, navigation, route}) => {
                             <Text style={[styles.priceTxt, styles.cutprice]}>{item.price}</Text>
                         </View>
                     </View>
+                    </TouchableOpacity>
                     </View>
                 })
                 : <Text>Loading...</Text>

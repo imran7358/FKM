@@ -6,6 +6,7 @@ const END_URL = "/home/home";
 import axios from 'axios';
 
 const RealtedDeals = ({ navigation, relatedProduct}) => {
+
     return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
             <View style={styles.dealsContainer}>
@@ -20,9 +21,9 @@ const RealtedDeals = ({ navigation, relatedProduct}) => {
                     {
                         relatedProduct.length ? relatedProduct.map((item, i) => {
                             return <View style={styles.productBox} key={i}>
-                                 <TouchableOpacity onPress={() =>
-                
-                                    navigation.navigate({name:'Details',params:{dealSlug:'deals/' + item.slug_url}})}>
+                                 <TouchableOpacity onPress={() =>{
+                                 console.log("Mai hoo",item.slug_url);
+                                    navigation.push('Details',{dealSlug:item.slug_url})}}>
                                 <View style={styles.productImageCon}>
                                     <View style={styles.productImage}>
                                         <Image source={{ uri: item.deal_image }} style={{ height: 70, width: 70 }} />

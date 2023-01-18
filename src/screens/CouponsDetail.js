@@ -7,7 +7,7 @@ const ENDPOINT = '/coupons/coupon-detail';
 
 const CouponsDetails = ({navigation, route, props}) => {
     const [couponsdetails, setCouponDetails] = useState({
-        storeImage:'',
+        storeImage: null,
         description:'',
         cpCode: '',
 

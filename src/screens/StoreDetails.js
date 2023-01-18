@@ -9,15 +9,15 @@ import Config from 'react-native-config';
 const END_URL = "/store/storedetail";
 
 
-const StoreDetails = ({ props, route }) => {
+const StoreDetails = ({ props, route, navigation }) => {
     const [deals, setShowDeals] = useState(true);
     const [coupons, setShowCoupons] = useState(false);
     const [rate, setRate] = useState({
         cashback_tag: '',
         rate: '',
         rate_type: '',
-        tag_desc: ''
-    })
+        tag_desc: '',
+    });
     const [store, storeDetails] = useState({
         is_cashback: '',
         cashback_amount: '',
@@ -28,33 +28,46 @@ const StoreDetails = ({ props, route }) => {
         speed: '',
         is_missing: '',
         store_name: '',
-        store_img: '',
+        store_img: null,
         top_desc: '',
 
     })
-    const [storeDeals, setStoreDeals] = useState([])
-    const [streCoupons, setStoreCoupons] = useState([])
-    const [opt, setOpt] = useState([])
-    const [show, setShow] = useState(false)
+    const [storeDeals, setStoreDeals] = useState([]);
+    const [couponsList, setCouponsList] = useState([])
+    const [streCoupons, setStoreCoupons] = useState([]);
+    const [opt, setOpt] = useState('');
+    const [page, setPage] = useState(1);
+    const [show, setShow] = useState(false);
     const showDeals = () => {
         setShowDeals(true);
         setShowCoupons(false);
+        setOpt('deals');
     };
 
     const showCoupons = () => {
         setShowCoupons(true);
         setShowDeals(false);
+        setOpt('coupons');
     };
 
     const StoreDtails = () => {
         axios.post(Config.API_URL + END_URL, {
-            'page': '1',
             'apiAuth': Config.API_AUTH,
             'store_slug': route.params.storeSlug,
             'device_type': 4,
+            page,
+            'option': opt,
 
         }).then(({ data }) => {
-            const regex = /(<([^>]+)>)/ig;
+            if ( opt === 'deals'){
+                setStoreDeals(data.response.deals);
+            }
+
+            else if (opt === 'coupons') {
+                setCouponsList(data.response.coupons);
+            }
+            else {
+                const regex = /(<([^>]+)>)/ig;
             const result = data.response.store_details.top_desc.replace(regex, '');
             storeDetails({
                 is_cashback: data.response.store_details.is_cashback,
@@ -70,18 +83,16 @@ const StoreDetails = ({ props, route }) => {
 
             setRate(data.response.store_rates);
             setStoreDeals(data.response.deals);
+            }
         }).catch((error) => {
             console.log(error);
         });
     };
 
-    const showMore = () => {
-        setShow(!show);
-    };
 
     useEffect(() => {
         StoreDtails();
-    }, [])
+    }, [page, opt])
     return (
 
         <SafeAreaView>
@@ -166,28 +177,28 @@ const StoreDetails = ({ props, route }) => {
                     <View style={styles.catDeals}>
                         <View style={styles.tabList}>
                             <TouchableOpacity onPress={showDeals} style={styles.tabContainer}>
-                                <View style={deals ? [styles.tab, styles.activeTab] : [styles.tab]} ><Text style={deals ? styles.activText : styles.mayTab}>Deals <Text>(10)</Text></Text></View>
+                                <View style={deals ? [styles.tab, styles.activeTab] : [styles.tab]} ><Text style={deals ? styles.activText : styles.mayTab}>Deals</Text></View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={showCoupons} style={styles.tabContainer}>
-                                <View style={coupons ? [styles.tab, styles.coupnActiveTab] : [styles.tab]}><Text style={coupons ? styles.activText : styles.mayTab}>Coupons <Text>(20)</Text></Text></View>
+                                <View style={coupons ? [styles.tab, styles.coupnActiveTab] : [styles.tab]}><Text style={coupons ? styles.activText : styles.mayTab}>Coupons</Text></View>
                             </TouchableOpacity>
                         </View>
                     </View>
                     {
                         deals ?
 
-                            <Deals deals={storeDeals} />
+                            <Deals deals={storeDeals} navigation = {navigation}/>
 
                             : null
                     }
 
-                    {/* {
+                    {
                         coupons ?
 
-                            <Coupons />
+                            <Coupons couponsList = {couponsList} navigation = {navigation}/>
 
                             : null
-                    } */}
+                    }
                 </View>
             </ScrollView>
             <View style={styles.shopErnCon}>
@@ -234,8 +245,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 0,
         width: '100%',
     },
     catDeals: {

@@ -12,7 +12,7 @@ const CategoryDetails = ({ navigation, route }) => {
   const [deals, setShowDeals] = useState(true);
   const [coupons, setShowCoupons] = useState(false);
   const [catDetails, setCatDetails] = useState({
-    catImg:'',
+    catImg:null,
     name: '',
     description: '',
   });
@@ -82,7 +82,7 @@ const CategoryDetails = ({ navigation, route }) => {
         {
           deals ?
 
-            <Deals deals = {catDeals}/>
+            <Deals deals = {catDeals} navigation = {navigation}/>
 
             : null
         }
@@ -90,11 +90,10 @@ const CategoryDetails = ({ navigation, route }) => {
         {
           coupons ?
 
-            <Coupons coupons = {catCoupons}/>
+            <Coupons couponsList = {catCoupons} navigation = {navigation}/>
 
             : null
         }
-
 
       </ScrollView>
     </SafeAreaView>

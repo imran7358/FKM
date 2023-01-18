@@ -24,7 +24,6 @@ const MissingReport = () => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
-
     const data = [
         { label: 'Item 1', value: '1' },
         { label: 'Item 2', value: '2' },
@@ -288,11 +287,11 @@ const styles = StyleSheet.create({
         color: '#fff',
       },
       dropdown: {
-        height: 50,
+        height: 45,
         borderColor: 'gray',
         borderWidth: 0.5,
         borderRadius: 6,
-        paddingHorizontal: 8,
+        padding: 10,
       },
       icon: {
         marginRight: 5,

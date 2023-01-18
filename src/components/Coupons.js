@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button } from 'react-native';
+import { View, Text, StyleSheet, Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Coupons = ({ navigation, coupons }) => {
+const Coupons = ({ navigation, couponsList }) => {
+
     return (
 
         <View style={styles.dealsContainer}>
             <View style={styles.productContainer}>
                 {
-                    coupons.length ? coupons.map((item, i) => {
+                    couponsList.length ? couponsList.map((item, i) => {
                         return <View style={styles.couponsList} key={i}>
+                            <TouchableOpacity style={styles.clickContainer} onPress={() => navigation.navigate('coupnsDetails',{couponId: item.coupon_id })} >
                             <View style={styles.couponHeading}>
                                 <Text style={styles.coupnHead}>
                                     {item.description}
@@ -40,6 +43,7 @@ const Coupons = ({ navigation, coupons }) => {
                                     </View>
                                 </View>
                             </View>
+                            </TouchableOpacity>
                         </View>
 
                     })
