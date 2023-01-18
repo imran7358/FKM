@@ -1,59 +1,127 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
+const END_URL = '/cashback/referral-summary';
+import Loader from '../../../components/Loader';
 
-const Declined = () => {
 
- return (
-        
-        <ScrollView horizontal={true}>
+const Declined = ({ setTop }) => {
+
+    const [decline, setDecline] = useState([]);
+    const [desc, setDesc] = useState('');
+    const [loadMore, setLoadeMore] = useState(true);
+    const [loader, setLoader] = useState(false);
+    const [page, setPage] = useState(1);
+    const [noData, setNoData] = useState('');
+
+    const getDecline = async () => {
+        setLoader(true);
+        const userToken = await AsyncStorage.getItem("userToken");
+        axios.post(Config.API_URL + END_URL, {
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+            option: 'decline',
+            page,
+        }, {
+            headers: {
+                Authorization: userToken,
+            }
+        }).then(({ data }) => {
+            if (data.response.decline && data.response.decline.length) {
+                setDecline([...decline, ...data.response.decline]);
+            }
+            else {
+                if (!data.response.decline.length) {
+                    setNoData('No record found !');
+                }
+
+                setLoadeMore(false);
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        }).finally(() => {
+            setLoader(false);
+        });
+    }
+    useEffect(() => {
+        getDecline();
+    }, [page])
+
+
+    return (
+
         <View style={styles.container}>
-             <View style={styles.recordCon}>
-             <View style={styles.headingCond}>
-                 <View style={styles.srNo}>
-                     <Text style={styles.barTxt}>SN</Text>
-                 </View>
-                 <View style={styles.storeName}>
-                     <Text style={styles.barTxt}>Store</Text>
-                 </View>
-                 <View style={styles.amount}>
-                     <Text style={styles.barTxt}>Amount</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Order-Id</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Declined Date</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Reason</Text>
-                 </View>
-                
-             </View>
-             <View style={styles.recordList}>
-             <View style={styles.innerReocrd}>
-                 <Text style={styles.srNo}>1</Text>
-                 <Text  style={styles.storeName}>xyxxcrew</Text>
-                 <Text style={styles.amount}>4</Text>
-                 <Text style={styles.status}>500</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
-                 <Text style={styles.status}>xyxxcrew</Text>
+            <ScrollView>
+                <View style={styles.recordCon}>
+                    <View style={styles.headingCond}>
+                        <View style={styles.srNo}>
+                            <Text style={styles.barTxt}>Id</Text>
+                        </View>
+                        <View style={styles.storeName}>
+                            <Text style={styles.barTxt}>Store</Text>
+                        </View>
+                        <View style={styles.amount}>
+                            <Text style={styles.barTxt}>Amount</Text>
+                        </View>
+                        <View style={styles.status}>
+                            <Text style={styles.barTxt}>Time</Text>
+                        </View>
 
+                    </View>
+                    <View style={styles.recordList}>
+                        {
+                            decline.length ? decline.map((item, i) => {
+                                return <View style={styles.innerReocrd} key={i}>
+                                    <Text style={styles.srNo}>{item.id}</Text>
+                                    <Text style={styles.storeName}>{item.store}</Text>
+                                    <Text style={styles.amount}>{item.amount}</Text>
+                                    <Text style={styles.status}>{item.updated_time}</Text>
+                                </View>
+                            })
+                                : null
+                        }
+                    </View>
 
-             </View>
-             </View>
+                </View>
+            </ScrollView>
+            {
+                loader ?
+                    <View style={styles.loadContainer}>
+                        <Loader />
+                    </View>
+                    : null
+            }
+            {
+                <View style={styles.noData}>
+                    <Text>{noData}</Text>
+                </View>
+            }
 
-             </View>
-            
+            {
+                loadMore ?
+                    <TouchableOpacity onPress={(e) => {
+                        setPage(page + 1);
+                    }}>
+                        <View style={styles.loginButton}>
+                            <Text style={styles.loginTxt}>Load More</Text>
+                        </View>
+                    </TouchableOpacity>
+                    : null
+            }
         </View>
-        </ScrollView>
+
+
     )
 
 }
 
 const styles = StyleSheet.create({
-    container : {
-       
+    container: {
+
     },
     bgWhite: {
         backgroundColor: '#fff',
@@ -86,36 +154,28 @@ const styles = StyleSheet.create({
     innerReocrd: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         padding: 10,
     },
     srNo: {
-        width: 50,
+        width: '20%',
         justifyContent: 'center',
         alignContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         textAlign: 'center',
     },
-    click: {
+    date: {
 
-        width: 100,
-        justifyContent: 'center',
-        alignContent: 'center',
-        alignItems:'center',
-
-    },
-    date:{
-
-        width: 100,
+        width: '30%',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     storeName: {
-        width: 100,
+        width: '25%',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     alterColor: {
         backgroundColor: '#EDEDED'
@@ -132,26 +192,44 @@ const styles = StyleSheet.create({
         color: '#666666',
     },
     activeTab: {
-       color: '#F27935',
-       fontWeight: '900',
-       borderColor: '#f27935',
-       borderBottomWidth: 1,
+        color: '#F27935',
+        fontWeight: '900',
+        borderColor: '#f27935',
+        borderBottomWidth: 1,
     },
     txtActive: {
         color: '#f27935',
         fontSize: 16,
         fontWeight: '900',
     },
-    status: {
-        width: 100,
-        textAlign: 'center'
-        
-    },
     amount: {
-        width: 100,
-        textAlign: 'center'
-    }
-   
-})
+        width: '25%',
+        textAlign: 'center',
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+    },
+    loginButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F27935',
+        padding: 10,
+        marginTop: 30,
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
+    loginTxt: {
+        fontWeight: '900',
+        color: '#fff',
+    },
+    noData: {
+        alignContent: 'center',
+        alignItems: 'center',
+        margin: 20,
+    },
+
+});
 
 export default Declined;

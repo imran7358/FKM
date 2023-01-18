@@ -1,93 +1,71 @@
-import React from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useState} from 'react';
+
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, SafeAreaView} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useState } from 'react';
 import PendingCashback from './Pending';
-import AllCashback from './All';
 import Confirmed from './Confirmed';
 import Declined from './Declined';
 
-const ReferalHistory = () => {
-    const [active, setActive] = useState(true)
-    const [status, setStatus] = useState('All')
-    const setStatusFilter = status => {
-        setStatus(status)
-    }
-    const ListTab = [
-        {
-            status: 'All'
-        },
-        {
-            status: 'Pending'
-        },
-        {
-            status: 'Confirmed'
-        },
-        {
-            status: 'Declined'
-        },
-
-    ]
+const OPTIONS = ["Pending", "Confirm", "Declined", "Withdrawal"];
+const ReferalHistory = ({ navigation }) => {
+    const [tab, setTab] = useState('Pending');
+    const [active, setActive] = useState(true);
+    const [desc, setDesc] = useState("");
+    useEffect(() => {
+    }, [tab]);
     return (
         <SafeAreaView style={styles.bgWhite}>
-         <ScrollView style={styles.bgWhite}>
-         <View style={styles.container}>
-          <View style={styles.topContent}>
-             <Text style={styles.topText}>Below you will find the list of the latest stores you’ve visited. 
- So that you can track the stores you have looked at.</Text>
-          </View>
-    
-            <View style={styles.historyTab}>
-                    {
-                       ListTab.map((e,i)=>(
-                        <TouchableOpacity key={i} style={status === e.status && styles.activeTab} onPress={()=> setStatusFilter(e.status)}>
-                        <Text style={status === e.status && styles.txtActive}>{e.status}</Text>
-                        </TouchableOpacity>
-                        
-                       ))
-                    }
+            <ScrollView style={styles.bgWhite}>
+                <View style={styles.container}>
+                    <View style={styles.historyTab}>
+                        {OPTIONS.map((e, i) => <View key={i}><Text style={e == tab ? [styles.tabList, styles.activeTab] : [styles.tabList]} onPress={(ev) => { setTab(e) }}>{e}</Text></View>)}
+                    </View>
 
-            </View>
+                    <View style={styles.recordCon}>
+                        {
+                            tab === 'Pending' ?
 
-          <View style={styles.recordCon}>
-             {
-                status === 'All' ? 
-                <AllCashback />
-                : null
-             }
-             {
-                status === 'Pending' ? 
-                
-                <PendingCashback />
-                
-                : null
-             }
-             {
-                status === 'Confirmed' ? 
-                
-                <Confirmed />
-                : null
-             }
-             {
-                status === 'Declined' ? 
-                
-               <Declined />
-                
-                : null
-             }
-            
-           </View>
-         </View>
-         </ScrollView>
+                                <PendingCashback setTop={(txt) => {
+                                    setDesc(txt);
+                                }} />
+
+                                : null
+                        }
+                        {
+                            tab === 'Confirm' ?
+
+                                <Confirmed setTop={(txt) => {
+                                    setDesc(txt);
+                                }} />
+                                : null
+                        }
+                        {
+                            tab === 'Declined' ?
+
+                                <Declined setTop={(txt) => {
+                                    setDesc(txt);
+                                }} />
+
+                                : null
+                        }
+
+                    </View>
+                </View>
+
+            </ScrollView>
         </SafeAreaView>
-     )
+    )
 
 }
-
 const styles = StyleSheet.create({
-    container : {
+    container: {
         padding: 24,
         flex: 1,
+    },
+    tabList: {
+        fontSize: 16,
+        fontWeight: '500',
     },
     bgWhite: {
         backgroundColor: '#fff',
@@ -121,14 +99,14 @@ const styles = StyleSheet.create({
     innerReocrd: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         padding: 10,
     },
     srNo: {
         width: '10%',
         justifyContent: 'center',
         alignContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         textAlign: 'center',
     },
     click: {
@@ -136,24 +114,24 @@ const styles = StyleSheet.create({
         width: '20%',
         justifyContent: 'center',
         alignContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
 
     },
-    date:{
+    date: {
 
         width: '40%',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     storeName: {
         width: '30%',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     alterColor: {
-        backgroundColor: '#EDEDED'
+        backgroundColor: '#EDEDED',
     },
     historyTab: {
         flexDirection: 'row',
@@ -167,16 +145,21 @@ const styles = StyleSheet.create({
         color: '#666666',
     },
     activeTab: {
-       color: '#F27935',
-       fontWeight: '900',
-       borderColor: '#f27935',
-       borderBottomWidth: 1,
+        color: '#F27935',
+        fontWeight: '900',
+        borderColor: '#f27935',
+        borderBottomWidth: 1,
     },
     txtActive: {
         color: '#f27935',
         fontSize: 16,
         fontWeight: '900',
+        textTransform: 'capitalize',
     },
-})
+    preTab: {
+        textTransform: 'capitalize',
+    },
+});
 
 export default ReferalHistory;
+
