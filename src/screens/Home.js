@@ -68,14 +68,12 @@ const Home = ({ navigation }) => {
                   <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
                   <Text style={styles.topHeading}>Hot<Text style={{ fontWeight: '800' }}> Deals</Text></Text>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('Deal List')}>
+                <TouchableOpacity onPress={() => navigation.navigate('DealList')}>
                   <Text>View All</Text>
                 </TouchableOpacity>
               </View>
               <AllDeals style={styles.margin20} navigation={navigation} />
-              <View style={styles.loadmoreCont}>
-                <LoadMore />
-              </View>
+
             </View>
           </View>
         </View>

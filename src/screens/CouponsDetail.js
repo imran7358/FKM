@@ -21,7 +21,6 @@ const CouponsDetails = ({navigation, route, props}) => {
         }).then(({data})=>{
             console.log('couponsDetails', data)
             setCouponDetails({
-
                 storeImage: data.response.coupon.store_image,
                 description:data.response.coupon.description,
                 cpCode:data.response.coupon.coupon_code,
@@ -47,10 +46,6 @@ const CouponsDetails = ({navigation, route, props}) => {
             <Text style={styles.detailsTxt}>
           {couponsdetails.description}
             </Text>
-            {/* <Text style={styles.cpPara}>
-            Through this coupon, you will get Rs.300 Off on Min 
-order value must be Rs.969 or more Valid for all users
-            </Text> */}
             <View style={styles.apllyCp}>
             <Text style={styles.cpCode}>{couponsdetails.cpCode}</Text>
             <TouchableOpacity onPress={(()=> navigation.navigate('Activated'))}>

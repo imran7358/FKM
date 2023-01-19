@@ -4,12 +4,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-
-import {
-  centerContainer,
-  fontSize,
-  inputBox,
-} from '../../assets/styles/common';
+import {centerContainer,fontSize,inputBox} from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 
 const AddAccount = () => {
@@ -23,7 +18,7 @@ const AddAccount = () => {
   return (
     <ScrollView style={styles.container}> 
 
-    
+
       <View style={styles.innerContainer}>
         <Dropdown
         style={styles.dropdown}

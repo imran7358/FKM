@@ -25,12 +25,14 @@ import WidthdrawalMoney from '../screens/Dashboard/WithdrawlHistory';
 import MissingReport from '../screens/Dashboard/ReportMissing';
 import Register from '../screens/Register';
 import ReferalHistory from '../screens/Dashboard/ReferalHistory';
-import WithdrawlMoney from '../screens/Dashboard/WidthdrawMoney';
+import WithdrawlMoney from '../screens/Dashboard/WithdrawalMoney';
 import ClaimForm from '../screens/Dashboard/ClaimForm';
 import ReferralMoney from '../screens/Dashboard/ReferralMoney';
 import MissingCashback from '../screens/Dashboard/MissingCashbackHistory';
 import AddAccount from '../screens/Dashboard/AddAccount';
 import EditProfile from '../screens/EditProfile';
+import UserClaimForm from '../screens/Dashboard/UserClaimForm';
+import DealList from '../screens/DealList';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -128,9 +130,9 @@ const AuthStack = ({ navigation }) => {
       <Stack.Screen name="Home" component={BottomTabs} options={{ headerShown: false, title: '' }} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Forgot Paasword" component={ForgotPassword} />
+      <Stack.Screen name="ForgotPaasword" component={ForgotPassword} />
       <Stack.Screen name="Verify" component={EnterOTP} />
-      <Stack.Screen name="Reset Password" component={ResetPassword} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="Stores" component={AllStores} screenOptions={{}} />
       <Stack.Screen name="Categories" component={ProductCategories} initialParams={{ catSlug: "" }} options={{ title: 'Categories' }} />
       <Stack.Screen name="CategoryDetails" component={CategoryDetails} options={{ title: 'Categories Details' }} />
@@ -139,20 +141,27 @@ const AuthStack = ({ navigation }) => {
       <Stack.Screen name="Coupons" component={TopCoupons} options={{ title: '' }} />
       <Stack.Screen name="coupnsDetails" component={CouponsDetails} />
       <Stack.Screen name="Activated" component={CouponsActivated} />
-      <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }} />
-      <Stack.Screen name="Deal List" component={AllDeals} />
-      <Stack.Screen name="Click History" component={ClickHistory} />
-      <Stack.Screen name="Cashback History" component={CashbackHistory} />
-      <Stack.Screen name="Widthdrawal Money" component={WidthdrawalMoney} />
-      <Stack.Screen name="Missing Report" component={MissingReport} />
-      <Stack.Screen name="Refer Earn" component={ReferEarn} />
-      <Stack.Screen name="Referral History" component={ReferalHistory} />
-      <Stack.Screen name="Withdrawl Money" component={WithdrawlMoney} />
-      <Stack.Screen name="Claim Form" component={ClaimForm} />
-      <Stack.Screen name="Referral Money" component={ReferralMoney} />
-      <Stack.Screen name="Missing Cashback" component={MissingCashback} />
-      <Stack.Screen name="Add Account" component={AddAccount} />
+      <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }} options={{title: 'Deal Details',
+    headerLeft:()=>(
+      <TouchableOpacity onPress={()=> {navigation.goBack()}}>
+        <View><Text>Back</Text></View>
+      </TouchableOpacity>
+    )
+    }}/>
+      <Stack.Screen name="DealList" component={DealList}  options ={{title: 'All Deals'}}/>
+      <Stack.Screen name="ClickHistory" component={ClickHistory} options={{title: 'Click History'}}/>
+      <Stack.Screen name="CashbackHistory" component={CashbackHistory} />
+      <Stack.Screen name="WidthdrawalMoney" component={WidthdrawalMoney} />
+      <Stack.Screen name="MissingReport" component={MissingReport} />
+      <Stack.Screen name="ReferEarn" component={ReferEarn} options={{title:'Refer Earn'}}/>
+      <Stack.Screen name="ReferralHistory" component={ReferalHistory} />
+      <Stack.Screen name="WithdrawlMoney" component={WithdrawlMoney} />
+      <Stack.Screen name="ClaimForm" component={ClaimForm} />
+      <Stack.Screen name="ReferralMoney" component={ReferralMoney} />
+      <Stack.Screen name="MissingCashback" component={MissingCashback} />
+      <Stack.Screen name="AddAccount" component={AddAccount} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="UserClaimForm" component={UserClaimForm} />
 
     </Stack.Navigator>
   );

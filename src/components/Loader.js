@@ -15,14 +15,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
+        position: 'relative',
     },
     laoderimg: {
         width:50,
         height:50,
         resizeMode: 'contain',
-        position: 'absolute',
-        top: '50%',
-
     },
 });
 export default Loader;

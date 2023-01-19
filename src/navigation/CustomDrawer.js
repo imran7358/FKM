@@ -3,16 +3,17 @@ import { View, Text, TouchableOpacity, StyleSheet, Image} from "react-native";
 import { Grid,ShoppingBag, Percent, Scissors, Briefcase, BookOpen, PhoneCall, HelpCircle, LogOut} from "react-native-feather";
 
 const CustomDrawer = ({navigation}) => {
+
     return (
 
         <View style={{}}>
-            <TouchableOpacity onPress={(props)=> navigation.navigate('Login')}>
             <View style={{backgroundColor: '#f27935', height: 120,}}>
             </View>
-            </TouchableOpacity>
             <View style={styles.humburgerContainer}>
                 <View style={styles.editProfile}>
-                    <Text style={styles.edtiTxt}>Edit</Text>
+                   <TouchableOpacity onPress={()=>{navigation.navigate('EditProfile')}}>
+                   <Text style={styles.edtiTxt}>Edit</Text>
+                   </TouchableOpacity>
                 </View>
               <View style={styles.profileInfo}>
                 <View style={styles.profileimage}>

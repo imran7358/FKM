@@ -4,28 +4,45 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = "/home/home";
 import axios from 'axios';
+import Loader from './Loader';
 
-const AllDeals = ({ navigation}) => {
+
+const AllDeals = ({ navigation }) => {
 
     const [deals, setDeals] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loader, setLoader] = useState(false);
+    const [loadMore, setLoadMore] = useState(true);
+    const [noData, setNoData] = useState('');
 
     const getAllDeals = () => {
+        setLoader(true);
         axios.post(Config.API_URL + END_URL, {
-            'page': '1',
             'apiAuth': Config.API_AUTH,
-            'device_type': 4,
+            'device_type': '',
+            'sponsored_count':'1',
+            page,
         }).then(({ data }) => {
-            setDeals(data.response.hotdeals);
+            if(data.response.hotdeals && data.response.hotdeals.length){
+                setDeals([...deals, ...data.response.hotdeals]);
+            }
+            else {
+                if (!data.response.hotdeals.length) {
+                    setNoData('No records found!');
+                }
+                setLoadMore(false);
+            }
         }).catch((error) => {
             console.log('Error', error);
-        })
+        }).finally(() => {
+            setLoader(false);
+        });
 
     }
 
     useEffect(() => {
         getAllDeals();
-
-    }, [])
+    }, [page])
     return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
             <View style={styles.dealsContainer}>
@@ -34,38 +51,59 @@ const AllDeals = ({ navigation}) => {
                     {
                         deals.length ? deals.map((item, i) => {
                             return <View style={styles.productBox} key={i}>
-                                 <TouchableOpacity onPress={() => navigation.navigate({name:'Details',params:{dealSlug:item.slug_url}})}>
-                                <View style={styles.productImageCon}>
-                                    <View style={styles.productImage}>
-                                        <Image source={{ uri: item.deal_image }} style={{ height: 70, width: 70 }} />
+                                <TouchableOpacity onPress={() => navigation.navigate({ name: 'Details', params: { dealSlug: item.slug_url } })}>
+                                    <View style={styles.productImageCon}>
+                                        <View style={styles.productImage}>
+                                            <Image source={{ uri: item.deal_image }} style={{ height: 70, width: 70 }} />
+                                        </View>
                                     </View>
-                                </View>
-                                <View style={styles.brandLogo}>
-                                    <Image source={{ uri: item.store_img_url }} style={{ height: 16, width: 55 }} />
-                                </View>
-                                <View style={styles.prodDescr}>
-                                    <Text style={styles.prdLine} numberOfLines={2}>
-                                        {item.title}
-                                    </Text>
+                                    <View style={styles.brandLogo}>
+                                        <Image source={{ uri: item.store_img_url }} style={{ height: 16, width: 55 }} />
+                                    </View>
+                                    <View style={styles.prodDescr}>
+                                        <Text style={styles.prdLine} numberOfLines={2}>
+                                            {item.title}
+                                        </Text>
 
-                                </View>
-                                <View style={styles.priceContainer}>
-                                    <View style={styles.innerPrice}>
-                                        <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage} />
-                                        <Text style={styles.priceTxt}>{item.offer_price}</Text>
                                     </View>
-                                    <View style={styles.innerPrice}>
-                                        <Text style={styles.cutLine}></Text>
-                                        <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage} />
-                                        <Text style={[styles.priceTxt, styles.cutprice]}>{item.price}</Text>
+                                    <View style={styles.priceContainer}>
+                                        <View style={styles.innerPrice}>
+                                            <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage} />
+                                            <Text style={styles.priceTxt}>{item.offer_price}</Text>
+                                        </View>
+                                        <View style={styles.innerPrice}>
+                                            <Text style={styles.cutLine}></Text>
+                                            <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage} />
+                                            <Text style={[styles.priceTxt, styles.cutprice]}>{item.price}</Text>
+                                        </View>
                                     </View>
-                                </View>
                                 </TouchableOpacity>
                             </View>
                         }) : null
                     }
-
+                    {
+                    loader ?
+                    <View style={styles.loadContainer}>
+                        <Loader />
+                    </View>
+                    : null
+                }
+                {
+                    <View style={styles.noData}>
+                    <Text>{noData}</Text>
+                  </View>
+                }
                 </View>
+                {
+                    loadMore ?
+                    <View style={styles.loaderContainer}>
+                    <TouchableOpacity style={styles.LoadMore} onPress={()=> setPage( page + 1)}>
+                        <View>
+                            <Text style={styles.loadTxt}>Load More</Text>
+                        </View>
+                    </TouchableOpacity>
+                    </View>: null
+                }
             </View>
         </ScrollView>
     )
@@ -73,8 +111,10 @@ const AllDeals = ({ navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    dealsContainer: {
-
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
     },
     productContainer: {
         flexDirection: 'row',
@@ -90,7 +130,17 @@ const styles = StyleSheet.create({
         borderColor: '#EDEDED',
         borderWidth: 1,
         marginBottom: 15,
-
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+        justifyContent:'center',
+        alignItems: 'center',
+    },
+    dealsContainer: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
     },
     productImage: {
         width: 100,
@@ -99,8 +149,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 9,
         justifyContent: 'center',
-        alignContent:'center',
+        alignContent: 'center',
         alignItems: 'center',
+    },
+    noData: {
+        alignContent: 'center',
+        alignItems: 'center',
+        margin: 20,
     },
     productImageCon: {
         width: '100%',
@@ -151,8 +206,21 @@ const styles = StyleSheet.create({
         height: 2,
         backgroundColor: '#f27935',
 
-    }
-
+    },
+    LoadMore: {
+        backgroundColor: '#f27935',
+        borderRadius: 6,
+        padding: 15,
+        width: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#fff',
+        fontSize: 16,
+        textTransform: 'uppercase',
+    },
 });
 
 export default AllDeals;

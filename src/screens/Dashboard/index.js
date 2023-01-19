@@ -105,7 +105,7 @@ const Profile = ({ navigation }) => {
                     </View>
                     <View style={styles.profileMenu}>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Click History')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('ClickHistory')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/history-icon.png')} style={styles.icon} />
@@ -124,7 +124,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Cashback History')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('CashbackHistory')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/cbhistory.png')} style={styles.icon} />
@@ -143,7 +143,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Widthdrawal Money')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('WidthdrawalMoney')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/whistory.png')} style={styles.icon} />
@@ -162,7 +162,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Missing Report')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('MissingReport')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/rmissing.png')} style={styles.icon} />
@@ -180,7 +180,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Refer Earn')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('ReferEarn')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/referearn.png')} style={styles.icon} />
@@ -197,7 +197,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Referral History')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('ReferralHistory')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/rhistory.png')} style={styles.icon} />
@@ -216,7 +216,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Withdrawl Money')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('WithdrawlMoney')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/wmoney.png')} style={styles.icon} />
@@ -235,7 +235,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Referral Money')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('ReferralMoney')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/rmoney.png')} style={styles.icon} />
@@ -252,7 +252,7 @@ const Profile = ({ navigation }) => {
                         </View>
 
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Claim Form')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('ClaimForm')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/cbform.png')} style={styles.icon} />
@@ -271,7 +271,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Missing Cashback')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('MissingCashback')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/mhistory.png')} style={styles.icon} />
@@ -290,7 +290,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('Add Account')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('AddAccount')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/addacount.png')} style={styles.icon} />

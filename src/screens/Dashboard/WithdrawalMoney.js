@@ -1,66 +1,33 @@
+
+
+
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import Config from 'react-native-config';
-import axios from 'axios';
-const END_URL = '/cashback/claimformstore';
-import { centerContainer,fontSize,inputBox } from '../../assets/styles/common';
+
+import {
+    centerContainer,
+    fontSize,
+    inputBox,
+} from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ClaimForm = ({navigation}) => {
-    const [value, setValue] = useState([]);
-    const [noData, setNoData] = useState('');
-    const [loadMore, setLoadMore] = useState(true);
-    const [loader, setLoader] = useState(false);
-    const [store, setStore] = useState ([]);
-
-    const getStore = async () => {
-        const userToken = await AsyncStorage.getItem('userToken');
-        setLoader(true);
-        axios.post(Config.API_URL + END_URL, {
-            apiAuth: Config.API_AUTH,
-        },
-            {
-                headers: {
-                    Authorization: userToken,
-                },
-            }).then(({ data }) => {
-               setStore(data.response);
-                console.log('store data', data);
-
-            }).catch((error) => {
-                console.log(error);
-            }).finally(() => {
-                setLoader(false);
-            });
-    };
-
-    useEffect(() => {
-        getStore();
-    }, []);
+const WidthdarawlMoney = () => {
+    const [value, setValue] = useState('Bank');
     useEffect(() => {
     }, [value]);
-
-    console.log('value', value);
+    const data = [
+        { label: 'Bank', value: 'Bank' },
+        { label: 'Paytm', value: 'Paytm' },
+    ];
     return (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
-                <View style={styles.margi}>
-                    <Text style={styles.cbform}>Cashback Claimform</Text>
-                </View>
                 <View>
-                    <Text style={styles.notes}>Kindly Please Select the Store & fill up this form only after you
-                        have completed purchase or registration at our partner site.
-                        We will verify your details and cashback amount will be
-                        added to your account within 2-3 business days
-                        (except Saturday and Sunday).</Text>
-                </View>
-
-                <View>
-                    <Text style={styles.storeName}>Store Name</Text>
+                    <Text style={styles.storeName}>Select Account</Text>
                 </View>
                 <Dropdown
                     style={styles.dropdown}
@@ -68,34 +35,45 @@ const ClaimForm = ({navigation}) => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={store}
+                    data={data}
                     maxHeight={300}
-                    labelField="name"
-                    valueField="store_id"
+                    labelField="label"
+                    valueField="value"
                     placeholder="Select item"
                     placeholderTextColor="grey"
                     searchPlaceholder="Search..."
                     value={value}
                     onChange={item => {
-                        setValue(item.store_id);
+                        setValue(item.value);
                     }}
 
                 />
-                <TouchableOpacity onPress={(item)=> 
-                    navigation.navigate('UserClaimForm',{storeId:value})} >
+                {
+                    value === 'Paytm' ? <View >
+                        <Text style={styles.notification}>
+                        Kindly note, Minimum withdrawal amount for paytm is Rs.100 and you will be charged a convenience fee of 3% on all PayTM withdrawal request
+                        </Text>
+                    </View>
+                    : null
+                }
+                 <View>
+                    <Text style={styles.storeName}>Enter the amount you want to redeem</Text>
+                </View>
+                <View style={styles.inputBoxContainer}>
+              <TextInput
+               style={[styles.inputText, styles.lableFont]}
+                placeholder="Account Number"
+              />
+              </View>
+                <TouchableOpacity>
                     <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Next</Text>
+                        <Text style={styles.loginTxt}>WITHDRAW</Text>
                     </View>
                 </TouchableOpacity>
-
-
-
-
 
             </View>
         </ScrollView>
     );
-
 };
 
 const styles = StyleSheet.create({
@@ -107,13 +85,12 @@ const styles = StyleSheet.create({
     cbform: {
         fontSize: 14,
         fontWeight: 'bold',
-        marginBottom: 7,
+        marginBottom:7,
     },
     inputText: {
         height: inputBox.height,
         padding: inputBox.padding,
         borderWidth: inputBox.borderWidth,
-        marginTop: inputBox.marginTop,
         borderColor: inputBox.borderColor,
         borderRadius: inputBox.borderRadius,
         color: '#333333',
@@ -154,6 +131,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         paddingHorizontal: 8,
         backgroundColor: '#fff',
+        marginBottom: 15,
     },
     icon: {
         marginRight: 5,
@@ -181,6 +159,13 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
+    notification:{
+        color: 'green',
+        fontSize: 12,
+        lineHeight: 18,
+        marginBottom: 15,
+
+    },
     innerContainer: {
         backgroundColor: '#f7f7f7',
         padding: 20,
@@ -195,10 +180,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 7,
     },
+    margin10: {
+        marginTop: 10,
+    }
 
-});
+})
 
-export default ClaimForm;
+export default WidthdarawlMoney;
 
 
 
