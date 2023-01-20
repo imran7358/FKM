@@ -6,6 +6,7 @@ import Config from 'react-native-config';
 const END_URL = "/deals/dealdetail";
 import axios from 'axios';
 import RealtedDeals from "../components/RelatedDeals";
+import { Loader } from "react-native-feather";
 
  const ProductDetails = ({navigation, route}) => {
     const [details, setDetails] = useState({
@@ -54,14 +55,18 @@ import RealtedDeals from "../components/RelatedDeals";
         <SafeAreaView style={styles.bgWhite}>
             <ScrollView style={styles.bgWhite}>
             {
-                loading ? <Text>Loader</Text> : <View style={styles.container}>
+                loading ? 
+                <View style={styles.loadContainer}>
+                    <Loader/>
+                </View>
+                : <View style={styles.container}>
                 <Text style={styles.heading}>{details.title}</Text>
                 <View style={styles.prodImage}>
                     <View style={styles.offerCon}>
                     <Text style={styles.offPrice}>50% OFF</Text>
                     </View>
                     <View style={styles.imgCon}>
-                       <Image source={{ uri: details.dealImg}} style={{height:300, width:300}}/>
+                       <Image source={{ uri: details.dealImg}} style={{height:300, width:300, resizeMode: 'contain'}}/>
                     </View>
                     <Text>Choose the best price and the rertailer</Text>
                     <View style={styles.pricLogoCon}>
@@ -182,6 +187,12 @@ import RealtedDeals from "../components/RelatedDeals";
         backgroundColor: '#fff',
         flex: 1,
     },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
     container: {
         padding: 24,
     },

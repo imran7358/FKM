@@ -42,7 +42,6 @@ const AllCashback = ({ setTop }) => {
             }).finally(() => {
                 setLoader(false);
             });
-
     };
 
     useEffect(() => {

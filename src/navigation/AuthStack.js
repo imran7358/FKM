@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 import Home from '../screens/Home';
 import AllStores from '../screens/AllStores';
@@ -38,6 +38,23 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = ({ navigation }) => {
+
+  const horizontalAnimation = {
+    cardStyleInterpolator: ({ current, layouts }) => {
+      return {
+        cardStyle: {
+          transform: [
+            {
+              translateX: current.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [layouts.screen.width, 0],
+              }),
+            },
+          ],
+        },
+      };
+    },
+  };
   return (
     <Tab.Navigator navigation={navigation} screenOptions={{
       tabBarShowLabel: false,
@@ -46,7 +63,7 @@ const BottomTabs = ({ navigation }) => {
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
-        fontWeight: 'bold',
+        fontWeight: '900',
       },
     }}>
       <Tab.Screen name="MyHome" component={Home} options={{
@@ -65,6 +82,7 @@ const BottomTabs = ({ navigation }) => {
       }} />
       <Tab.Screen name="Store" component={AllStores} options={{
         BottomTabs: false,
+        title: 'All Store',
         tabBarIcon: ({ focused }) => (
           <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
             <Image source={require('../assets/images/store.png')} style={{
@@ -77,9 +95,11 @@ const BottomTabs = ({ navigation }) => {
 
         ),
         headerLeft: () => (
-          <View>
-            <TouchableOpacity onPress={() => { navigation.goBack() }}><Text>Back</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => { navigation.goBack()}}>
+          <View style={styles.backArrow}>
+            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
           </View>
+        </TouchableOpacity>
         )
       }} />
       <Tab.Screen name="Refer & Earn" component={ReferEarn} options={{
@@ -124,7 +144,7 @@ const AuthStack = ({ navigation }) => {
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
-        fontWeight: 'bold',
+        fontWeight: '900',
       },
     }}>
       <Stack.Screen name="Home" component={BottomTabs} options={{ headerShown: false, title: '' }} />
@@ -133,27 +153,49 @@ const AuthStack = ({ navigation }) => {
       <Stack.Screen name="ForgotPaasword" component={ForgotPassword} />
       <Stack.Screen name="Verify" component={EnterOTP} />
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
-      <Stack.Screen name="Stores" component={AllStores} screenOptions={{}} />
+      <Stack.Screen name="Stores" component={AllStores} options={{title: 'All Stores',
+       cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+       headerLeft: () => (
+        <TouchableOpacity onPress={() => { navigation.goBack() }}>
+          <View style={styles.backArrow}>
+            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+          </View>
+        </TouchableOpacity>
+      )
+    }} />
       <Stack.Screen name="Categories" component={ProductCategories} initialParams={{ catSlug: "" }} options={{ title: 'Categories' }} />
       <Stack.Screen name="CategoryDetails" component={CategoryDetails} options={{ title: 'Categories Details' }} />
-      <Stack.Screen name="StoreDetails" component={StoreDetails} initialParams={{ storeSlug: "" }} options={{ title: '' }} />
+      <Stack.Screen name="StoreDetails" component={StoreDetails} initialParams={{ storeSlug: "" }} options={{ title: 'Store Details',
+     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+     headerLeft: () => (
+       <TouchableOpacity onPress={() => { navigation.goBack()}}>
+         <View style={styles.backArrow}>
+           <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+         </View>
+       </TouchableOpacity>
+     )
+    }} />
       <Stack.Screen name="Profile" component={Profile} options={{ title: '' }} />
       <Stack.Screen name="Coupons" component={TopCoupons} options={{ title: '' }} />
       <Stack.Screen name="coupnsDetails" component={CouponsDetails} />
       <Stack.Screen name="Activated" component={CouponsActivated} />
-      <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }} options={{title: 'Deal Details',
-    headerLeft:()=>(
-      <TouchableOpacity onPress={()=> {navigation.goBack()}}>
-        <View><Text>Back</Text></View>
-      </TouchableOpacity>
-    )
-    }}/>
-      <Stack.Screen name="DealList" component={DealList}  options ={{title: 'All Deals'}}/>
-      <Stack.Screen name="ClickHistory" component={ClickHistory} options={{title: 'Click History'}}/>
+      <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }} options={{
+        title: 'Deal Details',
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => { navigation.goBack() }}>
+            <View style={styles.backArrow}>
+              <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+            </View>
+          </TouchableOpacity>
+        )
+      }} />
+      <Stack.Screen name="DealList" component={DealList} options={{ title: 'All Deals' }} />
+      <Stack.Screen name="ClickHistory" component={ClickHistory} options={{ title: 'Click History' }} />
       <Stack.Screen name="CashbackHistory" component={CashbackHistory} />
       <Stack.Screen name="WidthdrawalMoney" component={WidthdrawalMoney} />
       <Stack.Screen name="MissingReport" component={MissingReport} />
-      <Stack.Screen name="ReferEarn" component={ReferEarn} options={{title:'Refer Earn'}}/>
+      <Stack.Screen name="ReferEarn" component={ReferEarn} options={{ title: 'Refer Earn' }} />
       <Stack.Screen name="ReferralHistory" component={ReferalHistory} />
       <Stack.Screen name="WithdrawlMoney" component={WithdrawlMoney} />
       <Stack.Screen name="ClaimForm" component={ClaimForm} />
@@ -178,7 +220,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 15,
-  }
+  },
+  backIcon: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+  },
 })
 
 export default AuthStack;

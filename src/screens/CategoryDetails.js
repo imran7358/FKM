@@ -1,18 +1,25 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Coupons from '../components/Coupons';
-import Deals from '../components/Deals';
 import Config from 'react-native-config';
+import CategoriesDeals from '../components/Deals/CategoryDeals';
+const END_URL = '/category/category-detail';
+import Loader from '../components/Loader';
 
 const CategoryDetails = ({ navigation, route }) => {
 
   const [deals, setShowDeals] = useState(true);
   const [coupons, setShowCoupons] = useState(false);
+  const [page, setPage] = useState(1);
+  const [readMore, setReadMore] = useState(true);
+  const [loader, setLoader] = useState(false);
+  const [loadMore, setLoadMore] = useState(true);
+  const [noData, setNoData] = useState('');
   const [catDetails, setCatDetails] = useState({
-    catImg:null,
+    catImg: null,
     name: '',
     description: '',
   });
@@ -33,26 +40,42 @@ const CategoryDetails = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    axios.post("https://fkmdata.freekaamaal.com/category/category-detail", {
-      "page": "1",
+    setLoader(true);
+    axios.post(Config.API_URL + END_URL, {
+      page,
       "apiAuth": Config.API_AUTH,
       "cate_slug": route.params.catSlug,
       "option": opt,
     }).then(({ data }) => {
       if (opt == "") {
-          setCatDetails({
-            catImg: data.response.category.cate_img_url,
-            name: data.response.category.name,
-            description: data.response.category.description,
-          })
-        setCatDeals(data.response.deals);
+        const regex = /(<([^>]+)>)/ig;
+        const result = data.response.category.description.replace(regex, '');
+        setCatDetails({
+          catImg: data.response.category.cate_img_url,
+          name: data.response.category.name,
+          description: result,
+        });
+        if (data.response.deals && data.response.deals.length){
+          setCatDeals([...catDeals, ...data.response.deals]);
+        }
       } else if (opt == "coupons") {
-        setCatCoupons(data.response.coupons);
+        setCatCoupons([...catCoupons, ...data.response.coupons]);
       } else {
-        setCatDeals(data.response.deals);
+        if (!data.response.deals.length){
+          setNoData('No records found !');
+          setLoadMore(false);
+        }
+        setCatDeals([...catDeals, ...data.response.deals]);
       }
-    });
-  }, [opt, route.params.catSlug]);
+    }).catch((error)=>{
+      console.log(error);
+    }).finally(()=>{
+      setLoader(false);
+    })
+    console.log('page', page);
+    console.log('option', opt)
+    console.log()
+  }, [opt, route.params.catSlug, page]);
   return (
     <SafeAreaView style={styles.mainWrapper}>
       <ScrollView>
@@ -60,11 +83,19 @@ const CategoryDetails = ({ navigation, route }) => {
           <View style={[styles.container, styles.catDetails]}>
             <View style={styles.catDetails}>
               <View style={styles.detailsIcon}>
-                <Image source={{uri: catDetails.catImg}} style={styles.catImg}/>
+                <Image source={{ uri: catDetails.catImg }} style={styles.catImg} />
               </View>
               <View style={styles.catInfo}>
                 <Text style={styles.catHeading}>{catDetails.name}</Text>
-                <Text style={styles.catPara}>{catDetails.description}</Text>
+                <Text style={styles.catPara}>{readMore ? catDetails.description.substring(0, 200) : catDetails.description}</Text>
+                <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => setReadMore(!readMore)}>
+                  <View style={styles.readMore}>
+                    {
+                      readMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
+                    }
+                  </View>
+                </TouchableHighlight>
+
               </View>
             </View>
           </View>
@@ -72,17 +103,17 @@ const CategoryDetails = ({ navigation, route }) => {
         <View style={styles.catDeals}>
           <View style={styles.tabList}>
             <TouchableOpacity onPress={showDeals} style={styles.tabContainer}>
-              <View style={deals ? [styles.tab, styles.activeTab] : [styles.tab]} ><Text style={deals ? styles.activText : styles.mayTab}>Deals <Text>(10)</Text></Text></View>
+              <View style={deals ? [styles.tab, styles.activeTab] : [styles.tab]} ><Text style={deals ? styles.activText : styles.mayTab}>Deals</Text></View>
             </TouchableOpacity>
             <TouchableOpacity onPress={showCoupons} style={styles.tabContainer}>
-              <View style={coupons ? [styles.tab, styles.coupnActiveTab] : [styles.tab]}><Text style={coupons ? styles.activText : styles.mayTab}>Coupons <Text>(20)</Text></Text></View>
+              <View style={coupons ? [styles.tab, styles.coupnActiveTab] : [styles.tab]}><Text style={coupons ? styles.activText : styles.mayTab}>Coupons</Text></View>
             </TouchableOpacity>
           </View>
         </View>
         {
           deals ?
 
-            <Deals deals = {catDeals} navigation = {navigation}/>
+            <CategoriesDeals deals={catDeals} navigation={navigation} />
 
             : null
         }
@@ -90,10 +121,36 @@ const CategoryDetails = ({ navigation, route }) => {
         {
           coupons ?
 
-            <Coupons couponsList = {catCoupons} navigation = {navigation}/>
+            <Coupons couponsList={catCoupons} navigation={navigation} />
 
             : null
         }
+        <View style={styles.loadeMoreCon}>
+        {
+                    loader ?
+                    <View style={styles.loadContainer}>
+                        <Loader />
+                    </View>
+                    : null
+                }
+                {/* {
+                    <View style={styles.noData}>
+                    <Text>{noData}</Text>
+                  </View>
+                } */}
+        </View>
+
+      {
+        loadMore ?  <View style={styles.loadeMoreCon}>
+        <TouchableOpacity onPress={(e) => {
+           setPage(page + 1);
+         }}>
+           <View style={styles.loginButton}>
+             <Text style={styles.loginTxt}>Load More...</Text>
+           </View>
+         </TouchableOpacity>
+        </View> : null
+      }
 
       </ScrollView>
     </SafeAreaView>
@@ -102,10 +159,11 @@ const CategoryDetails = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    padding: 20,
     backgroundColor: '#fff',
     flex: 1,
   },
+  loadeMoreCon: {paddingLeft: 20,paddingRight:20},
   cardDetailsCon: {
     backgroundColor: '#F7F7F7',
     paddingTop: 20,
@@ -189,11 +247,51 @@ const styles = StyleSheet.create({
     borderColor: '#f27935',
     borderRadius: 45,
   },
-  catImg:{
+  catImg: {
     width: 58,
     height: 58,
     resizeMode: 'contain',
-  }
+  },
+  readMore: {
+    backgroundColor: '#f27935',
+    height: 38,
+    width: 38,
+    borderRadius: 45,
+    marginTop: 15,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  readArrow: {
+    width: 20,
+    height: 20,
+  },
+  arrowTransform: {
+    transform: [{ rotate: '180deg' }]
+  },
+  loginButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F27935',
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 6,
+    fontWeight: 'bold',
+    height: 50,
+},
+loginTxt: {
+    fontWeight: '900',
+    color: '#fff',
+},
+loadContainer: {
+  marginTop: 50,
+  marginBottom: 50,
+},
+noData: {
+  alignContent: 'center',
+  alignItems: 'center',
+  margin: 20,
+},
 });
 
 

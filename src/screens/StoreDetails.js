@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { centerContainer, fontSize } from '../assets/styles/common';
 import Coupons from '../components/Coupons';
-import Deals from '../components/Deals';
+import StoreDeals from '../components/Deals/StoreDeals';
 import Config from 'react-native-config';
-const END_URL = "/store/storedetail";
+const END_URL = '/store/storedetail';
+import Loader from '../components/Loader';
 
 
 const StoreDetails = ({ props, route, navigation }) => {
@@ -18,6 +18,7 @@ const StoreDetails = ({ props, route, navigation }) => {
         rate_type: '',
         tag_desc: '',
     });
+    const [readMore, setReadMore] = useState(true);
     const [store, storeDetails] = useState({
         is_cashback: '',
         cashback_amount: '',
@@ -30,13 +31,16 @@ const StoreDetails = ({ props, route, navigation }) => {
         store_name: '',
         store_img: null,
         top_desc: '',
-
-    })
+    });
     const [storeDeals, setStoreDeals] = useState([]);
     const [couponsList, setCouponsList] = useState([])
     const [streCoupons, setStoreCoupons] = useState([]);
     const [opt, setOpt] = useState('');
     const [page, setPage] = useState(1);
+    const [loader, setLoader] = useState(false);
+    const [loadMore, setLoadMore] = useState(true);
+    const [noData, setNoData] = useState('');
+
     const [show, setShow] = useState(false);
     const showDeals = () => {
         setShowDeals(true);
@@ -50,7 +54,8 @@ const StoreDetails = ({ props, route, navigation }) => {
         setOpt('coupons');
     };
 
-    const StoreDtails = () => {
+    useEffect(() => {
+        setLoader(true);
         axios.post(Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'store_slug': route.params.storeSlug,
@@ -59,44 +64,50 @@ const StoreDetails = ({ props, route, navigation }) => {
             'option': opt,
 
         }).then(({ data }) => {
-            if ( opt === 'deals'){
-                setStoreDeals(data.response.deals);
+            if (opt == ""){
+                const regex = /(<([^>]+)>)/ig;
+                const result = data.response.store_details.top_desc.replace(regex, '');
+                storeDetails({
+                    is_cashback: data.response.store_details.is_cashback,
+                    store_name: data.response.store_details.store_name,
+                    store_img: data.response.store_details.store_img,
+                    cashback_amount: data.response.store_details.cashback_amount,
+                    confirmation: data.response.store_details.confirmation,
+                    speed: data.response.store_details.speed,
+                    is_missing: data.response.store_details.is_missing,
+                    top_desc: result,
+                });
+                setRate(data.response.store_rates);
+                    if (data.response.deals && data.response.deals.length){
+                        setStoreDeals([...storeDeals, ...data.response.deals]);
+                    }
             }
-
-            else if (opt === 'coupons') {
-                setCouponsList(data.response.coupons);
+            else if (opt == 'coupons') {
+                setCouponsList([...couponsList, ...data.response.coupons]);
             }
             else {
-                const regex = /(<([^>]+)>)/ig;
-            const result = data.response.store_details.top_desc.replace(regex, '');
-            storeDetails({
-                is_cashback: data.response.store_details.is_cashback,
-                store_name: data.response.store_details.store_name,
-                store_img: data.response.store_details.store_img,
-                cashback_amount: data.response.store_details.cashback_amount,
-                confirmation: data.response.store_details.confirmation,
-                speed: data.response.store_details.speed,
-                is_missing: data.response.store_details.is_missing,
-                top_desc: result,
-
-            });
-
-            setRate(data.response.store_rates);
-            setStoreDeals(data.response.deals);
+                if (!data.response.deals.length){
+                    setNoData('No records found !');
+                    setLoadMore(false);
+                  }
+                  setStoreDeals([...storeDeals, ...data.response.deals]);
             }
         }).catch((error) => {
             console.log(error);
+        }).finally(() => {
+            setLoader(false);
         });
-    };
+        console.log('page', page);
+        console.log('option', opt);
+        console.log('deals', storeDeals);
+    }, [page, opt,route.params.storeSlug])
+    useEffect(()=>{
 
-
-    useEffect(() => {
-        StoreDtails();
-    }, [page, opt])
+    }, [storeDeals])
     return (
 
-        <SafeAreaView>
-            <ScrollView>
+        <SafeAreaView style={styles.bgWhite}>
+            <ScrollView style={styles.bgWhite}>
                 <View style={styles.container}>
                     <View style={styles.StoreCardInfo}>
                         <View style={styles.logoContainer}>
@@ -105,14 +116,21 @@ const StoreDetails = ({ props, route, navigation }) => {
                             </View>
                         </View>
                         <View style={styles.cashbackStore}>
-                            <Image source={require('../assets/images/rupee-icon.png')} style={{ width: 13, height: 13, resizeMode: 'contain' }} />
+                            <Image source={require('../assets/images/rupee-icon.png')} style={{ width: 11, height: 11, resizeMode: 'contain' }} />
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5, }}><Text style={{ fontSize: 14, fontWeight: 'bold' }}>{store.cashback_amount} </Text></View>
                             <Image source={require('../assets/images/info.png')} />
                         </View>
                         <View>
-                            <Text style={styles.storePara}>{store.top_desc}</Text>
-                            {/* <Text onPress={showMore}>{show ? 'Read More' : 'Read Less'}</Text> */}
+                            <Text style={styles.storePara}>{readMore ? store.top_desc.substring(0, 200) : store.top_desc}</Text>
+
                         </View>
+                        <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => setReadMore(!readMore)}>
+                            <View style={styles.readMore}>
+                                {
+                                    readMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
+                                }
+                            </View>
+                        </TouchableHighlight>
                         <View style={styles.cashbackInfo}>
                             <View style={styles.confirmTime}>
                                 <Text style={styles.infoTxt}>Confirmation</Text>
@@ -187,17 +205,42 @@ const StoreDetails = ({ props, route, navigation }) => {
                     {
                         deals ?
 
-                            <Deals deals={storeDeals} navigation = {navigation}/>
+                            <StoreDeals deals={storeDeals} navigation={navigation} />
 
                             : null
                     }
-
                     {
                         coupons ?
-
-                            <Coupons couponsList = {couponsList} navigation = {navigation}/>
+                            <Coupons couponsList={couponsList} navigation={navigation} />
 
                             : null
+                    }
+                    <View style={styles.loadeMoreCon}>
+                        {
+                            loader ?
+                                <View style={styles.loadContainer}>
+                                    <Loader />
+                                </View>
+                                : null
+                        }
+                        {
+                    <View style={styles.noData}>
+                    <Text>{noData}</Text>
+                  </View>
+                }
+                    </View>
+                    
+                    {
+                        loadMore ? <View style={styles.loadeMoreCon}>
+                            <TouchableOpacity onPress={(e) => {
+                                setPage(page + 1);
+
+                            }}>
+                                <View style={styles.loginButton}>
+                                    <Text style={styles.loginTxt}>Load More...</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View> : null
                     }
                 </View>
             </ScrollView>
@@ -213,6 +256,10 @@ const StoreDetails = ({ props, route, navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    bgWhite: {
+        backgroundColor: '#fff',
+        flex: 1,
+    },
     cashbackRates: {
         padding: 20,
         backgroundColor: '#fff',
@@ -233,6 +280,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
 
     },
+    loadeMoreCon: {paddingLeft: 20,paddingRight:20},
     bottomBtn: {
         backgroundColor: '#f27935',
         padding: 10,
@@ -375,6 +423,8 @@ const styles = StyleSheet.create({
         padding: 20,
         marginTop: 50,
         width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
 
     },
     logoContainer: {
@@ -420,6 +470,46 @@ const styles = StyleSheet.create({
     activText: {
         fontWeight: 'bold',
         color: '#fff',
+    },
+    readMore: {
+        backgroundColor: '#f27935',
+        height: 38,
+        width: 38,
+        borderRadius: 45,
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    readArrow: {
+        width: 20,
+        height: 20,
+    },
+    arrowTransform: {
+        transform: [{ rotate: '180deg' }],
+    },
+    loginButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F27935',
+        padding: 10,
+        marginTop: 30,
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
+    loginTxt: {
+        fontWeight: '900',
+        color: '#fff',
+    },
+    loadContainer: {
+      marginTop: 50,
+      marginBottom: 50,
+    },
+    noData: {
+      alignContent: 'center',
+      alignItems: 'center',
+      margin: 20,
     },
 
 

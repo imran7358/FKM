@@ -5,8 +5,8 @@ import { centerContainer } from '../assets/styles/common';
 import axios from 'axios';
 import Loader from '../components/Loader';
 import Config from 'react-native-config';
-const apiAuth = 'u636a0295845eb68x';
-const deviceType = '4';
+const END_URL = '/category/all-category';
+
 
 const ProductCategories = ({ navigation }) => {
   const [categories, allCategrioes] = useState([]);
@@ -15,8 +15,10 @@ const ProductCategories = ({ navigation }) => {
   }, [])
 
   const getCategories = () => {
-    axios.post('https://fkmdata.freekaamaal.com/category/all-category', {apiAuth: Config.API_AUTH}
-    ).then(({ data }) => {
+    axios.post(Config.API_URL + END_URL, {
+      apiAuth: Config.API_AUTH,
+      deviceType: '4',
+    }).then(({ data }) => {
       allCategrioes((data.response.allcategory));
     }).catch((error) => {
       console.log(error);
@@ -46,14 +48,14 @@ const ProductCategories = ({ navigation }) => {
                     </View>
                   </View>
                   <View style={styles.viewDetails}>
-                  <TouchableOpacity onPress={() => navigation.navigate({name:'CategoryDetails',params:{catSlug:item.cate_slug}})}>
+                    <TouchableOpacity onPress={() => navigation.navigate({ name: 'CategoryDetails', params: { catSlug: item.cate_slug } })}>
                       <Text style={styles.viewDetailsBtn}>View Deals</Text>
-                      </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               })
                 :
-                <Text>Loading...</Text>
+                <Loader />
             }
 
           </View>
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 15,
-    textAlign:'center',
+    textAlign: 'center',
   },
   dealNum: {
     justifyContent: 'center',
