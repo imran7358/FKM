@@ -31,6 +31,7 @@ const StoreDetails = ({ props, route, navigation }) => {
         store_name: '',
         store_img: null,
         top_desc: '',
+        isClaim: '',
     });
     const [storeDeals, setStoreDeals] = useState([]);
     const [couponsList, setCouponsList] = useState([])
@@ -64,7 +65,7 @@ const StoreDetails = ({ props, route, navigation }) => {
             'option': opt,
 
         }).then(({ data }) => {
-            if (opt == ""){
+            if (opt == "") {
                 const regex = /(<([^>]+)>)/ig;
                 const result = data.response.store_details.top_desc.replace(regex, '');
                 storeDetails({
@@ -76,21 +77,22 @@ const StoreDetails = ({ props, route, navigation }) => {
                     speed: data.response.store_details.speed,
                     is_missing: data.response.store_details.is_missing,
                     top_desc: result,
+                    isClaim: data.response.store_details.is_claim,
                 });
                 setRate(data.response.store_rates);
-                    if (data.response.deals && data.response.deals.length){
-                        setStoreDeals([...storeDeals, ...data.response.deals]);
-                    }
+                if (data.response.deals && data.response.deals.length) {
+                    setStoreDeals([...storeDeals, ...data.response.deals]);
+                }
             }
             else if (opt == 'coupons') {
                 setCouponsList([...couponsList, ...data.response.coupons]);
             }
             else {
-                if (!data.response.deals.length){
+                if (!data.response.deals.length) {
                     setNoData('No records found !');
                     setLoadMore(false);
-                  }
-                  setStoreDeals([...storeDeals, ...data.response.deals]);
+                }
+                // setStoreDeals([...storeDeals, ...data.response.deals]);
             }
         }).catch((error) => {
             console.log(error);
@@ -100,8 +102,8 @@ const StoreDetails = ({ props, route, navigation }) => {
         console.log('page', page);
         console.log('option', opt);
         console.log('deals', storeDeals);
-    }, [page, opt,route.params.storeSlug])
-    useEffect(()=>{
+    }, [page, opt, route.params.storeSlug]);
+    useEffect(() => {
 
     }, [storeDeals])
     return (
@@ -178,15 +180,19 @@ const StoreDetails = ({ props, route, navigation }) => {
 
                     </View>
 
-                    <View style={styles.claimForm}>
-                        <View>
-                            <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>Cashback claim form</Text>
-                            <Text> Fill up this form within 24 hrs</Text>
-                        </View>
-                        <View style={styles.claimFormbtn}>
-                            <Text style={{ color: '#fff', fontWeight: '900' }}>Claim Form</Text>
-                        </View>
-                    </View>
+                    {
+                        store.isClaim == '1' ?
+                            <View style={styles.claimForm}>
+                                <View>
+                                    <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>Cashback claim form</Text>
+                                    <Text> Fill up this form within 24 hrs</Text>
+                                </View>
+                                <View style={styles.claimFormbtn}>
+                                    <Text style={{ color: '#fff', fontWeight: '900' }}>Claim Form</Text>
+                                </View>
+                            </View>
+                            : null
+                    }
 
 
 
@@ -212,7 +218,6 @@ const StoreDetails = ({ props, route, navigation }) => {
                     {
                         coupons ?
                             <Coupons couponsList={couponsList} navigation={navigation} />
-
                             : null
                     }
                     <View style={styles.loadeMoreCon}>
@@ -224,12 +229,12 @@ const StoreDetails = ({ props, route, navigation }) => {
                                 : null
                         }
                         {
-                    <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                  </View>
-                }
+                            <View style={styles.noData}>
+                                <Text>{noData}</Text>
+                            </View>
+                        }
                     </View>
-                    
+
                     {
                         loadMore ? <View style={styles.loadeMoreCon}>
                             <TouchableOpacity onPress={(e) => {
@@ -237,7 +242,7 @@ const StoreDetails = ({ props, route, navigation }) => {
 
                             }}>
                                 <View style={styles.loginButton}>
-                                    <Text style={styles.loginTxt}>Load More...</Text>
+                                    <Text style={styles.loginTxt}>Load More</Text>
                                 </View>
                             </TouchableOpacity>
                         </View> : null
@@ -271,25 +276,28 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     shopearnbtn: {
-
         color: '#fff',
         width: '100%',
         textAlign: 'center',
-
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
 
     },
-    loadeMoreCon: {paddingLeft: 20,paddingRight:20},
+    loadeMoreCon: {
+        paddingLeft: 20,
+        paddingRight: 20,
+        alignContent: 'center',
+        alignItems: 'center',
+    },
     bottomBtn: {
         backgroundColor: '#f27935',
-        padding: 10,
+        padding: 15,
         borderRadius: 3,
         width: '100%',
     },
     shopErnCon: {
         backgroundColor: '#fff8f4',
-        padding: 30,
+        padding: 20,
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
@@ -489,29 +497,28 @@ const styles = StyleSheet.create({
         transform: [{ rotate: '180deg' }],
     },
     loginButton: {
+        borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F27935',
-        padding: 10,
-        marginTop: 30,
-        borderRadius: 6,
-        fontWeight: 'bold',
-        height: 50,
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        width: 150,
     },
     loginTxt: {
         fontWeight: '900',
-        color: '#fff',
+        color: '#f27935',
     },
     loadContainer: {
-      marginTop: 50,
-      marginBottom: 50,
+        marginTop: 50,
+        marginBottom: 50,
     },
     noData: {
-      alignContent: 'center',
-      alignItems: 'center',
-      margin: 20,
+        alignContent: 'center',
+        alignItems: 'center',
+        marginBottom: 15,
     },
-
 
 });
 

@@ -7,22 +7,43 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-
-import {
-    centerContainer,
-    fontSize,
-    inputBox,
-} from '../../assets/styles/common';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
+import Config from 'react-native-config';
+import request from '../../utils/request';
+const END_URL = '/cashback/withdraw-payment-mode';
 
-const WidthdarawlMoney = () => {
-    const [value, setValue] = useState('Bank');
-    useEffect(() => {
-    }, [value]);
-    const data = [
-        { label: 'Bank', value: 'Bank' },
-        { label: 'Paytm', value: 'Paytm' },
+const WidthdarawlMoney = ({navigation}) => {
+    const [value, setValue] = useState('');
+
+    const mydata = [
+        { label: 'Bank', value: 'bank' },
+        { label: 'Paytm', value: 'paytm' },
     ];
+    const getAccount = async () => {
+        const userToken = await AsyncStorage.getItem('userToken');
+        Alert.alert(value, userToken);
+        request.post(navigation, Config.API_URL + END_URL, {
+            'apiAuth': Config.API_AUTH,
+            'device_type': '4',
+            'wallet_type': value,
+        },
+            {
+                headers: {
+                    'Authorization': userToken,
+                },
+            }).then(({ data }) => {
+                console.log('Data', data);
+            }).catch((error) => {
+                console.log('Error', error);
+            });
+    };
+
+    useEffect(() => {
+        console.log('Bank Value', value);
+    }, [value]);
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
@@ -35,11 +56,11 @@ const WidthdarawlMoney = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
-                    data={data}
+                    data={mydata}
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
-                    placeholder="Select item"
+                    placeholder="Select Method"
                     placeholderTextColor="grey"
                     searchPlaceholder="Search..."
                     value={value}
@@ -49,23 +70,14 @@ const WidthdarawlMoney = () => {
 
                 />
                 {
-                    value === 'Paytm' ? <View >
+                    value === 'paytm' ? <View >
                         <Text style={styles.notification}>
-                        Kindly note, Minimum withdrawal amount for paytm is Rs.100 and you will be charged a convenience fee of 3% on all PayTM withdrawal request
+                            Kindly note, Minimum withdrawal amount for paytm is Rs.100 and you will be charged a convenience fee of 3% on all PayTM withdrawal request
                         </Text>
                     </View>
-                    : null
+                        : null
                 }
-                 <View>
-                    <Text style={styles.storeName}>Enter the amount you want to redeem</Text>
-                </View>
-                <View style={styles.inputBoxContainer}>
-              <TextInput
-               style={[styles.inputText, styles.lableFont]}
-                placeholder="Account Number"
-              />
-              </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={getAccount}>
                     <View style={styles.loginButton}>
                         <Text style={styles.loginTxt}>WITHDRAW</Text>
                     </View>
@@ -85,7 +97,7 @@ const styles = StyleSheet.create({
     cbform: {
         fontSize: 14,
         fontWeight: 'bold',
-        marginBottom:7,
+        marginBottom: 7,
     },
     inputText: {
         height: inputBox.height,
@@ -159,7 +171,7 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
-    notification:{
+    notification: {
         color: 'green',
         fontSize: 12,
         lineHeight: 18,
@@ -182,11 +194,8 @@ const styles = StyleSheet.create({
     },
     margin10: {
         marginTop: 10,
-    }
+    },
 
-})
+});
 
 export default WidthdarawlMoney;
-
-
-

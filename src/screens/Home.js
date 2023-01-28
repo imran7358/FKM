@@ -95,9 +95,6 @@ const Home = ({ navigation }) => {
                 <MyStore navigation={navigation} />
               </View>
             </View>
-            <View style={styles.loadmoreCont}>
-              <LoadMore />
-            </View>
           </View>
         </View>
         {/* <View style={styles.mainContainer}>
@@ -215,6 +212,6 @@ const styles = StyleSheet.create({
   },
   marginBottom50: {
     marginBottom:50,
-  }
+  },
 });
 export default Home;

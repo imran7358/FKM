@@ -1,9 +1,23 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image} from "react-native";
+import React, { useEffect,useState} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import { Grid,ShoppingBag, Percent, Scissors, Briefcase, BookOpen, PhoneCall, HelpCircle, LogOut} from "react-native-feather";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { LOGGEDOUT } from '../redux/actionTypes';
 
 const CustomDrawer = ({navigation}) => {
-
+    const dispatch = useDispatch()
+    const logOut = async() =>{
+        try {
+            dispatch({
+                type: LOGGEDOUT,
+                userToken: '',
+            });
+        }
+        catch (exception) {
+            console.log(exception);
+        }
+    }
     return (
 
         <View style={{}}>
@@ -67,9 +81,6 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                </View>
               </TouchableOpacity>
-
-
-            
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Scissors style={styles.iconSize} width={18}/>
@@ -122,9 +133,11 @@ const CustomDrawer = ({navigation}) => {
                 <View style={styles.menuIcon}>
                 <LogOut style={styles.iconSize} width={18}/>
                 </View>
-                <View style={styles.menuName}>
+               <TouchableOpacity onPress={logOut}>
+               <View style={styles.menuName}>
                     <Text style={styles.menuTxt}>Logout</Text>
                 </View>
+               </TouchableOpacity>
                </View>
                
             </View>
@@ -155,7 +168,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#fff',
         marginRight: 15,
-        justifyContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
     },

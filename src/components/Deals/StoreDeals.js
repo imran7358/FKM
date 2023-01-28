@@ -6,9 +6,16 @@ const StoreDeals = ({ deals, navigation }) => {
         <View style={styles.dealsContainer}>
             <View style={styles.productContainer}>
                 {
-                     deals.map((item, i) => {
+                    deals.map((item, i) => {
                         return <View style={styles.productBox} key={i}>
                             <TouchableOpacity onPress={() => navigation.navigate({ name: 'Details', params: { dealSlug: item.deal_slug } })}>
+                            {
+                                        item.is_cashback == '1' ?
+                                        <View style={styles.cashback}>
+                                            <Text style={styles.cbtxt}>Cashback</Text>
+                                        </View>
+                                        : null
+                                    }
                                 <View style={styles.productImageCon}>
                                     <View style={styles.productImage}>
                                         <Image source={{ uri: item.deal_image }} style={styles.dealImage} />
@@ -37,17 +44,15 @@ const StoreDeals = ({ deals, navigation }) => {
                         </View>;
                     })
                 }
-
-
-
             </View>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     dealsContainer: {
-        padding: 24,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
     productContainer: {
         flexDirection: 'row',
@@ -136,7 +141,20 @@ const styles = StyleSheet.create({
     brandLogoImg: {
         height: 16,
         width: 55,
-
+    },
+    cashback: {
+        backgroundColor: '#f27935',
+        borderRadius:3,
+       paddingHorizontal: 7,
+        position:'absolute',
+        zIndex: 999,
+        paddingVertical: 4,
+        right:0,
+        opacity: 0.8,
+    },
+    cbtxt:{
+        color: '#fff',
+        fontSize: 12,
     },
 
 });

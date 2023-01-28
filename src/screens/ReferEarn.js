@@ -1,46 +1,46 @@
 import React from 'react';
 
-import {View, Text, SafeAreaView, StyleSheet, Image} from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const ReferEarn = () => {
 
     return (
 
-       <SafeAreaView style = {styles.bgWhite}>
-        <ScrollView style = {styles.bgWhite}>
-            <View style = {styles.container}>
-                <Text style={styles.headingTxt}>Let’s Grow Together With Our Refer And Earn Program</Text>
+        <SafeAreaView style={styles.bgWhite}>
+            <ScrollView style={styles.bgWhite}>
+                <View style={styles.container}>
+                    <Text style={styles.headingTxt}>Let’s Grow Together With Our Refer And Earn Program</Text>
 
-                <View style = {styles.copyCode}>
-                    <Text style={styles.referalLink}>Referral Link</Text>
-                    <View style = {styles.copyLink}>
-                        <Text style={styles.codeLinkCon}>https://freekaamaal.com/referral/90501380</Text>
-                        <View style={styles.copyBtn}>
-                            <Text style={styles.cpText}>Copy</Text>
+                    <View style={styles.copyCode}>
+                        <Text style={styles.referalLink}>Referral Link</Text>
+                        <View style={styles.copyLink}>
+                            <Text style={styles.codeLinkCon}>https://freekaamaal.com/referral/90501380</Text>
+                            <View style={styles.copyBtn}>
+                                <Text style={styles.cpText}>Copy</Text>
+                            </View>
+                        </View>
+                        <Text style={[styles.referalLink, styles.margin30]}>Referral Code</Text>
+                        <View style={styles.copyLink}>
+                            <Text style={styles.codeLinkCon}>90501380</Text>
+                            <View style={styles.copyBtn}>
+                                <Text style={styles.cpText}>Copy</Text>
+                            </View>
                         </View>
                     </View>
-                    <Text style={[styles.referalLink, styles.margin30]}>Referral Code</Text>
-                    <View style = {styles.copyLink}>
-                        <Text style={styles.codeLinkCon}>90501380</Text>
-                        <View style={styles.copyBtn}>
-                            <Text style={styles.cpText}>Copy</Text>
-                        </View>
+                    <Text style={[styles.headingTxt, styles.margin30]}>Easy Process</Text>
+                    <View style={styles.processImg}>
+                        <Image source={require('../assets/images/processImg.png')} style={styles.prImg} />
                     </View>
+                    <Text style={[styles.headingTxt, styles.margin30]}>Frequently Asked Questions ?</Text>
                 </View>
-                <Text style={[styles.headingTxt, styles.margin30]}>Easy Process</Text>
-                <View style={styles.processImg}>
-                    <Image source={require('../assets/images/processImg.png')} style={styles.prImg}/>
-                </View>
-                <Text style={[styles.headingTxt, styles.margin30]}>Frequently Asked Questions ?</Text>
-            </View>
-        </ScrollView>
-       </SafeAreaView>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-   
+
     container: {
         padding: 24,
         flex: 1,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cpText: {
-        fontSize: 14, 
+        fontSize: 14,
         fontWeight: 'bold',
         color: '#fff'
     },

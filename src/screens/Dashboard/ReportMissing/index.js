@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import * as yup from 'yup';

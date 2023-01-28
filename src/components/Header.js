@@ -1,10 +1,14 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Image} from 'react-native';
 import { Menu } from 'react-native-feather';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { User } from 'react-native-feather';
+import { useSelector } from 'react-redux';
 
 const Header = ({ navigation }) => {
+  const userToken = useSelector(state => {
+    return state.user.userToken;
+  });
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -21,11 +25,19 @@ const Header = ({ navigation }) => {
         <View style={styles.serchCon}>
           <Image source={require('../assets/images/search.png')} style={styles.searchIcon} />
         </View>
-        <View>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <User style={{ color: '#fff', width: 100, }} width={22} height={22} />
-          </TouchableOpacity>
-        </View>
+       {
+        userToken ? <View>
+          <Text>User</Text>
+        </View> :
+         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+         <User style={{ color: '#fff', width: 100,}} width={22} height={22} />
+       </TouchableOpacity>
+       }
+
+         {/* <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+         <User style={{ color: '#fff', width: 100,}} width={22} height={22} />
+       </TouchableOpacity> */}
+
       </View>
     </View>
   );

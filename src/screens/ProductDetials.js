@@ -1,61 +1,64 @@
-import React, { useEffect, useState} from "react";
-import {View, Text, SafeAreaView, StyleSheet, Image} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import AppButton from "../components/customInputs/AppButton";
+import React, { useEffect, useState} from 'react';
+import {View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
-const END_URL = "/deals/dealdetail";
+const END_URL = '/deals/dealdetail';
 import axios from 'axios';
-import RealtedDeals from "../components/RelatedDeals";
-import { Loader } from "react-native-feather";
+import RealtedDeals from '../components/Deals/RelatedDeals';
+import { Loader } from 'react-native-feather';
+import { WebView } from 'react-native-webview';
+
 
  const ProductDetails = ({navigation, route}) => {
     const [details, setDetails] = useState({
-
         title: '',
         dealImg: null,
         description: '',
         price: '',
         offerPrice: '',
-
+        isClaim: '',
     });
-    const [relatedProduct, setRelatedProduct] = useState([])
+    const [relatedProduct, setRelatedProduct] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const getDetails = () => {
         setLoading(true);
         axios.post(Config.API_URL + END_URL, {
-            "page":"1",
-            "apiAuth": Config.API_AUTH,
-            "deal_slug": route.params.dealSlug,
-            "device_type":"4",       
+            'page':'1',
+            'apiAuth': Config.API_AUTH,
+            'deal_slug': route.params.dealSlug,
+            'device_type':'4',
         }).then(({data})=>{
             const regex = /(<([^>]+)>)/ig;
             const result = data.response.deal.deal_description_url.replace(regex, '');
+             const htmltxt = data.response.deal.deal_description_url;
+             
             setDetails({
                 title: data.response.deal.deal_title,
                 dealImg:data.response.deal.deal_img_url,
                 price: data.response.deal.price,
                 offerPrice: data.response.deal.offer_price,
-                description: result,
-            })
+                description: htmltxt,
+                isClaim: data.response.deal.is_claim,
+            });
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
         }).catch((error)=>{
             console.log(error);
         }).finally(()=>{
             setLoading(false);
-        })
-    }
+        });
+    };
 
     useEffect(()=>{
         getDetails();
-    },[])
+    },[]);
 
     return (
         <SafeAreaView style={styles.bgWhite}>
             <ScrollView style={styles.bgWhite}>
             {
-                loading ? 
+                loading ?
                 <View style={styles.loadContainer}>
                     <Loader/>
                 </View>
@@ -96,90 +99,45 @@ import { Loader } from "react-native-feather";
                         </View>
                     </View>
                 </View>
-    
-                <View style={styles.claimForm}>
+                {
+                    details.isClaim == '1' ?
+                    <View style={styles.claimForm}>
                    <View>
                     <Text style={styles.claimHead}>cashback claim form</Text>
                     <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
                    </View>
-                   <View style={styles.FormBtn}>
+                  <TouchableHighlight onPress={()=> navigation.navigate('ClaimForm')}>
+                  <View style={styles.FormBtn}>
                     <Text style={styles.submitBtn}>Submit</Text>
                    </View>
+                  </TouchableHighlight>
                 </View>
-    
+                : null
+                }
                 <View style={styles.prodDetails}>
+                    {/* <WebView
+                    originWhitelist={['*']}
+                   html={{}}/> */}
                     <Text style={styles.abtDeals}>About the Deals</Text>
                     <Text style={styles.hastag}>#Neversettle #Oneplus #Dealoftheday </Text>
                     <Text style={styles.detailsPara}>
                  {details.description}
                     </Text>
-                    {/* <Text style={styles.secondHeading}>Here is how you can avail of this offer</Text> */}
-                    {/* <View style={styles.viewPoints}>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                    </View> */}
-    
-                    {/* <Text style={styles.secondHeading}>Highlights</Text> */}
-                    {/* <View style={styles.viewPoints}>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                        <View style={styles.points}>
-                            <View style={styles.circle}></View>
-                            <Text>Click on Shop Now button</Text>
-                        </View>
-                    </View> */}
+
+
                 </View>
                 <RealtedDeals relatedProduct = {relatedProduct} navigation={navigation}/>
             </View>
             }
             </ScrollView>
             <View style ={styles.container}>
-                <AppButton />
+            <View style={styles.appButton}>
+            <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+        </View>
             </View>
         </SafeAreaView>
-        
-    )
- }
+    );
+ };
 
  const styles = StyleSheet.create({
 
@@ -365,7 +323,22 @@ import { Loader } from "react-native-feather";
         borderRadius: 45,
         backgroundColor: '#B5B5B5',
         marginRight: 7,
-    }
-
- })
+    },
+    appButton: {
+        backgroundColor: '#f27935',
+        borderRadius: 6,
+        alignItems: 'center',
+        alignContent: 'center',
+    },
+    btnTxt: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        alignContent: 'center',
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+        padding: 14,
+    },
+ });
  export default ProductDetails;

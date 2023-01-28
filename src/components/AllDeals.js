@@ -20,10 +20,10 @@ const AllDeals = ({ navigation }) => {
         axios.post(Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': '',
-            'sponsored_count':'1',
+            'sponsored_count': '1',
             page,
         }).then(({ data }) => {
-            if(data.response.hotdeals && data.response.hotdeals.length){
+            if (data.response.hotdeals && data.response.hotdeals.length) {
                 setDeals([...deals, ...data.response.hotdeals]);
             }
             else {
@@ -38,7 +38,8 @@ const AllDeals = ({ navigation }) => {
             setLoader(false);
         });
 
-    }
+    };
+
 
     useEffect(() => {
         getAllDeals();
@@ -47,11 +48,18 @@ const AllDeals = ({ navigation }) => {
         <ScrollView style={{ backgroundColor: '#fff' }}>
             <View style={styles.dealsContainer}>
                 <View style={styles.productContainer}>
-
                     {
                         deals.length ? deals.map((item, i) => {
                             return <View style={styles.productBox} key={i}>
                                 <TouchableOpacity onPress={() => navigation.navigate({ name: 'Details', params: { dealSlug: item.slug_url } })}>
+                                    {
+                                        item.is_cashback == '1' ?
+                                        <View style={styles.cashback}>
+                                            <Text style={styles.cbtxt}>Cashback</Text>
+                                        </View>
+                                        : null
+                                    }
+
                                     <View style={styles.productImageCon}>
                                         <View style={styles.productImage}>
                                             <Image source={{ uri: item.deal_image }} style={{ height: 70, width: 70 }} />
@@ -82,27 +90,27 @@ const AllDeals = ({ navigation }) => {
                         }) : null
                     }
                     {
-                    loader ?
-                    <View style={styles.loadContainer}>
-                        <Loader />
-                    </View>
-                    : null
-                }
-                {
-                    <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                  </View>
-                }
+                        loader ?
+                            <View style={styles.loadContainer}>
+                                <Loader />
+                            </View>
+                            : null
+                    }
+                    {
+                        <View style={styles.noData}>
+                            <Text>{noData}</Text>
+                        </View>
+                    }
                 </View>
                 {
                     loadMore ?
-                    <View style={styles.loaderContainer}>
-                    <TouchableOpacity style={styles.LoadMore} onPress={()=> setPage( page + 1)}>
-                        <View>
-                            <Text style={styles.loadTxt}>Load More</Text>
-                        </View>
-                    </TouchableOpacity>
-                    </View>: null
+                        <View style={styles.loaderContainer}>
+                            <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                                <View>
+                                    <Text style={styles.loadTxt}>Load More</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View> : null
                 }
             </View>
         </ScrollView>
@@ -114,7 +122,10 @@ const styles = StyleSheet.create({
     loaderContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+    },
+    cbtxt:{
+        color: '#fff',
+        fontSize: 12,
     },
     productContainer: {
         flexDirection: 'row',
@@ -134,7 +145,7 @@ const styles = StyleSheet.create({
     loadContainer: {
         marginTop: 50,
         marginBottom: 50,
-        justifyContent:'center',
+        justifyContent: 'center',
         alignItems: 'center',
     },
     dealsContainer: {
@@ -208,18 +219,31 @@ const styles = StyleSheet.create({
 
     },
     LoadMore: {
-        backgroundColor: '#f27935',
         borderRadius: 6,
-        padding: 15,
-        width: 200,
         justifyContent: 'center',
         alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal:30,
+        paddingVertical: 15,
+
+
     },
     loadTxt: {
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#f27935',
         fontSize: 16,
         textTransform: 'uppercase',
+    },
+    cashback: {
+        backgroundColor: '#f27935',
+        borderRadius:3,
+       paddingHorizontal: 7,
+        position:'absolute',
+        zIndex: 999,
+        paddingVertical: 4,
+        right:0,
+        opacity: 0.8,
     },
 });
 

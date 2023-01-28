@@ -58,14 +58,14 @@ const Profile = ({ navigation }) => {
                 <View style={styles.container}>
 
                     <View style={styles.profileInfo}>
-                       
-                       <View style={styles.editProfile}>
-                       <TouchableOpacity onPress={()=> navigation.navigate('EditProfile')}>
-                            <Image source={require('../../assets/images/edit.png')} style={styles.editImg} />
+
+                        <View style={styles.editProfile}>
+                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                                <Image source={require('../../assets/images/edit.png')} style={styles.editImg} />
                             </TouchableOpacity>
                         </View>
 
-                      
+
                         <View style={styles.profilePic}>
                             <Image source={require('../../assets/images/profile.png')} />
                         </View>
@@ -94,7 +94,7 @@ const Profile = ({ navigation }) => {
                                 <Text style={styles.cbBottomPara}>withdraw Pending</Text>
                             </View>
                             <View style={styles.cbTxt}>
-                                <Text style={styles.cbRupees}>₹{summry.avlableAmount}</Text>
+                                <Text style={styles.cbRupees}>₹{Number(summry.available_amount).toFixed(2)}</Text>
                                 <Text style={styles.cbBottomPara}>Available Cashback</Text>
                             </View>
                             <View style={styles.cbTxt}>
