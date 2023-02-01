@@ -1,11 +1,16 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import Config from 'react-native-config';
 import { ScrollView } from 'react-native-gesture-handler';
 const END_URL = '/cashback/home';
+import { useSelector } from 'react-redux';
 const Profile = ({ navigation }) => {
+
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
     const [summry, setSummary] = useState({
         confirmAmount: '',
         widthdrawlAmount: '',
@@ -22,7 +27,6 @@ const Profile = ({ navigation }) => {
 
     });
     const getDetails = async () => {
-        const userToken = await AsyncStorage.getItem("userToken")
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
@@ -143,7 +147,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('WidthdrawalMoney')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('WithdrawalHistory')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/whistory.png')} style={styles.icon} />
@@ -162,7 +166,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('MissingReport')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('MissingForm')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/rmissing.png')} style={styles.icon} />
@@ -216,7 +220,7 @@ const Profile = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.menuList}>
-                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('WithdrawlMoney')}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('WidthdrawalMoney')}>
                                 <View style={styles.menuName}>
                                     <View style={styles.menuIcon}>
                                         <Image source={require('../../assets/images/wmoney.png')} style={styles.icon} />
@@ -317,9 +321,7 @@ const Profile = ({ navigation }) => {
                                     <Text>Find the list of FKM activities</Text>
                                 </View>
                             </View>
-
                             <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
-
                             <View>
 
                             </View>

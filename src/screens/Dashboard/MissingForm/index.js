@@ -3,12 +3,12 @@ import { View, Text, StyleSheet} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 import axios from 'axios';
-const END_URL = '/cashback/claimformstore';
-import { centerContainer,fontSize,inputBox } from '../../assets/styles/common';
+const END_URL = '/cashback/missingstore';
+import { centerContainer,fontSize,inputBox } from '../../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector } from 'react-redux';
 
-const ClaimForm = ({navigation}) => {
+const MissingForm = ({navigation}) => {
     const [value, setValue] = useState([]);
     const [noData, setNoData] = useState('');
     const [loadMore, setLoadMore] = useState(true);
@@ -29,6 +29,7 @@ const ClaimForm = ({navigation}) => {
                 },
             }).then(({ data }) => {
                setStore(data.response);
+               console.log("Missing Store", data.response);
 
             }).catch((error) => {
                 console.log(error);
@@ -46,7 +47,7 @@ const ClaimForm = ({navigation}) => {
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
                 <View style={styles.margi}>
-                    <Text style={styles.cbform}>Cashback Claimform</Text>
+                    <Text style={styles.cbform}>Missing Store</Text>
                 </View>
                 <View>
                     <Text style={styles.notes}>Kindly Please Select the Store & fill up this form only after you
@@ -67,7 +68,7 @@ const ClaimForm = ({navigation}) => {
                     iconStyle={styles.iconStyle}
                     data={store}
                     maxHeight={300}
-                    labelField="name"
+                    labelField="store"
                     valueField="store_id"
                     placeholder="Select item"
                     placeholderTextColor="grey"
@@ -77,8 +78,8 @@ const ClaimForm = ({navigation}) => {
                         setValue(item.store_id);
                     }}
                 />
-                <TouchableOpacity onPress={(item)=> 
-                    navigation.navigate('UserClaimForm',{storeId:value})} >
+                <TouchableOpacity onPress={(item)=>
+                    navigation.navigate('MissingCashBackForm',{storeId:value})} >
                     <View style={styles.loginButton}>
                         <Text style={styles.loginTxt}>Next</Text>
                     </View>
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
 
 });
 
-export default ClaimForm;
+export default MissingForm;
 
 
 

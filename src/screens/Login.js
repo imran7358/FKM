@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, Image, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Alert } from 'react-native';
 
 import {
     centerContainer,
@@ -14,7 +13,6 @@ import {
     fontColor,
     commonMargin,
 } from '../assets/styles/common';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import request from '../utils/request';
 import { useDispatch } from 'react-redux';
 import { SIGNEDIN } from '../redux/actionTypes';
@@ -22,7 +20,7 @@ const ENDPOINT = '/user/login';
 
 
 const Login = ({ navigation }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     return (
         <ScrollView>
             <Formik initialValues={{
@@ -39,6 +37,7 @@ const Login = ({ navigation }) => {
                             email: values.email,
                         });
                         if (data.status == '1' && data.error == '0') {
+                            console.log("Login Token", data.token)
                             dispatch({
                                 type: SIGNEDIN,
                                 userToken: data.token,

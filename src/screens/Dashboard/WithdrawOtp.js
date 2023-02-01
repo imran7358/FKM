@@ -1,85 +1,83 @@
-
-
-
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import React, { useEffect, useState} from 'react';
+import { View, Text, StyleSheet, TextInput} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Alert } from 'react-native';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import Config from 'react-native-config';
 import request from '../../utils/request';
-const END_URL = '/cashback/withdraw-payment-mode';
+import { useSelector, useDispatch } from 'react-redux';
+const END_URL = '/cashback/withdraw-money';
 
-const WidthdarawlMoney = ({navigation}) => {
+const WidthdarawlOtp = ({navigation,response,payType,couponSelected,account}) => {
     const [value, setValue] = useState('');
-
+    const dispatch = useDispatch();
+    const request_id = response.request_id;
+    const [OTP,setOTP] = useState("");
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
     const mydata = [
         { label: 'Bank', value: 'bank' },
         { label: 'Paytm', value: 'paytm' },
     ];
-    const getAccount = async () => {
-        const userToken = await AsyncStorage.getItem('userToken');
-        Alert.alert(value, userToken);
+    const sendAPIreq = (opt) => {
+        console.log("==-?>??API aya h_-->>",{
+            apiAuth: Config.API_AUTH,
+            device_type: '4',
+            option:opt,
+            request_id:response.request_id,
+            wallet_name: payType,
+            code_reference: response.code_reference,
+            userotp:OTP,
+            });
+        // setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
-            'apiAuth': Config.API_AUTH,
-            'device_type': '4',
-            'wallet_type': value,
-        },
-            {
-                headers: {
-                    'Authorization': userToken,
-                },
+            apiAuth: Config.API_AUTH,
+            device_type: '4',
+            option:opt,
+            request_id:response.request_id,
+            wallet_name: payType,
+            userotp:OTP,
+            code_reference: response.code_reference,
+            },{
+            headers: {
+                'Authorization': userToken,
+            },
             }).then(({ data }) => {
-                console.log('Data', data);
+                console.log("RESPIONESs--->>>",data);
+                // setLoading(false);
+                // Resp(data);
             }).catch((error) => {
                 console.log('Error', error);
             });
-    };
+    }
 
-    useEffect(() => {
-        console.log('Bank Value', value);
-    }, [value]);
 
     return (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
                 <View>
-                    <Text style={styles.storeName}>Select Account</Text>
+                    <Text style={styles.storeName}>OTP</Text>
+                    <Text>{response.msg}</Text>
                 </View>
-                <Dropdown
-                    style={styles.dropdown}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={mydata}
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Method"
-                    placeholderTextColor="grey"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                        setValue(item.value);
-                    }}
-
-                />
-                {
-                    value === 'paytm' ? <View >
-                        <Text style={styles.notification}>
-                            Kindly note, Minimum withdrawal amount for paytm is Rs.100 and you will be charged a convenience fee of 3% on all PayTM withdrawal request
-                        </Text>
+                <View style={styles.inputView}>
+                    <View style={styles.inputBoxContainer}>
+                        <TextInput
+                            autoCapitalize="none"
+                            style={styles.inputText}
+                            placeholderTextColor="#666"
+                            placeholder="OTP"
+                            onChangeText={(e)=>{
+                                setOTP(e);
+                            }}
+                        />
                     </View>
-                        : null
-                }
-                <TouchableOpacity onPress={getAccount}>
+                </View>
+                <TouchableOpacity onPress={()=>{
+                    sendAPIreq("confirmotp")
+                }}>
                     <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>WITHDRAW</Text>
+                        <Text style={styles.loginTxt}>Submit</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
         justifyContent: centerContainer.justifyCenter,
         backgroundColor: '#F27935',
         padding: 10,
-        marginTop: 30,
+        marginTop: 10,
         borderRadius: 6,
         fontWeight: 'bold',
         height: 50,
@@ -198,4 +196,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WidthdarawlMoney;
+export default WidthdarawlOtp;

@@ -1,31 +1,38 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 import Config from 'react-native-config';
-import { Alert } from 'react-native';
 import axios from 'axios';
 const END_URL = '/cashback/userclaimform';
+const POST_URL = '/cashback/userclaimdata';
 import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import DatePicker from 'react-native-date-picker';
 import DocumentPicker from 'react-native-document-picker';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 
 const UserClaimForm = ({ navigation, route }) => {
-    const [value, setValue] = useState([]);
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
+    const [value, setValue] = useState("");
     const [loadMore, setLoadMore] = useState(true);
     const [loader, setLoader] = useState(false);
-    const [store, setStore] = useState([]);
     const [click, setClick] = useState([]);
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
-    const [fileResponse, setFileResponse] = useState([]);
+    const [amount, setAmount] = useState(0);
+    const [fileResponse, setFileResponse] = useState({});
+    const [field, setField] = useState([]);
+    const [formField, setFormField] = useState({})
+    useEffect(() => {
+        console.log("File", fileResponse)
+    }, [fileResponse])
 
     const getDetails = async () => {
-        const userToken = await AsyncStorage.getItem('userToken');
+
         axios.post(Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
@@ -36,31 +43,86 @@ const UserClaimForm = ({ navigation, route }) => {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
-                console.log('couponsDetails', data.response.claimform);
+                console.log('qasim ali ', data.response.userclicks);
                 setClick(data.response.userclicks);
+                setField(data.response.claimform);
+
             }).catch((error) => {
                 console.log(error);
             });
-
     };
 
-    const handleDocumentSelection = useCallback(async () => {
+    const sendFormReq = async (formD) => {
+        console.log("Sending request-->>>", formD);
+        axios.post(Config.API_URL + POST_URL, formD,
+            {
+                headers: {
+                    Authorization: userToken,
+                    "Content-Type": "multipart/form-data",
+                    'Accept': 'application/json',
+                },
+            }).then(({ data }) => {
+                console.log("rEsponse came", data);
+            }).catch((error) => {
+                console.log(error.response);
+            });
+    }
+    const handleDocumentSelection = async (item, fieldq) => {
         try {
             const response = await DocumentPicker.pick({
                 presentationStyle: 'fullScreen',
+                type: [DocumentPicker.types.images],
             });
-            setFileResponse(response);
+            const tempFile = { ...fileResponse };
+            tempFile[fieldq] = response;
+            setFileResponse(tempFile);
+            console.log("File", fileResponse)
         } catch (err) {
             console.warn(err);
         }
-    }, []);
-
+    }
     useEffect(() => {
         getDetails();
-        console.log('date', date.toDateString())
-    }, [value, date])
+        console.log('date', date.toDateString());
+    }, [value, date]);
+
+    const submitForm = () => {
+        let fdata = new FormData();
+        fdata.append('store', click[0].store);
+        fdata.append('device_type', 'ios');
+        fdata.append('apiAuth', Config.API_AUTH);
+        fdata.append('store_id', route.params.storeId);
+        fdata.append('clickid', value);
+        console.log('Form Data', formField);
+        field.length ? field.map((item, i) => {
+            if (item.type == 'text') {
+                fdata.append(item.field_name, formField[item.field_name]);
+            }
+            else if (item.type == 'date') {
+                fdata.append(item.field_name, moment(date).format('YYYY-MM-DD'));
+            }
+
+            else if (item.type == 'file') {
+                fdata.append(item.field_name, fileResponse[item.field_name][0]);
+            }
+
+            else {
+                fdata.append(item.field_name, formField[item.field_name]);
+            }
+        }) : null
+        fdata.append("fd17","option");
+        // fdata.append("fd7",values.orderId);
+        // fdata.append("fd3",values.mobile);
+        // fdata.append("fd2",values.email);
+        // fdata.append("fd9",values.orderAmount);
+        console.log("FOrm data-->>", fdata);
+
+        sendFormReq(fdata);
+    }
+
+
     return (
-        <ScrollView style={styles.container}>
+     <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
                 <View style={styles.margi}>
                     <Text style={styles.cbform}>Cashback Claimform</Text>
@@ -72,187 +134,113 @@ const UserClaimForm = ({ navigation, route }) => {
                 </View>
 
                 <View>
-                    <Text style={styles.storeName}>Store Name</Text>
-                </View>
-                <Formik initialValues={{
-                    clickId: '',
-                    email: '',
-                    mobile: '',
-                    orderId: '',
-                    orderAmount: '',
-                    flieUpload: '',
-                    comment: '',
-                }}
-                    onSubmit={values => Alert.alert(JSON.stringify(values))}
-                    validationSchema={yup.object().shape({
-                        clickId: yup
-                            .string()
-                            .required('Please select click id'),
-                        mobile: yup
-                            .string().required('Please Enter phone no'),
-                        orderId: yup
-                            .string().required('Please enter order id'),
-                        date: yup
-                            .string().required('Please select date'),
-                        orderAmount: yup
-                            .string().required('Please enter order amount'),
-                        email: yup
-                            .string()
-                            .email()
-                            .required('Please enter email id'),
-                        password: yup
-                            .string()
-                            .min(4)
-                            .max(10, 'Password should not excced 10 chars.')
-                            .required(),
-                        flieUpload: yup
-                            .string().required('Please upload file'),
-                        comment: yup
-                            .string().required('Please enter description')
-                    })}
-                >
+                    <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={click}
+                        maxHeight={300}
+                        labelField="created_time"
+                        valueField="clickid"
+                        placeholder="Select item"
+                        placeholderTextColor="grey"
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onChange={item => {
+                            setValue(item.clickid);
+                        }}
 
-                    {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
-                        <View>
-                            <Dropdown
-                                style={styles.dropdown}
-                                placeholderStyle={styles.placeholderStyle}
-                                selectedTextStyle={styles.selectedTextStyle}
-                                inputSearchStyle={styles.inputSearchStyle}
-                                iconStyle={styles.iconStyle}
-                                data={click}
-                                maxHeight={300}
-                                labelField="created_time"
-                                valueField="store_id"
-                                placeholder="Select item"
-                                placeholderTextColor="grey"
-                                searchPlaceholder="Search..."
-                                value={value}
-                                onChange={item => {
-                                    setValue(item.created_time);
-                                }}
-
-                            />
-                            <View style={styles.inputBoxContainer}>
-                                <TextInput
-                                    style={[styles.inputText, styles.lableFont]}
-                                    value={values.email}
-                                    onChangeText={handleChange('email')}
-                                    onBlur={() => setFieldTouched('email')}
-                                    placeholder="Email"
-                                />
-                                {touched.email && errors.email &&
-                                    <Text style={styles.error}>{errors.email}</Text>
-                                }
-                            </View>
-
-                            <View style={styles.inputBoxContainer}>
-                                <TextInput
-                                    style={[styles.inputText, styles.lableFont]}
-                                    value={values.mobile}
-                                    onChangeText={handleChange('mobile')}
-                                    onBlur={() => setFieldTouched('mobile')}
-                                    placeholder="Mobile"
-                                />
-                                {touched.mobile && errors.mobile &&
-                                    <Text style={styles.error}>{errors.mobile}</Text>
-                                }
-                            </View>
-                            <View style={styles.inputBoxContainer}>
-                                <TextInput
-                                    style={[styles.inputText, styles.lableFont]}
-                                    value={values.orderId}
-                                    onChangeText={handleChange('orderId')}
-                                    onBlur={() => setFieldTouched('orderId')}
-                                    placeholder="Order Id"
-                                />
-                                {touched.orderId && errors.orderId &&
-                                    <Text style={styles.error}>{errors.orderId}</Text>
-                                }
-                            </View>
-                            <View style={[styles.inputBoxContainer, styles.dateCon]}>
-                                <Text>{date.toDateString()}</Text>
-                                <TouchableOpacity onPress={() => setOpen(true)}>
-                                    <View style={styles.dateIcon}>
-                                        <Image source={require('../../assets/images/date.png')} style={styles.dateIcon} />
-                                    </View>
-                                </TouchableOpacity>
-
-                                {touched.date && errors.date &&
-                                    <Text style={styles.error}>{errors.date}</Text>
-                                }
-                            </View>
-
-                            <View style={styles.inputBoxContainer}>
-                                <TextInput
-                                    style={[styles.inputText, styles.lableFont]}
-                                    value={values.orderAmount}
-                                    onChangeText={handleChange('orderAmount')}
-                                    onBlur={() => setFieldTouched('orderAmount')}
-                                    placeholder="Amount"
-                                />
-                                {touched.orderAmount && errors.orderAmount &&
-                                    <Text style={styles.error}>{errors.orderAmount}</Text>
-                                }
-                            </View>
-                            <View style={[styles.inputBoxContainer, styles.dateCon]}>
-                                {fileResponse.length ? fileResponse.map((file, index) => (
-                                    <Text
-                                        key={index.toString()}
-                                        style={styles.uri}
-                                        numberOfLines={1}
-                                        ellipsizeMode={'middle'}>
-                                        {file?.uri}
-                                    </Text>
-                                )):
-                                <View><Text>Upload File</Text></View>
-                                }
-                                <TouchableOpacity onPress={handleDocumentSelection}>
-                                <View style={styles.dateIcon}>
-                                        <Image source={require('../../assets/images/upload.png')} style={styles.dateIcon} />
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.inputBoxContainer}>
-                                <TextInput
-                                    style={[styles.inputText, styles.lableFont]}
-                                    value={values.comment}
-                                    onChangeText={handleChange('comment')}
-                                    onBlur={() => setFieldTouched('comment')}
-                                    placeholder="Comment"
-                                    multiline={true}
-                                    numberOfLines={12}
-                                />
-                                {touched.comment && errors.comment &&
-                                    <Text style={styles.error}>{errors.comment}</Text>
-                                }
-                            </View>
-
-                            <DatePicker
-                                modal
-                                open={open}
-                                date={date}
-                                onConfirm={(date) => {
-                                    setOpen(false);
-                                    setDate(date);
-                                }}
-                                onCancel={() => {
-                                    setOpen(false)
-                                }}
-                                mode="date"
-                            />
-
-                            <TouchableOpacity onPress={handleSubmit}>
-                                <View style={styles.loginButton}>
-                                    <Text style={styles.loginTxt}>Submit</Text>
+                    />
+                    {
+                        field.length ? field.map((item, i) => {
+                            if (item.type === 'text') {
+                                return <View style={styles.inputBoxContainer} key={i}>
+                                    <TextInput
+                                        style={[styles.inputText, styles.lableFont]}
+                                        placeholder={item.placeholder}
+                                        value={formField[item.field_name]}
+                                        onChangeText = {(e)=>{
+                                            const temp = {...formField};
+                                            temp[item.field_name] = e;
+                                            setFormField(temp);
+                                        }}
+                                    />
                                 </View>
-                            </TouchableOpacity>
+                            }
+                            else if (item.type === 'file') {
+
+                                return <View style={[styles.inputBoxContainer, styles.dateCon]} key={i}>
+                                    <Text
+                                            key={"FILE"+i}
+                                            style={styles.uri}
+                                            numberOfLines={1}
+                                            ellipsizeMode={'middle'}>
+                                            { fileResponse.hasOwnProperty(item.field_name)?fileResponse[item.field_name][0].name:"Uploa File"}
+                                    </Text>
+                                    <TouchableOpacity onPress={(i1) => {
+                                        handleDocumentSelection(i1, item.field_name)
+                                    }}>
+                                        <View style={styles.dateIcon}>
+                                            <Image source={require('../../assets/images/upload.png')} style={styles.dateIcon} />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+
+                            }
+
+                            else if (item.type === 'date') {
+
+                                return <View style={[styles.inputBoxContainer, styles.dateCon]}>
+                                    <Text>{date.toDateString()}</Text>
+                                    <TouchableOpacity onPress={() => setOpen(true)}>
+                                        <View style={styles.dateIcon}>
+                                            <Image source={require('../../assets/images/date.png')} style={styles.dateIcon} />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            }
+
+                            else {
+                                return <View style={styles.inputBoxContainer}>
+                                    <TextInput
+                                        style={[styles.inputText, styles.lableFont]}
+                                        placeholder={item.placeholder}
+                                        value={formField[item.field_name]}
+                                        onChangeText = {(e)=>{
+                                            const temp = {...formField};
+                                            temp[item.field_name] = e;
+                                            setFormField(temp);
+                                        }}
+                                    />
+                                </View>
+
+                            }
+
+                        }) : null
+                    }
+
+                    <DatePicker
+                        modal
+                        open={open}
+                        date={date}
+                        onConfirm={(date) => {
+                            setOpen(false);
+                            setDate(date);
+                        }}
+                        onCancel={() => {
+                            setOpen(false)
+                        }}
+                        mode="date"
+                    />
+
+                    <TouchableOpacity onPress={submitForm}>
+                        <View style={styles.loginButton}>
+                            <Text style={styles.loginTxt}>Submit</Text>
                         </View>
-
-
-                    )}
-                </Formik>
+                    </TouchableOpacity>
+                </View>
 
             </View>
         </ScrollView>
@@ -383,11 +371,11 @@ const styles = StyleSheet.create({
         color: '#FF0D10',
         marginTop: 7,
     },
-    flieUpload:{
+    flieUpload: {
 
     },
     uri: {
-      width: '70%',
+        width: '70%',
         flexWrap: 'wrap',
     }
 

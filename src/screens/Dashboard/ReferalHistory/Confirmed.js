@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Config from 'react-native-config';
 import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const END_URL = '/cashback/referral-summary';
 import Loader from '../../../components/Loader';
-
+import { useSelector } from 'react-redux';
 
 
 const Confirmed = ({setTop}) => {
-
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
     const [confirmed, setConfirmed] = useState([])
     const [desc, setDesc] = useState('');
     const [page, setPage] = useState(1);
@@ -20,7 +21,6 @@ const Confirmed = ({setTop}) => {
 
     const getConfirmed = async() =>{
         setLoader(true);
-        const userToken = await AsyncStorage.getItem("userToken");
         axios.post(Config.API_URL + END_URL,{
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,

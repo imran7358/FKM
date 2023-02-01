@@ -1,7 +1,6 @@
 import React, { useEffect,useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import { Grid,ShoppingBag, Percent, Scissors, Briefcase, BookOpen, PhoneCall, HelpCircle, LogOut} from "react-native-feather";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { LOGGEDOUT } from '../redux/actionTypes';
 

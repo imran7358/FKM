@@ -3,25 +3,28 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import Config from 'react-native-config';
 import { ScrollView } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 const END_URL = '/cashback/click-history';
 
 
 const ClickHistory = ({navigation}) => {
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
     const [history, setHistory] = useState([]);
     const [description, setDescription] = useState({
         desc: '',
     });
 
     const getClickHistory = async()=>{
-        const userToken = await AsyncStorage.getItem("userToken")
+
         axios.post(Config.API_URL + END_URL,{
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
         },
         {
             headers : {
-              Authorization:userToken,
+              Authorization: userToken,
             },
         }).then(({data})=>{
             setHistory(data.response.click_history);
@@ -35,6 +38,7 @@ const ClickHistory = ({navigation}) => {
 
     useEffect(()=>{
         getClickHistory();
+        console.log('ClickToken', userToken);
     }, [])
     return (
        <SafeAreaView style={styles.bgWhite}>

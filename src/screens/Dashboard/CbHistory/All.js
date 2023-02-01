@@ -5,17 +5,21 @@ import Config from 'react-native-config';
 const END_URL = '/cashback/cashback-history';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 import Loader from '../../../components/Loader';
 
 
 const AllCashback = ({ setTop }) => {
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
+
     const [allcb, setAllCb] = useState([]);
     const [noData, setNoData] = useState('');
     const [loadMore, setLoadMore] = useState(true);
     const [page, setPage] = useState(1);
     const [loader, setLoader] = useState(false);
     const getCashbackHistory = async () => {
-        const userToken = await AsyncStorage.getItem('userToken');
         setLoader(true);
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
@@ -46,7 +50,7 @@ const AllCashback = ({ setTop }) => {
 
     useEffect(() => {
         getCashbackHistory();
-    }, [page]);
+    }, [page, userToken]);
 
     return (
         <View style={styles.container}>
