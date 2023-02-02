@@ -3,11 +3,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = '/cashback/withdrawal-history';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Loader from '../../../components/Loader';
+import { useSelector } from 'react-redux';
 
 const PendingCashback = ({ setTop }) => {
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
     const [details, setDetails] = useState([]);
     const [page, setPage] = useState(1);
     const [loadMore, setLoadMore] = useState(true);
@@ -15,7 +18,6 @@ const PendingCashback = ({ setTop }) => {
     const [loader, setLoader] = useState(false);
     const getData = async () => {
         setLoader(true);
-        const userToken = await AsyncStorage.getItem("userToken");
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,

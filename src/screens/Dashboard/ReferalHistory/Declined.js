@@ -2,11 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 const END_URL = '/cashback/referral-summary';
 import Loader from '../../../components/Loader';
-
+import { useSelector } from 'react-redux';
 
 const Declined = ({ setTop }) => {
 
@@ -17,9 +16,11 @@ const Declined = ({ setTop }) => {
     const [page, setPage] = useState(1);
     const [noData, setNoData] = useState('');
 
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
     const getDecline = async () => {
         setLoader(true);
-        const userToken = await AsyncStorage.getItem("userToken");
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,

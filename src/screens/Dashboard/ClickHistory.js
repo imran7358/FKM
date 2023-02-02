@@ -38,7 +38,6 @@ const ClickHistory = ({navigation}) => {
 
     useEffect(()=>{
         getClickHistory();
-        console.log('ClickToken', userToken);
     }, [])
     return (
        <SafeAreaView style={styles.bgWhite}>

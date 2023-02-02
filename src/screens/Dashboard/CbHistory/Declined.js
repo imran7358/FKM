@@ -2,24 +2,28 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 const END_URL = '/cashback/cashback-history';
 import Loader from '../../../components/Loader';
+import { useSelector } from 'react-redux';
 
 
 const Declined = ({ setTop }) => {
 
-    const [decline, setDecline] = useState([])
+    const [decline, setDecline] = useState([]);
     const [desc, setDesc] = useState('');
     const [loadMore, setLoadeMore] = useState(true);
     const [loader, setLoader] = useState(false);
     const [page, setPage] = useState(1);
     const [noData, setNoData] = useState('');
 
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
+
+
     const getDecline = async () => {
         setLoader(true);
-        const userToken = await AsyncStorage.getItem("userToken");
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
@@ -28,7 +32,7 @@ const Declined = ({ setTop }) => {
         }, {
             headers: {
                 Authorization: userToken,
-            }
+            },
         }).then(({ data }) => {
             if (data.response.decline && data.response.decline.length) {
                 setDecline([...decline, ...data.response.decline]);

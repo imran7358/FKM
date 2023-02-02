@@ -2,10 +2,10 @@ import React,{useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import Config from 'react-native-config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 const END_URL = '/cashback/cashback-history';
 import Loader from '../../../components/Loader';
+import { useSelector } from 'react-redux';
 
 const PendingCashback = ({setTop}) => {
     const [allcb, setAllCb] = useState([]);
@@ -14,10 +14,12 @@ const PendingCashback = ({setTop}) => {
     const [loader, setLoader] = useState(false);
     const [page, setPage] = useState(1);
     const [noData, setNoData] = useState('');
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
 
     const getPendingkHistory = async () => {
         setLoader(false);
-        const userToken = await AsyncStorage.getItem("userToken");
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,

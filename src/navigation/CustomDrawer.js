@@ -80,38 +80,38 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                </View>
               </TouchableOpacity>
-               <View style={styles.menuListCon}>
+               {/* <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Scissors style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
                     <Text style={styles.menuTxt}>Festivals</Text>
                 </View>
-               </View>
-               <View style={styles.menuListCon}>
+               </View> */}
+               {/* <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Briefcase style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
                     <Text style={styles.menuTxt}>100% Cashback</Text>
                 </View>
-               </View>
-               <View style={styles.menuListCon}>
+               </View> */}
+               {/* <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <BookOpen style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
                     <Text style={styles.menuTxt}>Hindi Articles</Text>
                 </View>
-               </View>
-               <View style={styles.menuListCon}>
+               </View> */}
+               {/* <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Briefcase style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
                     <Text style={styles.menuTxt}>Career</Text>
                 </View>
-               </View>
+               </View> */}
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <PhoneCall style={styles.iconSize} width={18}/>

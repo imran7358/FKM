@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Config from 'react-native-config';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const END_URL = '/cashback/missing-history';
 import Loader from '../../components/Loader';
+import { useSelector } from 'react-redux';
 
 const CashbackMissingHistory = ({ navigation }) => {
     const [missing, setMissing] = useState([]);
@@ -13,9 +13,13 @@ const CashbackMissingHistory = ({ navigation }) => {
     const [loadMore, setLoadeMore] = useState(true);
     const [noData, setNoData] = useState('');
     const [page, setPage] = useState(1);
+
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
+
     const getData = async () => {
         setLoader(true);
-        const userToken = await AsyncStorage.getItem("userToken")
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,

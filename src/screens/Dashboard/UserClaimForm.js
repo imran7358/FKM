@@ -76,7 +76,8 @@ const UserClaimForm = ({ navigation, route }) => {
             const tempFile = { ...fileResponse };
             tempFile[fieldq] = response;
             setFileResponse(tempFile);
-            console.log("File", fileResponse)
+
+
         } catch (err) {
             console.warn(err);
         }
@@ -104,6 +105,7 @@ const UserClaimForm = ({ navigation, route }) => {
 
             else if (item.type == 'file') {
                 fdata.append(item.field_name, fileResponse[item.field_name][0]);
+    
             }
 
             else {
