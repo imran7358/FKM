@@ -99,9 +99,7 @@ const StoreDetails = ({ props, route, navigation }) => {
         }).finally(() => {
             setLoader(false);
         });
-        console.log('page', page);
-        console.log('option', opt);
-        console.log('deals', storeDeals);
+        
     }, [page, opt, route.params.storeSlug]);
     useEffect(() => {
 

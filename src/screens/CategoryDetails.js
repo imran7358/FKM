@@ -65,7 +65,7 @@ const CategoryDetails = ({ navigation, route }) => {
           setNoData('No records found !');
           setLoadMore(false);
         }
-        setCatDeals([...catDeals, ...data.response.deals]);
+        // setCatDeals([...catDeals, ...data.response.deals]);
       }
     }).catch((error)=>{
       console.log(error);
@@ -74,7 +74,6 @@ const CategoryDetails = ({ navigation, route }) => {
     })
     console.log('page', page);
     console.log('option', opt)
-    console.log()
   }, [opt, route.params.catSlug, page]);
   return (
     <SafeAreaView style={styles.mainWrapper}>
@@ -133,11 +132,11 @@ const CategoryDetails = ({ navigation, route }) => {
                     </View>
                     : null
                 }
-                {/* {
+                {
                     <View style={styles.noData}>
                     <Text>{noData}</Text>
                   </View>
-                } */}
+                }
         </View>
 
       {
