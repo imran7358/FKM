@@ -12,10 +12,9 @@ const Declined = ({ setTop }) => {
 
     const [decline, setDecline] = useState([]);
     const [desc, setDesc] = useState('');
-    const [loadMore, setLoadeMore] = useState(true);
     const [loader, setLoader] = useState(false);
     const [page, setPage] = useState(1);
-    const [noData, setNoData] = useState('');
+    const [noData, setNoData] = useState(false);
 
     const userToken = useSelector(state => {
         return state.user.userToken;
@@ -28,7 +27,7 @@ const Declined = ({ setTop }) => {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'decline',
-            page: '1',
+            page,
         }, {
             headers: {
                 Authorization: userToken,
@@ -38,11 +37,8 @@ const Declined = ({ setTop }) => {
                 setDecline([...decline, ...data.response.decline]);
             }
             else {
-                if (!data.response.decline.length) {
-                    setNoData('No record found !');
-                }
+                setNoData(true);
 
-                setLoadeMore(false);
             }
 
             setTop(data.response.top_desc);
@@ -108,22 +104,19 @@ const Declined = ({ setTop }) => {
                     </View>
                     : null
             }
-            {
-                <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                </View>
-            }
+           
 
-            {
-                loadMore ?
-                    <TouchableOpacity onPress={(e) => {
-                        setPage(page + 1);
-                    }}>
-                        <View style={styles.loginButton}>
-                            <Text style={styles.loginTxt}>Load More</Text>
-                        </View>
-                    </TouchableOpacity>
-                    : null
+           {
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
             }
         </View>
 
@@ -150,6 +143,10 @@ const styles = StyleSheet.create({
     },
     recordCon: {
         backgroundColor: '#FAFAFA',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     headingCond: {
         flexDirection: 'row',
@@ -254,6 +251,42 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         margin: 20,
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+    },
+    loginButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F27935',
+        padding: 10,
+        marginTop: 30,
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
+
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
     },
 
 });

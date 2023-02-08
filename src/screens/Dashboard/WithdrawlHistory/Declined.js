@@ -13,8 +13,7 @@ const Declined = ({ setTop }) => {
     });
     const [details, setDetails] = useState([]);
     const [page, setPage] = useState(1);
-    const [loadMore, setLoadMore] = useState(true);
-    const [noData, setNoData] = useState('');
+    const [noData, setNoData] = useState(false);
     const [loader, setLoader] = useState(false);
     const getData = async () => {
         setLoader(true);
@@ -33,10 +32,7 @@ const Declined = ({ setTop }) => {
                     setDetails([...details, ...data.response.decline]);
                 }
                 else {
-                    if (!data.response.decline.length) {
-                        setNoData('No records found!');
-                    }
-                    setLoadMore(false);
+                   setNoData(true);
                 }
                 setTop(data.response.top_desc);
             }).catch((error) => {
@@ -93,23 +89,20 @@ const Declined = ({ setTop }) => {
                     </View>
 
                 </View>
+
                 {
-                            <View style={styles.noData}>
-                                <Text>{noData}</Text>
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
                             </View>
-                        }
-               {
-                loadMore ?
-                <TouchableOpacity onPress={(e) => {
-                    setPage(page + 1);
-                }}>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Loader More</Text>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                :
-                null
-               }
+            }
+
             </View>
         </ScrollView>
     )
@@ -229,6 +222,31 @@ const styles = StyleSheet.create({
     loginTxt: {
         fontWeight: '900',
         color: '#fff',
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
     },
 
 })

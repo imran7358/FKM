@@ -15,8 +15,7 @@ const Confirmed = ({setTop}) => {
     const [desc, setDesc] = useState('');
     const [page, setPage] = useState(1);
     const [loader, setLoader] = useState(false);
-    const [loadMore, setLoadMore] = useState(true);
-    const [noData, setNoData] = useState('');
+    const [noData, setNoData] = useState(false);
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
@@ -37,10 +36,7 @@ const Confirmed = ({setTop}) => {
                 setConfirmed([...confirmed, ...data.response.confirm]);
             }
             else {
-                if (!data.response.confirm.length){
-                    setNoData('No record found !');
-                }
-                setLoadMore(false);
+                setNoData(true);
             }
             setTop(data.response.top_desc);
         }).catch((error)=>{
@@ -100,22 +96,18 @@ const Confirmed = ({setTop}) => {
                     </View>
                     : null
                 }
-                {
-                    <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                  </View>
-                }
 
-            {
-                loadMore ?
-                <TouchableOpacity onPress={(e) => {
-                    setPage(page + 1);
-                }}>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Load More</Text>
+{
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                : null
             }
         </View>
         
@@ -200,6 +192,10 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#666666',
     },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     activeTab: {
        color: '#F27935',
        fontWeight: '900',
@@ -241,6 +237,27 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         margin: 20,
+    },
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
     },
 
 });

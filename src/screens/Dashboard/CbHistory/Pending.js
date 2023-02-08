@@ -10,10 +10,9 @@ import { useSelector } from 'react-redux';
 const PendingCashback = ({setTop}) => {
     const [allcb, setAllCb] = useState([]);
     const [desc, setAllDesc] = useState([]);
-    const [loadMore, setLoadeMore] = useState(true);
     const [loader, setLoader] = useState(false);
     const [page, setPage] = useState(1);
-    const [noData, setNoData] = useState('');
+    const [noData, setNoData] = useState(false);
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
@@ -36,9 +35,7 @@ const PendingCashback = ({setTop}) => {
                 }
 
                 else {
-                    if (!data.response.pending.length){
-                        setNoData('No record found !');
-                    }
+                    setNoData(true);
                     setLoadeMore(false);
                 }
                 setTop(data.response.top_desc);
@@ -109,22 +106,18 @@ const PendingCashback = ({setTop}) => {
                     </View>
                     : null
                 }
-                {
-                    <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                  </View>
-                }
 
-            {
-                loadMore ?
-                <TouchableOpacity onPress={(e) => {
-                    setPage(page + 1);
-                }}>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Load More</Text>
+{
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                : null
             }
         </View>
     )
@@ -141,12 +134,37 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         padding: 15,
     },
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
+    },
     topText: {
         lineHeight: 22,
         fontSize: 14,
     },
     recordCon: {
         backgroundColor: '#FAFAFA',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     headingCond: {
         flexDirection: 'row',

@@ -11,10 +11,9 @@ const Declined = ({ setTop }) => {
 
     const [decline, setDecline] = useState([]);
     const [desc, setDesc] = useState('');
-    const [loadMore, setLoadeMore] = useState(true);
     const [loader, setLoader] = useState(false);
     const [page, setPage] = useState(1);
-    const [noData, setNoData] = useState('');
+    const [noData, setNoData] = useState(false);
 
     const userToken = useSelector(state => {
         return state.user.userToken;
@@ -35,11 +34,7 @@ const Declined = ({ setTop }) => {
                 setDecline([...decline, ...data.response.decline]);
             }
             else {
-                if (!data.response.decline.length) {
-                    setNoData('No record found !');
-                }
-
-                setLoadeMore(false);
+               setNoData(true);
             }
 
         }).catch((error) => {
@@ -96,22 +91,19 @@ const Declined = ({ setTop }) => {
                     </View>
                     : null
             }
-            {
-                <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                </View>
-            }
 
-            {
-                loadMore ?
-                    <TouchableOpacity onPress={(e) => {
-                        setPage(page + 1);
-                    }}>
-                        <View style={styles.loginButton}>
-                            <Text style={styles.loginTxt}>Load More</Text>
-                        </View>
-                    </TouchableOpacity>
-                    : null
+
+{
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
             }
         </View>
 
@@ -229,6 +221,31 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         margin: 20,
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
     },
 
 });

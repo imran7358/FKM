@@ -23,10 +23,12 @@ const AllDeals = ({ navigation }) => {
             'sponsored_count': '1',
             page,
         }).then(({ data }) => {
+               
             if (data.response.hotdeals && data.response.hotdeals.length) {
                 setDeals([...deals, ...data.response.hotdeals]);
             }
             else {
+
                 if (!data.response.hotdeals.length) {
                     setNoData('No records found!');
                 }

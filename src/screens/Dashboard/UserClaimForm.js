@@ -11,7 +11,8 @@ import DatePicker from 'react-native-date-picker';
 import DocumentPicker from 'react-native-document-picker';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-
+import ImgToBase64 from 'react-native-image-base64';
+import Loader from '../../components/Loader';
 
 const UserClaimForm = ({ navigation, route }) => {
     const userToken = useSelector(state => {
@@ -28,7 +29,6 @@ const UserClaimForm = ({ navigation, route }) => {
     const [field, setField] = useState([]);
     const [formField, setFormField] = useState({})
     useEffect(() => {
-        console.log("File", fileResponse)
     }, [fileResponse])
 
     const getDetails = async () => {
@@ -43,7 +43,6 @@ const UserClaimForm = ({ navigation, route }) => {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
-                console.log('qasim ali ', data.response.userclicks);
                 setClick(data.response.userclicks);
                 setField(data.response.claimform);
 
@@ -53,8 +52,9 @@ const UserClaimForm = ({ navigation, route }) => {
     };
 
     const sendFormReq = async (formD) => {
-        console.log("Sending request-->>>", formD);
+        console.log("Form Data -- >>> ", formD);
         axios.post(Config.API_URL + POST_URL, formD,
+
             {
                 headers: {
                     Authorization: userToken,
@@ -62,7 +62,9 @@ const UserClaimForm = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
-                console.log("rEsponse came", data);
+
+                console.log("sucess", data)
+
             }).catch((error) => {
                 console.log(error.response);
             });
@@ -74,7 +76,8 @@ const UserClaimForm = ({ navigation, route }) => {
                 type: [DocumentPicker.types.images],
             });
             const tempFile = { ...fileResponse };
-            tempFile[fieldq] = response;
+            const b64 = await ImgToBase64.getBase64String(response[0].uri);
+            tempFile[fieldq] = b64;
             setFileResponse(tempFile);
 
 
@@ -94,8 +97,7 @@ const UserClaimForm = ({ navigation, route }) => {
         fdata.append('apiAuth', Config.API_AUTH);
         fdata.append('store_id', route.params.storeId);
         fdata.append('clickid', value);
-        console.log('Form Data', formField);
-        field.length ? field.map((item, i) => {
+        field.forEach(async (item, i) => {
             if (item.type == 'text') {
                 fdata.append(item.field_name, formField[item.field_name]);
             }
@@ -104,27 +106,25 @@ const UserClaimForm = ({ navigation, route }) => {
             }
 
             else if (item.type == 'file') {
-                fdata.append(item.field_name, fileResponse[item.field_name][0]);
-    
+                fdata.append(item.field_name, fileResponse[item.field_name]);
             }
 
             else {
                 fdata.append(item.field_name, formField[item.field_name]);
             }
-        }) : null
-        fdata.append("fd17","option");
+        });
+        fdata.append("fd17", "option");
+        fdata.append("qasim", "king");
         // fdata.append("fd7",values.orderId);
         // fdata.append("fd3",values.mobile);
         // fdata.append("fd2",values.email);
         // fdata.append("fd9",values.orderAmount);
-        console.log("FOrm data-->>", fdata);
-
         sendFormReq(fdata);
     }
 
 
     return (
-     <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
                 <View style={styles.margi}>
                     <Text style={styles.cbform}>Cashback Claimform</Text>
@@ -163,8 +163,8 @@ const UserClaimForm = ({ navigation, route }) => {
                                         style={[styles.inputText, styles.lableFont]}
                                         placeholder={item.placeholder}
                                         value={formField[item.field_name]}
-                                        onChangeText = {(e)=>{
-                                            const temp = {...formField};
+                                        onChangeText={(e) => {
+                                            const temp = { ...formField };
                                             temp[item.field_name] = e;
                                             setFormField(temp);
                                         }}
@@ -175,11 +175,11 @@ const UserClaimForm = ({ navigation, route }) => {
 
                                 return <View style={[styles.inputBoxContainer, styles.dateCon]} key={i}>
                                     <Text
-                                            key={"FILE"+i}
-                                            style={styles.uri}
-                                            numberOfLines={1}
-                                            ellipsizeMode={'middle'}>
-                                            { fileResponse.hasOwnProperty(item.field_name)?fileResponse[item.field_name][0].name:"Uploa File"}
+                                        key={"FILE" + i}
+                                        style={styles.uri}
+                                        numberOfLines={1}
+                                        ellipsizeMode={'middle'}>
+                                        {fileResponse.hasOwnProperty(item.field_name) ? <Image style={{ width: 100, height: 100, resizeMode: 'cover' }} source={{ uri: 'data:image/png;base64,' + fileResponse[item.field_name] }} /> : "Uploa File"}
                                     </Text>
                                     <TouchableOpacity onPress={(i1) => {
                                         handleDocumentSelection(i1, item.field_name)
@@ -210,8 +210,8 @@ const UserClaimForm = ({ navigation, route }) => {
                                         style={[styles.inputText, styles.lableFont]}
                                         placeholder={item.placeholder}
                                         value={formField[item.field_name]}
-                                        onChangeText = {(e)=>{
-                                            const temp = {...formField};
+                                        onChangeText={(e) => {
+                                            const temp = { ...formField };
                                             temp[item.field_name] = e;
                                             setFormField(temp);
                                         }}

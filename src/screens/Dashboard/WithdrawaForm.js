@@ -8,18 +8,18 @@ import { useSelector } from 'react-redux';
 import WidthdarawlOtp from './WithdrawOtp';
 const END_URL = '/cashback/withdraw-money';
 
-const WidthdarawlForm = ({ navigation,payType,coupon,account,label }) => {
+const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
     const [userToken, withdrawInfo] = useSelector(state => {
         return [state.user.userToken, state.withdraw.withdrawInfo];
     });
-    const [amount,setAmount] = useState(null);
-    const [ couponSelected , setCouponSelected ] = useState(null);
-    const [ allCoupon , setAllCoupon ] = useState(coupon.map((e,i)=>{
-        if (i === 0) return {selected:true, ...e};
-        return { selected:false , ...e };
+    const [amount, setAmount] = useState(null);
+    const [couponSelected, setCouponSelected] = useState(null);
+    const [allCoupon, setAllCoupon] = useState(coupon.map((e, i) => {
+        if (i === 0) return { selected: true, ...e };
+        return { selected: false, ...e };
     }));
-    const [pipe,Resp] = useState(null);
-    const [loading,setLoading] = useState(false);
+    const [pipe, Resp] = useState(null);
+    const [loading, setLoading] = useState(false);
     const RadioButton = ({ onPress, selected, children }) => {
         return (
             <View style={styles.radioButtonContainer}>
@@ -32,56 +32,44 @@ const WidthdarawlForm = ({ navigation,payType,coupon,account,label }) => {
             </View>
         );
     };
-    // const [isLiked, setIsLiked] = useState(coupon);
-    // console.log("userToken", userToken);
-    // console.log(" withdrawInfo", withdrawInfo);
-    // const onRadioBtnClick = (item) => {
-    //     let updatedState = isLiked.map((isLikedItem) =>
-    //         isLikedItem.id === item.id
-    //             ? { ...isLikedItem, selected: true }
-    //             : { ...isLikedItem, selected: false }
-    //     );
-    //     setIsLiked(updatedState);
-    // };
+
     const sendAPIreq = (opt) => {
-        console.log("==-?>??API_-->>",{
+        console.log("==-?>??API_-->>", {
             apiAuth: Config.API_AUTH,
             device_type: '4',
-            option:opt,
-            account_ref_id:account[0].account_ref_id,
+            option: opt,
+            account_ref_id: account[0].account_ref_id,
             wallet_type: payType,
             code_reference: couponSelected,
             amount,
-            })
+        })
         setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: '4',
-            option:opt,
-            account_ref_id:account[0].account_ref_id,
+            option: opt,
+            account_ref_id: account[0].account_ref_id,
             wallet_type: payType,
             amount,
             code_reference: couponSelected
-            },{
+        }, {
             headers: {
                 'Authorization': userToken,
             },
-            }).then(({ data }) => {
-                console.log("RESPIONESs--->>>",data);
-                setLoading(false);
-                Resp(data);
-            }).catch((error) => {
-                console.log('Error', error);
-            });
+        }).then(({ data }) => {
+            console.log("RESPIONESs--->>>", data);
+            setLoading(false);
+            Resp(data);
+        }).catch((error) => {
+            console.log('Error', error);
+        });
     }
 
-    return pipe?<WidthdarawlOtp response={ pipe } payType={payType} couponSelected={couponSelected} account={account}/>:(
+    return pipe ? <WidthdarawlOtp response={pipe} payType={payType} couponSelected={couponSelected} account={account} /> : (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
-                <View>
-                    <Text>Pay Type --- {payType}</Text>
-                    <Text style={styles.storeName}>Selectd Account</Text>
-                </View>
+
+                <Text style={styles.storeName}>Selectd Account</Text>
                 <View style={styles.inputView}>
                     <View style={styles.inputBoxContainer}>
                         <TextInput
@@ -99,45 +87,40 @@ const WidthdarawlForm = ({ navigation,payType,coupon,account,label }) => {
                             style={styles.inputText}
                             placeholderTextColor="#666"
                             placeholder="Amount"
-                            onChangeText={(e)=>{
+                            onChangeText={(e) => {
                                 setAmount(e)
                             }}
                             value={amount}
-                            />
-                            <Text>{label}</Text>
+                        />
+                        <Text style={styles.cpLabel}>{label}</Text>
                     </View>
                 </View>
                 <View style={styles.savedCoupons}>
                     <Text style={styles.svedcponText}>Your Saved Coupons</Text>
                     <View style={styles.app}>
-                        {/* {isLiked.map((item) => (
-                            <RadioButton
-                                onPress={() => onRadioBtnClick(item)}
-                                selected={item.selected}
-                                key={item.id}>
-                                {item.name}
-                            </RadioButton>
-                        ))} */}
                         {
-                            allCoupon.map(item=>(<RadioButton key={item.code} selected={item.selected} onPress={()=>{
-                            let tempCoupon = [...coupon];
-                            tempCoupon = tempCoupon.map(e=>{
-                                if ( e.couponid === item.couponid ){
-                                    e.selected = true;
-                                    console.log("CIODE REFE___>>>",e);
-                                    setCouponSelected(e.code);
-                                }
-                                else{
-                                    e.selected = false;
-                                }
-                                return e;
-                            });
-                            setAllCoupon(tempCoupon);
-                        }}>{item.usage_text}</RadioButton>))}
+                            allCoupon.map(item => (
+                            <RadioButton style ={styles.radioLbl} key={item.code} selected={item.selected} onPress={() => {
+                                let tempCoupon = [...coupon];
+                                tempCoupon = tempCoupon.map(e => {
+                                    if (e.couponid === item.couponid) {
+                                        e.selected = true;
+                                        console.log("CIODE REFE___>>>", e);
+                                        setCouponSelected(e.code);
+                                    }
+                                    else {
+                                        e.selected = false;
+                                    }
+                                    return e;
+                                });
+                                setAllCoupon(tempCoupon);
+                            }}>
+                                <Text>{item.usage_text}</Text>
+                            </RadioButton>))}
 
                     </View>
                 </View>
-                <TouchableOpacity onPress={(e)=>{
+                <TouchableOpacity onPress={(e) => {
                     sendAPIreq("cbrequest");
                 }}>
                     <View style={styles.loginButton}>
@@ -150,10 +133,10 @@ const WidthdarawlForm = ({ navigation,payType,coupon,account,label }) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
         flex: 1,
         backgroundColor: '#fff',
     },
+
     cbform: {
         fontSize: 14,
         fontWeight: 'bold',
@@ -189,6 +172,10 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         borderColor: '#f27935',
         borderBottomWidth: 1,
+    },
+    cpLabel:{
+        marginTop: 10,
+        fontSize: 12,
     },
     txtActive: {
         color: '#f27935',
@@ -241,6 +228,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         backgroundColor: '#f7f7f7',
         padding: 20,
+        marginTop: 20,
     },
     notes: {
         fontSize: 12,
@@ -250,7 +238,6 @@ const styles = StyleSheet.create({
     storeName: {
         fontSize: 14,
         fontWeight: 'bold',
-        marginBottom: 7,
     },
     margin10: {
         marginTop: 10,
@@ -284,6 +271,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 5,
+        flex:1,
     },
     radioButton: {
         height: 20,

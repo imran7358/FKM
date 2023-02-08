@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image} from 'react-native';
-import { Menu } from 'react-native-feather';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { User } from 'react-native-feather';
+import { User, Menu, LogIn} from 'react-native-feather';
 import { useSelector } from 'react-redux';
 
 const Header = ({ navigation }) => {
@@ -27,10 +26,12 @@ const Header = ({ navigation }) => {
         </View>
        {
         userToken ? <View>
-          <Text>User</Text>
+         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+         <User style={{ color: '#fff', width: 100,}} width={22} height={22} />
+       </TouchableOpacity>
         </View> :
          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-         <User style={{ color: '#fff', width: 100,}} width={22} height={22} />
+         <LogIn style={{ color: '#fff', width: 100,}} width={22} height={22} />
        </TouchableOpacity>
        }
 

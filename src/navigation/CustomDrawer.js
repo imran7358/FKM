@@ -5,13 +5,14 @@ import { useDispatch } from 'react-redux';
 import { LOGGEDOUT } from '../redux/actionTypes';
 
 const CustomDrawer = ({navigation}) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const logOut = async() =>{
         try {
             dispatch({
                 type: LOGGEDOUT,
                 userToken: '',
             });
+            navigation.navigate('Home');
         }
         catch (exception) {
             console.log(exception);
