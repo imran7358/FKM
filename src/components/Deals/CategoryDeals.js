@@ -1,21 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-const CategoriesDeals = ({ deals, navigation }) => {
+import Config from 'react-native-config';
+const END_URL = '/category/category-detail';
+import Loader from '../../components/Loader';
+import axios from 'axios';
+
+const CategoriesDeals = ({ navigation, route }) => {
+    const [page, setPage] = useState(1);
+    const [loader, setLoader] = useState(false);
+    const [deals, setDeals] = useState([]);
+    const [noData, setNoData] = useState();
+
+    const getDeals = () => {
+        setLoader(true);
+        axios.post(Config.API_URL + END_URL, {
+            'apiAuth': Config.API_AUTH,
+            'cate_slug': route,
+            'device_type': '4',
+            page,
+            'option': 'deals',
+        }).then(({ data }) => {
+         
+            if (data.response.deals && data.response.deals.length) {
+                setDeals([...deals, ...data.response.deals]);
+            }
+            else {
+                setNoData(true);
+            }
+        }).catch((error) => {
+            console.log("Error Aaya", error);
+        }).finally(() => {
+            setLoader(false);
+        });
+
+    }
+
+    useEffect(() => {
+        console.log("Cat Details", route)
+        getDeals();
+    }, [page, route])
     return (
         <View style={styles.dealsContainer}>
             <View style={styles.productContainer}>
                 {
-                     deals.map((item, i) => {
+                    deals.map((item, i) => {
                         return <View style={styles.productBox} key={i}>
                             <TouchableOpacity onPress={() => navigation.navigate({ name: 'Details', params: { dealSlug: item.deal_slug_url } })}>
-                            {
-                                        item.is_cashback == '1' ?
+                                {
+                                    item.is_cashback == '1' ?
                                         <View style={styles.cashback}>
                                             <Text style={styles.cbtxt}>Cashback</Text>
                                         </View>
                                         : null
-                                    }
+                                }
                                 <View style={styles.productImageCon}>
                                     <View style={styles.productImage}>
                                         <Image source={{ uri: item.deal_image }} style={styles.dealImage} />
@@ -44,10 +82,26 @@ const CategoriesDeals = ({ deals, navigation }) => {
                         </View>;
                     })
                 }
-
-
-
             </View>
+            {
+                loader ?
+                    <View style={styles.loadContainer}>
+                        <Loader />
+                    </View>
+                    : null
+            }
+            {
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+            }
         </View>
     )
 }
@@ -147,17 +201,48 @@ const styles = StyleSheet.create({
     },
     cashback: {
         backgroundColor: '#f27935',
-        borderRadius:3,
-       paddingHorizontal: 7,
-        position:'absolute',
+        borderRadius: 3,
+        paddingHorizontal: 7,
+        position: 'absolute',
         zIndex: 999,
         paddingVertical: 4,
-        right:0,
+        right: 0,
         opacity: 0.8,
     },
-    cbtxt:{
+    cbtxt: {
         color: '#fff',
         fontSize: 12,
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+        justifyContent:'center',
+        alignItems: 'center',
     },
 
 });

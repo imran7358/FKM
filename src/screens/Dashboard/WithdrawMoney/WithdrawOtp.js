@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
+import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import Config from 'react-native-config';
-import request from '../../utils/request';
+import request from '../../../utils/request';
 import { useSelector, useDispatch } from 'react-redux';
-const END_URL = '/cashback/withdraw-payment-mode';
-import WidthdarawlForm from './WithdrawaForm';
-import WidthdarawlOtp from './WithdrawOtp';
+const END_URL = '/cashback/withdraw-money';
 
-const WidthdarawlMoney = ({ navigation }) => {
+const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account }) => {
     const [value, setValue] = useState('');
-    const [dataRes, setDataRes] = useState(null);
     const dispatch = useDispatch();
-
+    const request_id = response.request_id;
+    const [OTP, setOTP] = useState("");
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
@@ -22,74 +20,72 @@ const WidthdarawlMoney = ({ navigation }) => {
         { label: 'Bank', value: 'bank' },
         { label: 'Paytm', value: 'paytm' },
     ];
-    const getAccount = async () => {
+    const sendAPIreq = (opt) => {
+        console.log("==-?>??API aya h_-->>", {
+            apiAuth: Config.API_AUTH,
+            device_type: '4',
+            option: opt,
+            request_id: response.request_id,
+            wallet_name: payType,
+            code: couponSelected.code,
+            couponid: couponSelected.couponid,
+            code_reference: response.code_reference,
+            userotp: OTP,
+        });
+        // setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
-            'apiAuth': Config.API_AUTH,
-            'device_type': '4',
-            'wallet_type': value,
+            apiAuth: Config.API_AUTH,
+            device_type: '4',
+            option: opt,
+            code: couponSelected.code || null,
+            couponid: couponSelected.couponid || null,
+            request_id: response.request_id,
+            wallet_name: payType,
+            userotp: OTP,
+            code_reference: response.code_reference,
         }, {
             headers: {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("State set-->>>", { account: data.account, label: data.label_msg, coupon: data.promocodes })
-            setDataRes({ account: data.account, label: data.label_msg, coupon: data.promocodes });
+            console.log("RESPIONESs--->>>", data);
+            // setLoading(false);
+            // Resp(data);
         }).catch((error) => {
-            console.log('Error', error);
+            console.log('Error', error.message);
         });
-    };
+    }
 
-    useEffect(() => {
-        if (value) {
-            getAccount();
-        }
-    }, [value])
 
-    useEffect(() => {
-    }, [dataRes])
     return (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
                 <View>
-                    <Text style={styles.storeName}>Select Account</Text>
+                    <Text style={styles.storeName}>OTP</Text>
+                    <Text>{response.msg}</Text>
                 </View>
-                <Dropdown
-                    style={styles.dropdown}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={mydata}
-                    maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select Method"
-                    placeholderTextColor="grey"
-                    searchPlaceholder="Search..."
-                    value={value}
-                    onChange={item => {
-                        setValue(item.value);
-                    }}
-
-                />
-                {
-                    value === 'paytm' ? <View>
-                        <Text style={styles.notification}>
-                            Kindly note, Minimum withdrawal amount for paytm is Rs.100 and you will be charged a convenience fee of 3% on all PayTM withdrawal request
-                        </Text>
+                <View style={styles.inputView}>
+                    <View style={styles.inputBoxContainer}>
+                        <TextInput
+                            autoCapitalize="none"
+                            style={styles.inputText}
+                            placeholderTextColor="#666"
+                            placeholder="OTP"
+                            onChangeText={(e) => {
+                                setOTP(e);
+                            }}
+                        />
                     </View>
-                        : null
-                }
-                {/* <TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={() => {
+                    sendAPIreq("confirmotp")
+                }}>
                     <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Next</Text>
+                        <Text style={styles.loginTxt}>Submit</Text>
                     </View>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
+
             </View>
-            {value && dataRes ? <WidthdarawlForm payType={value} label={dataRes.label} account={dataRes.account} coupon={[
-                { "code": dataRes.coupon.code, "couponid": dataRes.coupon.couponid, "request_amount": 0, "usage_text": "Use No coupon" },
-                ...dataRes.coupon
-            ]} /> : null}
         </ScrollView>
     );
 };
@@ -204,4 +200,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WidthdarawlMoney;
+export default WidthdarawlOtp;

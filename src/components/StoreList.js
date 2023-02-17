@@ -10,13 +10,14 @@ const MyStore = ({navigation}) => {
     const [data, setData] = useState([])
     const getStore = () =>{
         axios.post(Config.API_URL + END_URL, {
-            'page': '1',
+            'page': '2',
             'apiAuth': Config.API_AUTH,
+            'sponsored_count':'1',
             'device_type': 4,
         }).then(({data})=>{
             setData(data.response.cbstores)
         }).catch((error)=>{
-            console.log(error)
+            console.log("Cashback Store", error)
         })
     }
     useEffect(()=>{

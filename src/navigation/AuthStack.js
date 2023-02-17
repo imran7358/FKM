@@ -33,9 +33,11 @@ import UserClaimForm from '../screens/Dashboard/UserClaimForm';
 import DealList from '../screens/DealList';
 // WithdrawMoney
 import WidthdarawlMoney from '../screens/Dashboard/WithdrawMoney';
-import WidthdarawlForm from '../screens/Dashboard/WithdrawaForm';
+import WidthdarawlForm from '../screens/Dashboard/WithdrawMoney/WithdrawaForm';
 import MissingForm from '../screens/Dashboard/MissingForm';
 import MissingCashBackForm from '../screens/Dashboard/MissingForm/MissingCashback';
+import SearchProduct from '../screens/SearchProducts';
+import Search from '../screens/Search'
 // import WidthdrawOTP from '../screens/Dashboard/WithdrawOtp-backup';
 // WithdrawMoney
 import { View, Image, StyleSheet } from 'react-native';
@@ -186,6 +188,18 @@ const AuthStack = ({ navigation }) => {
             }} />
             <Stack.Screen name="Register" component={Register} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+<Stack.Screen name="search" component={Search} initialParams={{ searchKeyword: "" }} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                title: 'Search Product',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>

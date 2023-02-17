@@ -105,13 +105,13 @@ const ClickHistory = ({ navigation }) => {
                         noData ? <View style={styles.noDataFound}>
                             <Text>No data Found</Text>
                         </View>
-                             : <View style={styles.loaderContainer}>
-                             <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
-                                 <View>
-                                     <Text style={styles.loadTxt}>Load More</Text>
-                                 </View>
-                             </TouchableOpacity>
-                         </View>
+                            : <View style={styles.loaderContainer}>
+                                <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                                    <View>
+                                        <Text style={styles.loadTxt}>Load More</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
                     }
                 </View>
             </ScrollView>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         padding: 24,
         flex: 1,
     },
-    noDataFound:{
+    noDataFound: {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 25,
@@ -206,16 +206,16 @@ const styles = StyleSheet.create({
         width: '40%',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     storeName: {
         width: '30%',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     alterColor: {
-        backgroundColor: '#EDEDED'
+        backgroundColor: '#EDEDED',
     },
     loadContainer: {
         marginTop: 50,
@@ -224,6 +224,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
-})
+});
 
 export default ClickHistory;

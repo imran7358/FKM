@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Config from 'react-native-config';
 import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const END_URL = '/cashback/referral-summary';
 import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';

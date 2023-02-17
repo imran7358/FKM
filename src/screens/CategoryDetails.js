@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Coupons from '../components/Coupons';
+import Coupons from '../components/Coupons/CategoryCoupons';
 import Config from 'react-native-config';
 import CategoriesDeals from '../components/Deals/CategoryDeals';
 const END_URL = '/category/category-detail';
@@ -112,7 +112,7 @@ const CategoryDetails = ({ navigation, route }) => {
         {
           deals ?
 
-            <CategoriesDeals deals={catDeals} navigation={navigation} />
+            <CategoriesDeals deals={catDeals} navigation={navigation} route={route.params.catSlug}/>
 
             : null
         }
@@ -120,36 +120,10 @@ const CategoryDetails = ({ navigation, route }) => {
         {
           coupons ?
 
-            <Coupons couponsList={catCoupons} navigation={navigation} />
+            <Coupons couponsList={catCoupons} navigation={navigation} route={route.params.catSlug}/>
 
             : null
         }
-        <View style={styles.loadeMoreCon}>
-        {
-                    loader ?
-                    <View style={styles.loadContainer}>
-                        <Loader />
-                    </View>
-                    : null
-                }
-                {
-                    <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                  </View>
-                }
-        </View>
-
-      {
-        loadMore ?  <View style={styles.loadeMoreCon}>
-        <TouchableOpacity onPress={(e) => {
-           setPage(page + 1);
-         }}>
-           <View style={styles.loginButton}>
-             <Text style={styles.loginTxt}>Load More...</Text>
-           </View>
-         </TouchableOpacity>
-        </View> : null
-      }
 
       </ScrollView>
     </SafeAreaView>

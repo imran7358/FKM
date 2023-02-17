@@ -19,19 +19,21 @@ const Home = ({ navigation }) => {
   const [sticky, setSticky] = useState([]);
   const [livedeals, setLiveDeals] = useState([]);
   const [faq, setFaq] = useState([]);
+  const [page, setpage] = useState(2);
+
   const getSlider = () => {
     axios.post(Config.API_URL + END_URL, {
-      'page': '1',
-      'sponsored_count': '0',
+      'sponsored_count': '1',
       'apiAuth': Config.API_AUTH,
       'device_type': 4,
+      page,
     }).then(({ data }) => {
       setSlider(data.response.slider);
       setSticky(data.response.sticky);
       setLiveDeals(data.response.live_deals);
       setFaq(data.response.earn_cashback);
     }).catch((error) => {
-      console.log(error);
+      console.log("Home Error", error);
     });
   };
   React.useEffect(() => {

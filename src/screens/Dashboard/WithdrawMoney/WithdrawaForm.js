@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
+import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import Config from 'react-native-config';
-import request from '../../utils/request';
+import request from '../../../utils/request';
 import { useSelector } from 'react-redux';
 import WidthdarawlOtp from './WithdrawOtp';
 const END_URL = '/cashback/withdraw-money';

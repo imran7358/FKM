@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
+import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import Config from 'react-native-config';
 import request from '../../utils/request';

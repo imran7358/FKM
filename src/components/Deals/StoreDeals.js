@@ -1,12 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-const StoreDeals = ({ deals, navigation }) => {
+import Config from 'react-native-config';
+const END_URL = '/store/storedetail';
+import Loader from '../../components/Loader';
+import axios from 'axios';
+
+const StoreDeals = ({ navigation ,route}) => {
+
+    const [page, setPage] = useState(1);
+    const [laoder, setLoader] = useState(false);
+    const [storeDeals, setStoreDeals] = useState([]);
+    const [noData, setNoData] = useState(false);
+
+    const getDeals = () => {
+        setLoader(true);
+       axios.post(Config.API_URL + END_URL, {
+        'apiAuth': Config.API_AUTH,
+        'store_slug': route,
+        'device_type':'4',
+        page,
+        'option': 'deals',
+       }).then(({data})=>{
+        if (data.response.deals && data.response.deals.length){
+            setStoreDeals([...storeDeals, ...data.response.deals]);
+        }
+        else {
+            setNoData(true);
+        }
+
+       }).catch((error)=>{
+        console.log("Dealsssss Error", error);
+       }).finally(()=>{
+        setLoader(false);
+       })
+    }
+
+    useEffect(()=>{
+
+        getDeals();
+
+    },[page,route])
     return (
         <View style={styles.dealsContainer}>
             <View style={styles.productContainer}>
                 {
-                    deals.map((item, i) => {
+                    storeDeals.map((item, i) => {
                         return <View style={styles.productBox} key={i}>
                             <TouchableOpacity onPress={() => navigation.navigate({ name: 'Details', params: { dealSlug: item.deal_slug } })}>
                             {
@@ -45,6 +84,25 @@ const StoreDeals = ({ deals, navigation }) => {
                     })
                 }
             </View>
+            {
+                    laoder ?
+                        <View style={styles.loadContainer}>
+                            <Loader />
+                        </View>
+                        : null
+                }
+            {
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+            }
         </View>
     );
 };
@@ -155,6 +213,37 @@ const styles = StyleSheet.create({
     cbtxt:{
         color: '#fff',
         fontSize: 12,
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
+    },
+    loadContainer: {
+        marginTop: 50,
+        marginBottom: 50,
+        justifyContent:'center',
+        alignItems: 'center',
     },
 
 });

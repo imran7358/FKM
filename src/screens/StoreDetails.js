@@ -7,6 +7,7 @@ import StoreDeals from '../components/Deals/StoreDeals';
 import Config from 'react-native-config';
 const END_URL = '/store/storedetail';
 import Loader from '../components/Loader';
+import StoreCoupons from '../components/Coupons/StoreCoupons';
 
 
 const StoreDetails = ({ props, route, navigation }) => {
@@ -102,8 +103,7 @@ const StoreDetails = ({ props, route, navigation }) => {
         
     }, [page, opt, route.params.storeSlug]);
     useEffect(() => {
-
-    }, [storeDeals])
+    }, [storeDeals,route.params.storeSlug])
     return (
 
         <SafeAreaView style={styles.bgWhite}>
@@ -166,7 +166,7 @@ const StoreDetails = ({ props, route, navigation }) => {
 
                                         <View style={styles.cbTxt}>
                                             <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>{item.cashback_tag}</Text>
-                                            <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '72%', lineHeight: 18, flex: 1, }}>{item.tag_desc}</Text>
+                                            <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '59%', lineHeight: 18, flex: 1, }}>{item.tag_desc}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -209,13 +209,13 @@ const StoreDetails = ({ props, route, navigation }) => {
                     {
                         deals ?
 
-                            <StoreDeals deals={storeDeals} navigation={navigation} />
+                            <StoreDeals deals={storeDeals} navigation={navigation} route={route.params.storeSlug}/>
 
                             : null
                     }
                     {
                         coupons ?
-                            <Coupons couponsList={couponsList} navigation={navigation} />
+                            <StoreCoupons navigation={navigation} route={route.params.storeSlug}/>
                             : null
                     }
                     <View style={styles.loadeMoreCon}>
@@ -233,18 +233,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                         }
                     </View>
 
-                    {
-                        loadMore ? <View style={styles.loadeMoreCon}>
-                            <TouchableOpacity onPress={(e) => {
-                                setPage(page + 1);
-
-                            }}>
-                                <View style={styles.loginButton}>
-                                    <Text style={styles.loginTxt}>Load More</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View> : null
-                    }
+                    
                 </View>
             </ScrollView>
             <View style={styles.shopErnCon}>
@@ -336,6 +325,7 @@ const styles = StyleSheet.create({
     },
     cbTxt: {
         padding: 20,
+        flexWrap: 'wrap',
     },
     cbRupee: {
         backgroundColor: '#f27935',

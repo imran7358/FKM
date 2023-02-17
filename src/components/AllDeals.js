@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button } from 'react-native';
+import { View, Text, StyleSheet, Image} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = "/home/home";
@@ -10,7 +10,7 @@ import Loader from './Loader';
 const AllDeals = ({ navigation }) => {
 
     const [deals, setDeals] = useState([]);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(2);
     const [loader, setLoader] = useState(false);
     const [loadMore, setLoadMore] = useState(true);
     const [noData, setNoData] = useState('');
@@ -35,7 +35,7 @@ const AllDeals = ({ navigation }) => {
                 setLoadMore(false);
             }
         }).catch((error) => {
-            console.log('Error', error);
+            console.log('Error aaya', error);
         }).finally(() => {
             setLoader(false);
         });

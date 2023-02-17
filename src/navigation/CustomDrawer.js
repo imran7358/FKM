@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import { Grid,ShoppingBag, Percent, Scissors, Briefcase, BookOpen, PhoneCall, HelpCircle, LogOut} from "react-native-feather";
 import { useDispatch } from 'react-redux';
 import { LOGGEDOUT } from '../redux/actionTypes';
+import { useSelector } from 'react-redux';
 
 const CustomDrawer = ({navigation}) => {
     const dispatch = useDispatch();
@@ -18,6 +19,10 @@ const CustomDrawer = ({navigation}) => {
             console.log(exception);
         }
     }
+
+        useEffect(()=>{
+          
+        }, [])
     return (
 
         <View style={{}}>
@@ -37,7 +42,10 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                 <View style={styles.profileName}>
                     <Text>Hi,</Text>
-                    <Text style={styles.pName}>Mohammad Imran</Text>
+                    <Text style={styles.pName}>
+                        imran
+                        {/* {userInfo} */}
+                        </Text>
                 </View>
               </View>
             </View>

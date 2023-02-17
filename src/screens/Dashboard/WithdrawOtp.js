@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from 'react';
-import { View, Text, StyleSheet, TextInput} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -8,11 +8,11 @@ import request from '../../utils/request';
 import { useSelector, useDispatch } from 'react-redux';
 const END_URL = '/cashback/withdraw-money';
 
-const WidthdarawlOtp = ({navigation,response,payType,couponSelected,account}) => {
+const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account }) => {
     const [value, setValue] = useState('');
     const dispatch = useDispatch();
     const request_id = response.request_id;
-    const [OTP,setOTP] = useState("");
+    const [OTP, setOTP] = useState("");
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
@@ -21,35 +21,39 @@ const WidthdarawlOtp = ({navigation,response,payType,couponSelected,account}) =>
         { label: 'Paytm', value: 'paytm' },
     ];
     const sendAPIreq = (opt) => {
-        console.log("==-?>??API aya h_-->>",{
+        console.log("==-?>??API aya h_-->>", {
             apiAuth: Config.API_AUTH,
             device_type: '4',
-            option:opt,
-            request_id:response.request_id,
+            option: opt,
+            request_id: response.request_id,
             wallet_name: payType,
+            code: couponSelected.code,
+            couponid: couponSelected.couponid,
             code_reference: response.code_reference,
-            userotp:OTP,
-            });
+            userotp: OTP,
+        });
         // setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: '4',
-            option:opt,
-            request_id:response.request_id,
+            option: opt,
+            code: couponSelected.code || null,
+            couponid: couponSelected.couponid || null,
+            request_id: response.request_id,
             wallet_name: payType,
-            userotp:OTP,
+            userotp: OTP,
             code_reference: response.code_reference,
-            },{
+        }, {
             headers: {
                 'Authorization': userToken,
             },
-            }).then(({ data }) => {
-                console.log("RESPIONESs--->>>",data);
-                // setLoading(false);
-                // Resp(data);
-            }).catch((error) => {
-                console.log('Error', error);
-            });
+        }).then(({ data }) => {
+            console.log("RESPIONESs--->>>", data);
+            // setLoading(false);
+            // Resp(data);
+        }).catch((error) => {
+            console.log('Error', error.message);
+        });
     }
 
 
@@ -67,13 +71,13 @@ const WidthdarawlOtp = ({navigation,response,payType,couponSelected,account}) =>
                             style={styles.inputText}
                             placeholderTextColor="#666"
                             placeholder="OTP"
-                            onChangeText={(e)=>{
+                            onChangeText={(e) => {
                                 setOTP(e);
                             }}
                         />
                     </View>
                 </View>
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity onPress={() => {
                     sendAPIreq("confirmotp")
                 }}>
                     <View style={styles.loginButton}>

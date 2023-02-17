@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, Platform } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
-import axios from 'axios';
+import axios, { all } from 'axios';
 const END_URL = '/cashback/userclaimform';
 const POST_URL = '/cashback/userclaimdata';
 import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
@@ -28,11 +28,14 @@ const UserClaimForm = ({ navigation, route }) => {
     const [fileResponse, setFileResponse] = useState({});
     const [field, setField] = useState([]);
     const [formField, setFormField] = useState({})
+    const [allowed, setAllowed] = useState(false)
+    const [emptyFields, setEmptyFields] = useState([])
+    const [error, setError] = useState("");
     useEffect(() => {
-    }, [fileResponse])
+        console.log("allowed", allowed)
+    }, [fileResponse, allowed])
 
     const getDetails = async () => {
-
         axios.post(Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
@@ -54,7 +57,6 @@ const UserClaimForm = ({ navigation, route }) => {
     const sendFormReq = async (formD) => {
         console.log("Form Data -- >>> ", formD);
         axios.post(Config.API_URL + POST_URL, formD,
-
             {
                 headers: {
                     Authorization: userToken,
@@ -62,33 +64,51 @@ const UserClaimForm = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
-
-                console.log("sucess", data)
+                console.log('sucess', data);
+                console.log('MyForm Data', formD);
+                setFormField([{}]);
+                setFileResponse([{}]);
 
             }).catch((error) => {
                 console.log(error.response);
             });
     }
+
     const handleDocumentSelection = async (item, fieldq) => {
         try {
             const response = await DocumentPicker.pick({
                 presentationStyle: 'fullScreen',
                 type: [DocumentPicker.types.images],
             });
-            const tempFile = { ...fileResponse };
-            const b64 = await ImgToBase64.getBase64String(response[0].uri);
-            tempFile[fieldq] = b64;
-            setFileResponse(tempFile);
+            // console.log("response", response)
+            let arr = response[0]?.name.split('.');
+            if (arr[1] === 'jpg' || arr[1] === 'JPG' || arr[1] === 'jpeg' || arr[1] === 'JPEG' || arr[1] === 'png' || arr[1] === 'PNG') {
+                const tempFile = { ...fileResponse };
+                tempFile[fieldq] = response;
+                setFileResponse(tempFile);
+                setAllowed(false);
+            }
+            else {
+                setAllowed(true);
+            }
 
 
         } catch (err) {
-            console.warn(err);
+            console.log("Image error", err)
         }
     }
+
     useEffect(() => {
         getDetails();
+    }, []);
+
+    useEffect(() => {
         console.log('date', date.toDateString());
-    }, [value, date]);
+    }, [date]);
+
+    useEffect(() => {
+
+    }, [value]);
 
     const submitForm = () => {
         let fdata = new FormData();
@@ -97,31 +117,48 @@ const UserClaimForm = ({ navigation, route }) => {
         fdata.append('apiAuth', Config.API_AUTH);
         fdata.append('store_id', route.params.storeId);
         fdata.append('clickid', value);
-        field.forEach(async (item, i) => {
-            if (item.type == 'text') {
-                fdata.append(item.field_name, formField[item.field_name]);
-            }
-            else if (item.type == 'date') {
-                fdata.append(item.field_name, moment(date).format('YYYY-MM-DD'));
-            }
 
-            else if (item.type == 'file') {
-                fdata.append(item.field_name, fileResponse[item.field_name]);
+        for (let i = 0; i < field.length; i++) {
+            const item = field[i]
+            switch (item.type) {
+                case "text":
+                    if (formField[item.field_name]) {
+                        fdata.append(item.field_name, formField[item.field_name]);
+                    }
+                    break;
+                case "date":
+                    if (date) {
+                        fdata.append(item.field_name, moment(date).format('YYYY-MM-DD'));
+                    }
+                    break;
+                case "file":
+                    if (fileResponse[item.field_name][0].uri) {
+                        console.log("fileResponse", fileResponse)
+                        fdata.append(item.field_name, fileResponse[item.field_name][0]);
+                    }
+                    break;
+                default:
+                    if (formField[item.field_name]) {
+                        fdata.append(item.field_name, formField[item.field_name]);
+                    }
+                    break;
             }
+        }
+        const submittedKeys = Object.keys(formField)
+        console.log("submittedKeys", formField, field)
+        for (let i = 0; i < field.length; i++) {
+            const item = field[i]
+            if (!["file", "date"].includes(item.type) && item.is_mandatory == "1" && !submittedKeys.includes(item.field_name)) {
+                setError("One or more mandatory field is empty.");
+                return;
+            }
+        }
 
-            else {
-                fdata.append(item.field_name, formField[item.field_name]);
-            }
-        });
-        fdata.append("fd17", "option");
-        fdata.append("qasim", "king");
-        // fdata.append("fd7",values.orderId);
-        // fdata.append("fd3",values.mobile);
-        // fdata.append("fd2",values.email);
-        // fdata.append("fd9",values.orderAmount);
+        console.log("FORM DATA", fdata);
         sendFormReq(fdata);
     }
 
+    console.log("formField", formField)
 
     return (
         <ScrollView style={styles.container}>
@@ -144,14 +181,14 @@ const UserClaimForm = ({ navigation, route }) => {
                         iconStyle={styles.iconStyle}
                         data={click}
                         maxHeight={300}
-                        labelField="created_time"
+                        labelField="clickid"
                         valueField="clickid"
                         placeholder="Select item"
                         placeholderTextColor="grey"
                         searchPlaceholder="Search..."
                         value={value}
-                        onChange={item => {
-                            setValue(item.clickid);
+                        onChange={e => {
+                            setValue(e.clickid);
                         }}
 
                     />
@@ -161,13 +198,15 @@ const UserClaimForm = ({ navigation, route }) => {
                                 return <View style={styles.inputBoxContainer} key={i}>
                                     <TextInput
                                         style={[styles.inputText, styles.lableFont]}
-                                        placeholder={item.placeholder}
+                                        placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
                                         value={formField[item.field_name]}
+                                        // required={item.is_mandatory == '1'}
                                         onChangeText={(e) => {
                                             const temp = { ...formField };
                                             temp[item.field_name] = e;
                                             setFormField(temp);
                                         }}
+
                                     />
                                 </View>
                             }
@@ -179,8 +218,10 @@ const UserClaimForm = ({ navigation, route }) => {
                                         style={styles.uri}
                                         numberOfLines={1}
                                         ellipsizeMode={'middle'}>
-                                        {fileResponse.hasOwnProperty(item.field_name) ? <Image style={{ width: 100, height: 100, resizeMode: 'cover' }} source={{ uri: 'data:image/png;base64,' + fileResponse[item.field_name] }} /> : "Uploa File"}
+                                        {fileResponse.hasOwnProperty(item.field_name) ? fileResponse[item.field_name][0].name : "Uploa File"}
                                     </Text>
+
+
                                     <TouchableOpacity onPress={(i1) => {
                                         handleDocumentSelection(i1, item.field_name)
                                     }}>
@@ -188,29 +229,33 @@ const UserClaimForm = ({ navigation, route }) => {
                                             <Image source={require('../../assets/images/upload.png')} style={styles.dateIcon} />
                                         </View>
                                     </TouchableOpacity>
+
                                 </View>
 
                             }
 
-                            else if (item.type === 'date') {
 
-                                return <View style={[styles.inputBoxContainer, styles.dateCon]}>
-                                    <Text>{date.toDateString()}</Text>
-                                    <TouchableOpacity onPress={() => setOpen(true)}>
-                                        <View style={styles.dateIcon}>
-                                            <Image source={require('../../assets/images/date.png')} style={styles.dateIcon} />
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
+                            else if (item.type === 'date') {
+                                return <>
+                                    <View key={i} style={[styles.inputBoxContainer, styles.dateCon]}>
+                                        <Text>{date.toDateString()}</Text>
+                                        <TouchableOpacity onPress={() => setOpen(true)}>
+                                            <View style={styles.dateIcon}>
+                                                <Image source={require('../../assets/images/date.png')} style={styles.dateIcon} />
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                </>
                             }
 
                             else {
-                                return <View style={styles.inputBoxContainer}>
+                                return <View key={i} style={styles.inputBoxContainer}>
                                     <TextInput
                                         style={[styles.inputText, styles.lableFont]}
-                                        placeholder={item.placeholder}
+                                        placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
                                         value={formField[item.field_name]}
                                         onChangeText={(e) => {
+                                            console.log("Option")
                                             const temp = { ...formField };
                                             temp[item.field_name] = e;
                                             setFormField(temp);
@@ -236,7 +281,16 @@ const UserClaimForm = ({ navigation, route }) => {
                         }}
                         mode="date"
                     />
-
+                    {
+                        allowed ? <View style={styles.allowedImg}>
+                            <Text style={styles.allowedlbl}>Only (jpg/png/jpeg) images are allowed</Text>
+                        </View> : null
+                    }
+                    {
+                        error ? <View>
+                            <Text>{error}</Text>
+                        </View> : null
+                    }
                     <TouchableOpacity onPress={submitForm}>
                         <View style={styles.loginButton}>
                             <Text style={styles.loginTxt}>Submit</Text>
@@ -255,6 +309,14 @@ const styles = StyleSheet.create({
         padding: 20,
         flex: 1,
         backgroundColor: '#fff',
+    },
+    allowedImg: {
+        marginTop: 10,
+
+    },
+    allowedlbl: {
+        fontSize: 12,
+        color: 'red',
     },
     cbform: {
         fontSize: 14,

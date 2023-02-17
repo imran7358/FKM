@@ -8,8 +8,8 @@ const FAQ = () => {
 const [cashback, setEarnCashback] = useState([]);
     const getEarnCashback = () => {
         axios.post(Config.API_URL + END_URL, {
-          'page': '1',
-          'sponsored_count': '0',
+          'page': '2',
+          'sponsored_count': '1',
           'apiAuth': Config.API_AUTH,
           'device_type': 4,
         }).then(({ data }) => {
