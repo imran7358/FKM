@@ -6,45 +6,23 @@ import Config from 'react-native-config';
 import request from '../../../utils/request';
 import { useSelector } from 'react-redux';
 import WidthdarawlOtp from './WithdrawOtp';
-const END_URL = '/cashback/withdraw-money';
+const END_URL = '/cashback/withdraw-refferal-money';
 
-const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
+const WidthdarawlForm = ({ navigation, payType, account, label }) => {
     const [userToken, withdrawInfo] = useSelector(state => {
         return [state.user.userToken, state.withdraw.withdrawInfo];
     });
     const [amount, setAmount] = useState(null);
-    const [couponSelected, setCouponSelected] = useState(null);
-    const [allCoupon, setAllCoupon] = useState(coupon.map((e, i) => {
-        if (i === 0) return { selected: true, ...e };
-        return { selected: false, ...e };
-    }));
     const [pipe, Resp] = useState(null);
     const [loading, setLoading] = useState(false);
-    const RadioButton = ({ onPress, selected, children }) => {
-        return (
-            <View style={styles.radioButtonContainer}>
-                <TouchableOpacity onPress={onPress} style={styles.radioButton}>
-                    {selected ? <View style={styles.radioButtonIcon} /> : null}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={onPress}>
-                    <Text style={styles.radioButtonText}>{children}</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    };
-
     const sendAPIreq = (opt) => {
-        const cpnSel = coupon.find(e => e.code == couponSelected)
         console.log("==-?>??API_-->>", {
             apiAuth: Config.API_AUTH,
             device_type: '4',
             option: opt,
             account_ref_id: account[0].account_ref_id,
             wallet_type: payType,
-            code_reference: couponSelected,
             amount,
-            code: cpnSel.code,
-            couponid: cpnSel.couponid,
         })
         setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
@@ -54,9 +32,6 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
             account_ref_id: account[0].account_ref_id,
             wallet_type: payType,
             amount,
-            code_reference: couponSelected,
-            code: cpnSel.code || null,
-            couponid: cpnSel.couponid || null,
         }, {
             headers: {
                 'Authorization': userToken,
@@ -66,15 +41,15 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
             setLoading(false);
             Resp(data);
         }).catch((error) => {
-            console.log('Error', error);
+            console.log('Error', error.message);
         });
     }
-    useEffect(()=>{
-        // console.log("COUPONS", coupon)
-    })
 
+    useEffect (()=>{
+console.log("Pipe Info", pipe)
+    }, [pipe])
 
-    return pipe ? <WidthdarawlOtp response={pipe} payType={payType} couponSelected={{code: pipe.coupon_code, couponid: pipe.couponid}} account={account} /> : (
+    return pipe ? <WidthdarawlOtp response={pipe} payType={payType}  account={account} /> : (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
 
@@ -102,32 +77,6 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
                             value={amount}
                         />
                         <Text style={styles.cpLabel}>{label}</Text>
-                    </View>
-                </View>
-                <View style={styles.savedCoupons}>
-                    <Text style={styles.svedcponText}>Your Saved Coupons</Text>
-                    <View style={styles.app}>
-                        {
-                            allCoupon.map(item => (
-                            <RadioButton style ={styles.radioLbl} key={item.code} selected={item.selected} 
-                            onPress={() => {
-                                let tempCoupon = [...coupon];
-                                tempCoupon = tempCoupon.map(e => {
-                                    if (e.couponid === item.couponid) {
-                                        e.selected = true;
-                                        console.log("CIODE REFE___>>>", e);
-                                        setCouponSelected(e.code);
-                                    }
-                                    else {
-                                        e.selected = false;
-                                    }
-                                    return e;
-                                });
-                                setAllCoupon(tempCoupon);
-                            }}>
-                                <Text>{item.usage_text}</Text>
-                            </RadioButton>))}
-
                     </View>
                 </View>
                 <TouchableOpacity onPress={(e) => {

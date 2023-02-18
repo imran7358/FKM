@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight,Linking, TouchableOpacity} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = '/deals/dealdetail';
@@ -17,6 +17,7 @@ import { WebView } from 'react-native-webview';
         price: '',
         offerPrice: '',
         isClaim: '',
+        landing_url : '',
     });
     const [relatedProduct, setRelatedProduct] = useState([]);
 
@@ -32,7 +33,6 @@ import { WebView } from 'react-native-webview';
             const regex = /(<([^>]+)>)/ig;
             const result = data.response.deal.deal_description_url.replace(regex, '');
              const htmltxt = data.response.deal.deal_description_url;
-             
             setDetails({
                 title: data.response.deal.deal_title,
                 dealImg:data.response.deal.deal_img_url,
@@ -40,6 +40,7 @@ import { WebView } from 'react-native-webview';
                 offerPrice: data.response.deal.offer_price,
                 description: htmltxt,
                 isClaim: data.response.deal.is_claim,
+                landing_url: data.response.deal.landing_url,
             });
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
@@ -132,7 +133,9 @@ import { WebView } from 'react-native-webview';
             </ScrollView>
             <View style ={styles.container}>
             <View style={styles.appButton}>
+            <TouchableOpacity onPress={async()=> { await Linking.openURL(details.landing_url)}}>
             <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+            </TouchableOpacity>
         </View>
             </View>
         </SafeAreaView>
@@ -239,8 +242,7 @@ import { WebView } from 'react-native-webview';
     },
     cbSize: {
         height: 13,
-        height: 13,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
     quesCircle: {
         height: 18,

@@ -4,13 +4,13 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import Config from 'react-native-config';
-import request from '../../utils/request';
+import request from '../../../utils/request';
 import { useSelector, useDispatch } from 'react-redux';
-const END_URL = '/cashback/withdraw-payment-mode';
+const END_URL = '/cashback/refferal-payment-mode';
 import WidthdarawlForm from './WithdrawaForm';
 import WidthdarawlOtp from './WithdrawOtp';
 
-const WidthdarawlMoney = ({ navigation }) => {
+const WithdrawRefferal = ({ navigation }) => {
     const [value, setValue] = useState('');
     const [dataRes, setDataRes] = useState(null);
     const dispatch = useDispatch();
@@ -32,8 +32,8 @@ const WidthdarawlMoney = ({ navigation }) => {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("State set-->>>", { account: data.account, label: data.label_msg, coupon: data.promocodes })
-            setDataRes({ account: data.account, label: data.label_msg, coupon: data.promocodes });
+            console.log("State set-->>>", { account: data.account, label: data.label_msg })
+            setDataRes({ account: data.account});
         }).catch((error) => {
             console.log('Error', error);
         });
@@ -43,9 +43,11 @@ const WidthdarawlMoney = ({ navigation }) => {
         if (value) {
             getAccount();
         }
+        console.log("Select Bank", value)
     }, [value])
 
     useEffect(() => {
+        console.log("Data Response", dataRes)
     }, [dataRes])
     return (
         <ScrollView style={styles.container}>
@@ -80,16 +82,8 @@ const WidthdarawlMoney = ({ navigation }) => {
                     </View>
                         : null
                 }
-                {/* <TouchableOpacity>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Next</Text>
-                    </View>
-                </TouchableOpacity> */}
             </View>
-            {value && dataRes ? <WidthdarawlForm payType={value} label={dataRes.label} account={dataRes.account} coupon={[
-                { "code": dataRes.coupon.code, "couponid": dataRes.coupon.couponid, "request_amount": 0, "usage_text": "Use No coupon" },
-                ...dataRes.coupon
-            ]} /> : null}
+            {value && dataRes ? <WidthdarawlForm payType={value} label={dataRes.label} account={dataRes.account}/> : null}
         </ScrollView>
     );
 };
@@ -204,4 +198,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WidthdarawlMoney;
+export default WithdrawRefferal;

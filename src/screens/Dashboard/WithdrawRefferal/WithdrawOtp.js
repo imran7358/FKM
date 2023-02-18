@@ -6,7 +6,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Config from 'react-native-config';
 import request from '../../../utils/request';
 import { useSelector, useDispatch } from 'react-redux';
-const END_URL = '/cashback/withdraw-money';
+const END_URL = '/cashback/withdraw-refferal-money';
 
 const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account }) => {
     const [value, setValue] = useState('');
@@ -27,9 +27,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
             option: opt,
             request_id: response.request_id,
             wallet_name: payType,
-            code: couponSelected.code,
-            couponid: couponSelected.couponid,
-            code_reference: response.code_reference,
+            reference_id: response.reference_id,
             userotp: OTP,
         });
         // setLoading(true);
@@ -37,12 +35,10 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
             apiAuth: Config.API_AUTH,
             device_type: '4',
             option: opt,
-            code: couponSelected.code || null,
-            couponid: couponSelected.couponid || null,
             request_id: response.request_id,
             wallet_name: payType,
             userotp: OTP,
-            code_reference: response.code_reference,
+            reference_id: response.reference_id,
         }, {
             headers: {
                 'Authorization': userToken,
@@ -55,7 +51,6 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
             console.log('Error', error.message);
         });
     }
-
 
     return (
         <ScrollView style={styles.container}>

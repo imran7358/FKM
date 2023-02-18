@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight, Linking} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Coupons from '../components/Coupons';
 import StoreDeals from '../components/Deals/StoreDeals';
@@ -13,12 +13,7 @@ import StoreCoupons from '../components/Coupons/StoreCoupons';
 const StoreDetails = ({ props, route, navigation }) => {
     const [deals, setShowDeals] = useState(true);
     const [coupons, setShowCoupons] = useState(false);
-    const [rate, setRate] = useState({
-        cashback_tag: '',
-        rate: '',
-        rate_type: '',
-        tag_desc: '',
-    });
+    const [rate, setRate] = useState(['']);
     const [readMore, setReadMore] = useState(true);
     const [store, storeDetails] = useState({
         is_cashback: '',
@@ -79,6 +74,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                     is_missing: data.response.store_details.is_missing,
                     top_desc: result,
                     isClaim: data.response.store_details.is_claim,
+                    store_landing_url: data.response.store_details.store_landing_url,
                 });
                 setRate(data.response.store_rates);
                 if (data.response.deals && data.response.deals.length) {
@@ -100,7 +96,7 @@ const StoreDetails = ({ props, route, navigation }) => {
         }).finally(() => {
             setLoader(false);
         });
-        
+
     }, [page, opt, route.params.storeSlug]);
     useEffect(() => {
     }, [storeDeals,route.params.storeSlug])
@@ -131,7 +127,8 @@ const StoreDetails = ({ props, route, navigation }) => {
                                 }
                             </View>
                         </TouchableHighlight>
-                        <View style={styles.cashbackInfo}>
+                        {
+                            store.is_cashback == '1' ? <View style={styles.cashbackInfo}>
                             <View style={styles.confirmTime}>
                                 <Text style={styles.infoTxt}>Confirmation</Text>
                                 <Text style={styles.infoPara}>{store.confirmation}</Text>
@@ -144,22 +141,23 @@ const StoreDetails = ({ props, route, navigation }) => {
                                 <Text style={styles.infoTxt}>Missing Order</Text>
                                 <Text style={styles.infoPara}>{store.is_missing}</Text>
                             </View>
-                        </View>
+                        </View> : null
+                        }
                     </View>
 
-                    <View style={styles.cashbackRates}>
+                    {
+                        store.is_cashback == '1' ? <View style={styles.cashbackRates}>
                         <View style={styles.cbrateTxt}>
                             <Text style={{ fontSize: 14, }}>Cashback</Text>
                             <Text style={{ fontSize: 14, fontWeight: 'bold', marginLeft: 5, }}>Rates</Text>
                         </View>
                         {
 
-                            rate.length ? rate.map((item, i) => {
+                            rate.length && rate.map((item, i) => {
                                 return <View style={styles.cbCardContainer} key={i}>
                                     <View style={styles.cbInner}>
                                         <View style={styles.cbRupee}>
                                             <View style={styles.cbInfoCon}>
-                                                {/* <Image source={require('../assets/images/wRupee.png')} /> */}
                                                 <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
                                             </View>
                                         </View>
@@ -171,12 +169,11 @@ const StoreDetails = ({ props, route, navigation }) => {
                                     </View>
                                 </View>
                             })
-
-                                : null
                         }
+                    </View> : null
+                    }
 
-
-                    </View>
+                    
 
                     {
                         store.isClaim == '1' ?
@@ -237,9 +234,14 @@ const StoreDetails = ({ props, route, navigation }) => {
                 </View>
             </ScrollView>
             <View style={styles.shopErnCon}>
+                <TouchableOpacity onPress={async()=>{ 
+                     console.log("Ye hai --->>>",store.store_landing_url);
+                    await Linking.openURL(store.store_landing_url)} }>
                 <View style={styles.bottomBtn}>
                     <Text style={styles.shopearnbtn}>Shop & Earn</Text>
                 </View>
+                </TouchableOpacity>
+               
 
             </View>
         </SafeAreaView>

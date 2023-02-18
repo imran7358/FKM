@@ -6,6 +6,11 @@ import { LOGGEDOUT } from '../redux/actionTypes';
 import { useSelector } from 'react-redux';
 
 const CustomDrawer = ({navigation}) => {
+
+    const user = useSelector((state) => {
+        return state.user;
+      });
+
     const dispatch = useDispatch();
     const logOut = async() =>{
         try {
@@ -21,32 +26,36 @@ const CustomDrawer = ({navigation}) => {
     }
 
         useEffect(()=>{
-          
-        }, [])
+            console.log("User Info", user)
+        }, [user])
     return (
 
         <View style={{}}>
             <View style={{backgroundColor: '#f27935', height: 120,}}>
             </View>
             <View style={styles.humburgerContainer}>
-                <View style={styles.editProfile}>
+                {user.userInfo ? <View style={styles.editProfile}>
                    <TouchableOpacity onPress={()=>{navigation.navigate('EditProfile')}}>
                    <Text style={styles.edtiTxt}>Edit</Text>
                    </TouchableOpacity>
-                </View>
+                </View> : null}
               <View style={styles.profileInfo}>
                 <View style={styles.profileimage}>
                    <View style={styles.profileImg}>
                     <Image source={require('../assets/images/profile-icon.png')} style={styles.imgProfile}/>
                    </View>
                 </View>
-                <View style={styles.profileName}>
+                { user.userInfo ? <View style={styles.profileName}>
                     <Text>Hi,</Text>
                     <Text style={styles.pName}>
-                        imran
-                        {/* {userInfo} */}
+                       {user.userInfo.data.username}
                         </Text>
-                </View>
+                </View> : <View style={styles.profileName}>
+                    <Text>Hii,</Text>
+                    <Text style={styles.pName}>
+                       Guest
+                        </Text>
+                </View>}
               </View>
             </View>
             <View style={styles.humburgerMenu}>

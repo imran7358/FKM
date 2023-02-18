@@ -20,6 +20,7 @@ const Home = ({ navigation }) => {
   const [livedeals, setLiveDeals] = useState([]);
   const [faq, setFaq] = useState([]);
   const [page, setpage] = useState(2);
+  const [tab, setTab] = useState([])
 
   const getSlider = () => {
     axios.post(Config.API_URL + END_URL, {
@@ -32,12 +33,14 @@ const Home = ({ navigation }) => {
       setSticky(data.response.sticky);
       setLiveDeals(data.response.live_deals);
       setFaq(data.response.earn_cashback);
+      setTab(data.response.store_tabbing);
     }).catch((error) => {
       console.log("Home Error", error);
     });
   };
   React.useEffect(() => {
     getSlider();
+    console.log("Tabbing", tab)
   }, []);
   return (
     <SafeAreaView>
@@ -89,7 +92,7 @@ const Home = ({ navigation }) => {
           <View style={styles.storeCat}>
             <View style={styles.storeList}>
               <ScrollView horizontal>
-                <StoreList />
+                <StoreList storeTab = {tab}/>
               </ScrollView>
             </View>
             <View style={[styles.storCon, styles.commonPadd]}>

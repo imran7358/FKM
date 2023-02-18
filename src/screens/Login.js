@@ -100,6 +100,7 @@ const Login = ({ navigation }) => {
                                     onChangeText={handleChange('password')}
                                     onBlur={() => setFieldTouched('password')}
                                     placeholder="Password"
+                                    secureTextEntry={true}
                                 />
                                 {touched.password && errors.password &&
                                     <Text style={styles.error}>{errors.password}</Text>

@@ -16,7 +16,7 @@ const TrendingCoupons = ({navigation,latetscoupons}) => {
     indicator={false}
     autoscroll ={false}
     onPress={async(item) => {
-      console.log("Ye hai --->>>",item);
+     
       await Linking.openURL("https://"+item.url);
     }}
   />

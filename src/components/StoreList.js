@@ -7,7 +7,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const MyStore = ({navigation}) => {
 
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [tab, setTab] = useState([]);
     const getStore = () =>{
         axios.post(Config.API_URL + END_URL, {
             'page': '2',
@@ -15,7 +16,8 @@ const MyStore = ({navigation}) => {
             'sponsored_count':'1',
             'device_type': 4,
         }).then(({data})=>{
-            setData(data.response.cbstores)
+            setData(data.response.cbstores);
+            setTab(data.response.store_tabbing);
         }).catch((error)=>{
             console.log("Cashback Store", error)
         })

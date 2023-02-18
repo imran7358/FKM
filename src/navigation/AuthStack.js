@@ -43,6 +43,11 @@ import Search from '../screens/Search'
 import { View, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+//WithDrawRefferal
+import WithdrawRefferal from '../screens/Dashboard/WithdrawRefferal';
+import ChangePassword from '../screens/Dashboard/ChangePassword';
+//WithDrawRefferal
+
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = ({ navigation }) => {
@@ -210,6 +215,18 @@ const AuthStack = ({ navigation }) => {
             }} />
             <Stack.Screen name="ForgotPaasword" component={ForgotPassword} options={{
                 title: 'Forgot Password',
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+            <Stack.Screen name="ChangePassword" component={ChangePassword} options={{
+                title: 'Change Password',
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
@@ -449,7 +466,7 @@ const AuthStack = ({ navigation }) => {
                         </TouchableOpacity>
                     )
                 }} />
-            <Stack.Screen name="ReferralMoney" component={ReferralMoney} options={{
+            <Stack.Screen name="ReferralMoney" component={WithdrawRefferal} options={{
                 title: 'Referral Money',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>

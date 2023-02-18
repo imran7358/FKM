@@ -58,6 +58,9 @@ const EditProfile = ({navigation}) => {
                 </View>
                 </View>
             </View>
+            <TouchableOpacity onPress={()=> navigation.navigate('ChangePassword')}>
+                <View><Text style={styles.changeLink}>Change Password</Text></View>
+            </TouchableOpacity>
             <TouchableOpacity>
             <View style={styles.loginButton}>
               <Text style={styles.loginTxt}>Submit</Text>
@@ -78,6 +81,12 @@ const styles = StyleSheet.create({
     },
     inputBoxContainer: {
         position: 'relative',
+      },
+      changeLink: {
+        color: '#397EF5',
+        fontSize: 14,
+        fontWeight: '700',
+        marginTop:20,
       },
     cashBackInfo: {
         marginTop: 20,

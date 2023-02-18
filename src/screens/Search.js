@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { ScrollView } from 'react-native-gesture-handler';
 const END_URL = "/search/search"
 import Loader from "../components/Loader";
+import { useSelector } from "react-redux";
 
 
 const SearchPage = ({ route, navigation }) => {
@@ -17,7 +18,6 @@ const SearchPage = ({ route, navigation }) => {
 
 
     useEffect(() => {
-
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             'keyword': route.params.searchKeyword,
@@ -88,7 +88,7 @@ const SearchPage = ({ route, navigation }) => {
                         <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
                         <Text style={styles.topHeading}><Text style={{ fontWeight: '800' }}>Stores</Text></Text>
                     </View>
-                    <View style={[styles.storeListCon, styles.catStore]}>
+                    <View style={[styles.catStore]}>
                         {
                             store.length ? store.map((item, i) => {
                                 return <TouchableOpacity style={styles.storeImgCon} key={i} onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.name } })}>
@@ -282,9 +282,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     storeImgCon: {
-        justifyContent: 'center',
+       justifyContent: 'space-between',
         marginBottom: 20,
-        width:'30%',
+        width:'28%',
+        flexDirection: 'row',
+        display: 'flex',
+        marginHorizontal: 7,
     },
     cbText: {
         fontWeight: '900',
@@ -296,15 +299,15 @@ const styles = StyleSheet.create({
         color: '#333'
     },
     storeListCon: {
-        display: 'flex',
-        justifyContent: 'flex-start',
+       justifyContent: 'space-between',
         flexDirection: 'row',
         marginTop: 10,
     },
     catStore: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+       justifyContent: 'flex-start',
         flexWrap: 'wrap',
+        marginTop: 15,
     },
 })
 
