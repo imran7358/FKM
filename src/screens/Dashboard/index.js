@@ -3,14 +3,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import Config from 'react-native-config';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 const END_URL = '/cashback/home';
+const PROMO_CODE = '/cashback/userpromocode';
 import { useSelector } from 'react-redux';
-const Profile = ({ navigation }) => {
+import {inputBox} from '../../assets/styles/common';
 
+const Profile = ({ navigation }) => {
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
+    const [promo, setPromo] = useState('');
     const [summry, setSummary] = useState({
         confirmAmount: '',
         widthdrawlAmount: '',
@@ -20,12 +23,14 @@ const Profile = ({ navigation }) => {
 
     });
     const [userinfo, setUserInfo] = useState({
-
         title: '',
         email: '',
         phone: '',
 
     });
+
+    const [sucess, setSucess] = useState(false);
+    const [error, setError] = useState(false);
     const getDetails = async () => {
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
@@ -54,7 +59,30 @@ const Profile = ({ navigation }) => {
     };
     useEffect(() => {
         getDetails();
+        console.log("Uname", userinfo.title)
+        console.log("Token", userToken)
     }, []);
+    const RedeemCode = () => {
+        axios.post(Config.API_URL + PROMO_CODE, {
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+            promocode: promo,
+        },
+        {
+            headers: {
+                Authorization: userToken,
+            },
+        }).then((data)=>{
+            if(data.status === '1' && data.error === "0" ) {
+                setSucess(true)
+            }
+            else {
+                setError(true)
+            }
+        }).catch((error)=>{
+            setError(true)
+        })
+    }
     return (
 
         <SafeAreaView style={styles.container}>
@@ -106,6 +134,35 @@ const Profile = ({ navigation }) => {
                                 <Text style={styles.cbBottomPara}>Promo Balance</Text>
                             </View>
                         </View>
+                    </View>
+                    <View style={styles.promoCont}>
+                    <Text style={styles.promoHeading}>Get a Promo Code</Text>
+                    <View style={styles.promoInner}>
+                        <TextInput
+                                autoCapitalize="none"
+                                style={styles.inputText}
+                                value={promo}
+                                placeholderTextColor="#666"
+                                placeholder="Your Promo Code"
+                                onChangeText={(txt)=> setPromo(txt)}
+                            />
+                            <TouchableOpacity onPress={RedeemCode} style={styles.rdmButton}>
+                                <Text style={styles.btnTxt}>Redeem</Text>
+                            </TouchableOpacity>
+                    </View>
+                    {
+                                error && <View style={styles.errorMsg}>
+                                    <Text style={styles.errorLbl}>Invlaid promo code</Text>
+                                </View>
+                            }
+
+                           {
+                                sucess && <View style={styles.errorMsg}>
+                                    <Text style={styles.sucessLbl}>Successfully Submitted !</Text>
+                                </View>
+                            }
+
+                            
                     </View>
                     <View style={styles.profileMenu}>
                         <View style={styles.menuList}>
@@ -232,9 +289,7 @@ const Profile = ({ navigation }) => {
                                 </View>
 
                                 <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
-
                                 <View>
-
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -304,9 +359,7 @@ const Profile = ({ navigation }) => {
                                         <Text>Add a new Bank/Paytm account to withdraw </Text>
                                     </View>
                                 </View>
-
                                 <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
-
                                 <View>
                                 </View>
                             </TouchableOpacity>
@@ -340,6 +393,60 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    errorLbl: {
+        fontSize: 12,
+        color:'red',
+        marginTop:7,
+
+    },
+    btnTxt: {
+
+        color:'#fff',
+        fontWeight: '900',
+        fontSize: 16,
+
+    },
+    suc: {
+        fontSize: 12,
+        color: '#1AA253',
+    },
+    rdmButton: {
+        position: 'absolute',
+        backgroundColor: '#f27935',
+        right:10,
+        padding: 12,
+        borderTopRightRadius:6,
+        borderBottomRightRadius:6,
+        top:10,
+    },
+    promoCont: {
+        marginTop:20,
+    },
+    promoHeading: {
+        fontSize: 16,
+        fontWeight: '900',
+        color: '#F27935',
+        marginBottom: 10,
+    },
+    promoInner:{
+        backgroundColor: '#f2f2f2',
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 10,
+        borderRadius: 6,
+        position: 'relative',
+    },
+    inputText: {
+        height: inputBox.height,
+        padding: inputBox.padding,
+        borderWidth: inputBox.borderWidth,
+        borderColor: inputBox.borderColor,
+        borderRadius: inputBox.borderRadius,
+        color: '#333333',
+        fontSize: 14,
+        width: '100%',
+        backgroundColor: '#FFF',
+      },
     editImg: {
         width: 15,
         height: 15,
@@ -411,7 +518,6 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         padding: 20,
         justifyContent: 'center',
-        justifyContent: 'space-between',
         width: '47%',
         textAlign: 'center',
         alignItems: 'center'
@@ -430,7 +536,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     profileMenu: {
-        marginTop: 30,
+        marginTop: 15,
     },
     menuIcon: {
         height: 38,

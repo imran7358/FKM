@@ -38,9 +38,8 @@ const Home = ({ navigation }) => {
       console.log("Home Error", error);
     });
   };
-  React.useEffect(() => {
+  useEffect(() => {
     getSlider();
-    console.log("Tabbing", tab)
   }, []);
   return (
     <SafeAreaView>
@@ -90,34 +89,9 @@ const Home = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.storeCat}>
-            <View style={styles.storeList}>
-              <ScrollView horizontal>
-                <StoreList storeTab = {tab}/>
-              </ScrollView>
-            </View>
-            <View style={[styles.storCon, styles.commonPadd]}>
-              <View style={styles.catStore}>
                 <MyStore navigation={navigation} />
-              </View>
-            </View>
           </View>
         </View>
-        {/* <View style={styles.mainContainer}>
-        <View style={styles.hotDealWrapper}>
-            <View style={styles.dealDay}>
-              <View style={styles.HotDealsInner}>
-                <View style={styles.headingArea}>
-                  <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
-                  <Text style={styles.topHeading}>How to Earn<Text style={{ fontWeight: '900' }}> Cashback?</Text></Text>
-                </View>
-              </View>
-           <View style={styles.videoContainer}>
-            <Text>Video</Text>
-           </View>
-            </View>
-          </View>
-          </View> */}
-
 
         <View style={[styles.mainContainer, styles.paddingZero, styles.margin20, styles.marginBottom50]}>
           <FAQ/>
@@ -136,6 +110,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     padding: 24,
   },
+
   bgWhite: {
     backgroundColor: '#fff',
   },
@@ -196,15 +171,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
   },
-  storCon: {
-    paddingTop: 24,
-    backgroundColor: '#F8F8F8',
-  },
-  catStore: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
+
   videoContainer: {
     backgroundColor: '#F7F7F7',
     height: 150,
@@ -218,5 +185,24 @@ const styles = StyleSheet.create({
   marginBottom50: {
     marginBottom:50,
   },
+  btn: {
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    padding: 10,
+    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+},
+btTxt: {
+    color: '#333',
+    fontSize: 14,
+},
+activeTab: {
+    color: '#F27935',
+    fontWeight: '900',
+    borderColor: '#f27935',
+    borderBottomWidth: 1,
+    backgroundColor: 'red',
+},
 });
 export default Home;

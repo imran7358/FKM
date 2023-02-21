@@ -115,7 +115,6 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
                                 tempCoupon = tempCoupon.map(e => {
                                     if (e.couponid === item.couponid) {
                                         e.selected = true;
-                                        console.log("CIODE REFE___>>>", e);
                                         setCouponSelected(e.code);
                                     }
                                     else {

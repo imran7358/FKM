@@ -7,8 +7,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 const StoreList = (props) => {
-    const [tab, setTab] = useState('All')
-    const [active, setActive] = useState(true)
+    const [tab, setTab] = useState('All');
+    const [active, setActive] = useState(true);
     const getTab = () => {
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,

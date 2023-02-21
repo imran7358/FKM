@@ -38,7 +38,6 @@ import MissingForm from '../screens/Dashboard/MissingForm';
 import MissingCashBackForm from '../screens/Dashboard/MissingForm/MissingCashback';
 import SearchProduct from '../screens/SearchProducts';
 import Search from '../screens/Search'
-// import WidthdrawOTP from '../screens/Dashboard/WithdrawOtp-backup';
 // WithdrawMoney
 import { View, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -46,6 +45,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 //WithDrawRefferal
 import WithdrawRefferal from '../screens/Dashboard/WithdrawRefferal';
 import ChangePassword from '../screens/Dashboard/ChangePassword';
+
 //WithDrawRefferal
 
 const Tab = createBottomTabNavigator();

@@ -43,7 +43,7 @@ const MissingCashback = ({ navigation, route }) => {
     const [amount, setAmount] = useState(0);
     const [fileResponse, setFileResponse] = useState({});
     const [formField, setFormField] = useState({});
-    const [uploadFile, setuplaodFile] = useState({})
+    const [uploadFile, setuplaodFile] = useState({});
     const [fileError, setFileError] = useState(false);
     const [filType, setFileType] = useState(false);
 
@@ -65,7 +65,7 @@ const MissingCashback = ({ navigation, route }) => {
     };
 
     const sendFormReq = async (formD) => {
-        console.log("Sending request-->>>", formD);
+        console.log('Sending request-->>>', formD);
         axios.post(Config.API_URL + POST_URL, formD,
             {
                 headers: {
@@ -74,7 +74,7 @@ const MissingCashback = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
-                console.log("rEsponse came", data);
+                console.log('rEsponse came', data);
             }).catch((error) => {
                 console.log(error.response);
             });
@@ -88,7 +88,7 @@ const MissingCashback = ({ navigation, route }) => {
             let arr = response[0]?.name.split(".");
             if (arr[1] === 'JPG' || arr[1] === "jpg" || arr[1] === "PNG" || arr[1] === "png" || arr[1] === "JPEG" || arr[1] === "jpeg") {
                 setFileResponse(response);
-                setFileType(false)
+                setFileType(false);
             }
             else {
                 setFileType(true);
@@ -96,7 +96,7 @@ const MissingCashback = ({ navigation, route }) => {
 
         } catch (err) {
             if(DocumentPicker.isCancel(err)){
-                Alert.alert("Not Uploaded")
+                Alert.alert('Not Uploaded');
             }
         }
     }
@@ -117,7 +117,7 @@ const MissingCashback = ({ navigation, route }) => {
 
         } catch (err) {
             if(DocumentPicker.isCancel(err)){
-                Alert.alert("Not Uploaded")
+                Alert.alert('Not Uploaded');
             }
         }
     }, [])
@@ -127,14 +127,14 @@ const MissingCashback = ({ navigation, route }) => {
 
     useEffect(() => {
 
-    }, [value, fileError, filType])
+    }, [value, fileError, filType]);
     useEffect(() => {
 
     }, [date])
 
     useEffect(() => {
         fileResponse[0]?.uri ? setFileError(false) : setFileError(true);
-    }, [fileResponse, route.params.storeId], uploadFile)
+    }, [fileResponse, route.params.storeId], uploadFile);
 
 
     const submitForm = () => {
