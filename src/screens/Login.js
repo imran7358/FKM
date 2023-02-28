@@ -1,10 +1,13 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import ErroLabel from '../components/ErrorCom';
+import KeybaordAvoidingWrapper from '../components/keyboardAvoidingWrapper';
+
 
 import {
     centerContainer,
@@ -20,9 +23,11 @@ const ENDPOINT = '/user/login';
 
 
 const Login = ({ navigation }) => {
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
     const dispatch = useDispatch();
     return (
-        <ScrollView>
+        <KeybaordAvoidingWrapper>
             <Formik initialValues={{
                 email: '',
                 password: '',
@@ -37,7 +42,6 @@ const Login = ({ navigation }) => {
                             email: values.email,
                         });
                         if (data.status == '1' && data.error == '0') {
-                            console.log("Login Token", data.token)
                             dispatch({
                                 type: SIGNEDIN,
                                 userToken: data.token,
@@ -45,9 +49,12 @@ const Login = ({ navigation }) => {
                             });
                             navigation.navigate("Home")
                         }
+                        else {
+                            setError(data.message);
+                        }
 
                     } catch (e) {
-                        console.log(e);
+                        setError(e.message);
                     }
                 }}
                 validationSchema={yup.object().shape({
@@ -58,7 +65,7 @@ const Login = ({ navigation }) => {
                 })}
             >
                 {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
-
+         
                     <View style={styles.container}>
                         <View style={styles.imageContainer}>
                             <Image source={require('../assets/images/login-image.png')} />
@@ -110,6 +117,9 @@ const Login = ({ navigation }) => {
                             <View style={styles.passwordContainer}>
                                 <Text onPress={() => navigation.navigate('ForgotPaasword')}
                                     style={styles.forgotPassword}> Forgot Password ?</Text></View>
+                                    {
+                                        error && <ErroLabel message={error}/>
+                                    }
                             <TouchableOpacity onPress={handleSubmit}>
                                 <View style={styles.loginButton}>
                                     <Text style={styles.loginTxt}>Login</Text>
@@ -125,7 +135,8 @@ const Login = ({ navigation }) => {
                 )}
 
             </Formik>
-        </ScrollView>
+       
+        </KeybaordAvoidingWrapper>
     );
 };
 

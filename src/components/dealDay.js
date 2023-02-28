@@ -5,12 +5,9 @@ import {FlatListSlider, indicatorContainerStyle} from 'react-native-flatlist-sli
 import Preview from "./preview";
 
 const DealsDay = ({navigation, stickyImages}) =>{
-
-  
-  
     return(
    <View>
-    { stickyImages.length?
+    { stickyImages.length ?
      <FlatListSlider
     data={stickyImages}
     component={<Preview imageKey={"image"} />}
@@ -19,8 +16,7 @@ const DealsDay = ({navigation, stickyImages}) =>{
     indicator={false}
     autoscroll ={false}
     onPress={item => {
-        console.log("Item,", item)
-        if(item.option === 'deal'){
+        if (item.option === 'deal'){
             navigation.navigate({name:'Details',params:{dealSlug:item.slug_url}})
         }
         else {

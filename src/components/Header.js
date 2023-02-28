@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback} from 'react';
-import { View, Text, StyleSheet, Image, Modal,Alert} from 'react-native';
+import React, { useState, useEffect} from 'react';
+import { View, Text, StyleSheet, Image, Modal, StatusBar} from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { User, Menu, LogIn, Search} from 'react-native-feather';
 import { useSelector } from 'react-redux';
@@ -50,6 +50,7 @@ useEffect(()=>{
 
   return (
     <View style={styles.container}>
+        <StatusBar backgroundColor="#f27935" />
       <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <View style={styles.menBox} >
           <Text>
@@ -115,6 +116,7 @@ useEffect(()=>{
             </Modal>
             : null
         }
+
        {
         user.userToken ? <View>
          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>

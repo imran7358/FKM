@@ -42,7 +42,7 @@ const Home = ({ navigation }) => {
     getSlider();
   }, []);
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor:'#f27935'}}>
       <View>
         <Header navigation={navigation} />
       </View>

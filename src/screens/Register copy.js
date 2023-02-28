@@ -1,19 +1,51 @@
 import Config from "react-native-config";
 import React, { useState } from 'react';
-import {View,Text,StyleSheet,Image,TextInput,SafeAreaView,ScrollView,Alert} from 'react-native';
+import {View,Text,StyleSheet,Image,TextInput,SafeAreaView,ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {centerContainer,fontSize,inputBox,fontColor,commonMargin,} from '../assets/styles/common';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
-import { Formik } from 'formik';
+import { Formik } from "formik";
 import * as yup from 'yup';
 import ErroLabel from "../components/ErrorCom";
 import SucessLbl from '../components/SuccessCom';
 
 const ENDPOINT = "/user/register";
 const Register = ({ navigation }) => {
-    const [error, setError]=useState('')
-    const [success, setSuccess] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    pass: '',
+    phone: '',
+    referral_code: '99361389',
+  });
+  const [err, setErr] = useState(null);
+  const handleChange = (value, name) => {
+    let obj = Object.assign({}, formData);
+    obj[name] = value;
+    setFormData(obj);
+  };
+//   const handleSubmit = async (event) => {
+//     try {
+//       const {data} = await axios.post(Config.API_URL + ENDPOINT,{
+//         apiAuth : Config.API_AUTH,
+//         device_type: Config.DEVICE_TYPE,
+//         ...formData,
+//       });
+//       if (data.token) {
+//         await AsyncStorage.setItem('registerToken', data.token);
+//         await AsyncStorage.setItem('phone', formData.phone);
+//         navigation.navigate('Verify');
+//       }
+//       else {
+//         setErr(data.message);
+//       }
+//     } catch (e) {
+//       setErr(e.message)
+//     }
+//   };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -24,37 +56,14 @@ const Register = ({ navigation }) => {
             password: '',
             referral: '',
         }}
-        onSubmit={async (values) => {
-            try {
-                      const {data} = await axios.post(Config.API_URL + ENDPOINT,{
-                        apiAuth : Config.API_AUTH,
-                        device_type: Config.DEVICE_TYPE,
-                       name:values.name,
-                       email: values.email,
-                       pass:values.password,
-                       phone: values.phone,
-                       referral_code:values.referral,
-                       app_device_id: '4',
-                      });
-                      if (data.token) {
-                        setSuccess(data.message)
-                        await AsyncStorage.setItem('registerToken', data.token);
-                        await AsyncStorage.setItem('phone', values.phone);
-                        navigation.navigate('Verify');
-                      }
-                      else {
-                        setError(data.message);
-                      }
-                    } catch (error) {
-                      setError(error.message)
-                    }
-          }
-          }
         validationSchema = { yup.object().shape({
             name:yup.string().required("Please enter name"),
             email: yup.string().required('Please enter Usename / Email id'),
             phone: yup.string().required("Please enter mobile number"),
             password:yup.string().required('Please Enter password').min(6,'Minimum 6 Chareter are required').max(8,'Maxmimum 8 Chareter are required')})}
+            onSubmit = {async(values)=>{
+                console.log(values)
+            }}
             >
             {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
                     <View style={styles.container}>
@@ -73,15 +82,11 @@ const Register = ({ navigation }) => {
                         <TextInput
                           autoCapitalize="none"
                           style={[styles.inputText, styles.lableFont]}
-                          placeholderTextColor="#666"
-                          value={values.name}
-                          onChangeText={handleChange('name')}
-                          onBlur={() => setFieldTouched('name')}
                           placeholder="Name"
-                           />
-                            {touched.name && errors.name &&
-                      <Text style={styles.error}>{errors.name}</Text>
-                    }
+                          name="name"
+                          placeholderTextColor="#666"
+                          value={formData["name"]}
+                          onChangeText={(value) => { handleChange(value, "name") }} />
                       </View>
                       <View style={styles.inputBoxContainer}>
                         <Image
@@ -92,15 +97,10 @@ const Register = ({ navigation }) => {
                           autoCapitalize="none"
                           style={[styles.inputText, styles.lableFont]}
                           name="email"
-                          value={values.email}
                           placeholder="Email ID"
                           placeholderTextColor="#666"
-                          onChangeText={handleChange('email')}
-                          onBlur={() => setFieldTouched('email')}
-                          />
-                           {touched.email && errors.email &&
-                      <Text style={styles.error}>{errors.email}</Text>
-                    }
+                          value={formData['email']}
+                          onChangeText={(value) => { handleChange(value, 'email') }} />
                       </View>
                       <View style={styles.inputBoxContainer}>
                         <Image
@@ -111,14 +111,10 @@ const Register = ({ navigation }) => {
                           autoCapitalize="none"
                           style={[styles.inputText, styles.lableFont]}
                           placeholder="Phone"
-                          value={values.phone}
+                          name="phone"
                           placeholderTextColor="#666"
-                          onChangeText={handleChange('phone')}
-                          onBlur={() => setFieldTouched('phone')}
-                         />
-                           {touched.phone && errors.phone &&
-                      <Text style={styles.error}>{errors.phone}</Text>
-                    }
+                          value={formData["phone"]}
+                          onChangeText={(value) => { handleChange(value, "phone") }} />
                       </View>
                       <View style={styles.inputBoxContainer}>
                         <Image
@@ -129,27 +125,20 @@ const Register = ({ navigation }) => {
                           autoCapitalize="none"
                           style={styles.inputText}
                           placeholder="Password"
+                          name="pass"
                           placeholderTextColor="#666"
+                          value={formData["pass"]}
                           secureTextEntry={true}
-                          value ={values.password}
-                          onChangeText={handleChange('password')}
-                          onBlur={() => setFieldTouched('password')}
-                          />
-                            {touched.password && errors.password &&
-                      <Text style={styles.error}>{errors.password}</Text>
-                    }
+                          onChangeText={(value) => { handleChange(value, "pass") }} />
                       </View>
-                     {
-                        error && <ErroLabel message={error} />
-                     }
-                     {
-                        success && <SucessLbl message = {success} />
-                     }
+                      {<Text>{err}</Text>}
                       <TouchableOpacity
+                        // onPress={()=>{navigation.navigate("Enter OTP")}}
                         onPress={handleSubmit}>
                         <View style={styles.loginButton} >
                           <Text style={styles.loginTxt}>Sign Up</Text>
                         </View>
+                      
                       </TouchableOpacity>
                       <View style={styles.socialLogin}>
                         <View style={styles.googleLogin}>
@@ -171,6 +160,7 @@ const Register = ({ navigation }) => {
                   </View>
             )}
         </Formik>
+        
       </ScrollView>
     </SafeAreaView>
   );
@@ -238,11 +228,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     fontWeight: 'bold',
     height: 50,
-  },
-  error: {
-    fontSize: 12,
-    color: '#FF0D10',
-    marginTop: 7,
   },
   loginTxt: {
     fontSize: fontSize.headingFont,

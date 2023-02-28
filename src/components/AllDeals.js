@@ -35,7 +35,6 @@ const AllDeals = ({ navigation }) => {
                 setLoadMore(false);
             }
         }).catch((error) => {
-            console.log('Error aaya', error);
         }).finally(() => {
             setLoader(false);
         });

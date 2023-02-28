@@ -62,7 +62,6 @@ const AddAccount = () => {
                 accountType: 'bank',
               }}
               onSubmit={async (values) => {
-                Alert.alert(JSON.stringify(values))
                 const userToken = await AsyncStorage.getItem('userToken')
                 axios.post(Config.API_URL + END_URL, {
                   apiAuth: Config.API_AUTH,
@@ -79,13 +78,11 @@ const AddAccount = () => {
                       Authorization: userToken,
                     },
                   }).then(({ data }) => {
-                    console.log("data", data.status);
-                    if (data.status === 1) {
+                    if (data.status === 1 && error === 0) {
                       setSuccess(true);
                     }
                   }).catch((error) => {
                     setError(true);
-                    console.log('Error', error);
                   }).finally(() => {
                   });
               }
