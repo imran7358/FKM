@@ -192,7 +192,6 @@ const AddAccount = () => {
                 onSubmit={async (values) => {
                   Alert.alert(JSON.stringify(values))
                   const userToken = await AsyncStorage.getItem('userToken')
-                  console.log(Config.API_URL + END_URL, Config.API_AUTH)
                   axios.post(Config.API_URL + END_URL, {
                     apiAuth: Config.API_AUTH,
                     device_type: 4,

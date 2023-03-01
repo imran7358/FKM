@@ -13,9 +13,6 @@ import { useSelector } from 'react-redux';
 import moment from 'moment';
 import ImgToBase64 from 'react-native-image-base64';
 import Loader from '../../components/Loader';
-import ErroLabel from '../../components/ErrorCom';
-import SucessLbl from '../../components/SuccessCom';
-
 
 const UserClaimForm = ({ navigation, route }) => {
     const userToken = useSelector(state => {
@@ -35,8 +32,7 @@ const UserClaimForm = ({ navigation, route }) => {
     const [emptyFields, setEmptyFields] = useState([])
     const [error, setError] = useState("");
     useEffect(() => {
-        console.log("Store Id",route.params.storeId)
-    }, [fileResponse, allowed, route.params.storeId])
+    }, [fileResponse, allowed])
 
     const getDetails = async () => {
         axios.post(Config.API_URL + END_URL, {
@@ -53,7 +49,7 @@ const UserClaimForm = ({ navigation, route }) => {
                 setField(data.response.claimform);
 
             }).catch((error) => {
-                console.log("Clicks Error", error.message);
+                console.log(error);
             });
     };
 
@@ -106,7 +102,7 @@ const UserClaimForm = ({ navigation, route }) => {
 
     useEffect(() => {
 
-    }, [value,field,click]);
+    }, [value]);
 
     const submitForm = () => {
         let fdata = new FormData();
@@ -155,9 +151,6 @@ const UserClaimForm = ({ navigation, route }) => {
 
     return (
         <ScrollView style={styles.container}>
-            {
-                click?.length ? <View><Text>Form Rahega</Text></View> : <View><Text>Form Nahi Rahega</Text></View>
-            }
             <View style={styles.innerContainer}>
                 <View style={styles.margi}>
                     <Text style={styles.cbform}>Cashback Claimform</Text>
@@ -189,14 +182,14 @@ const UserClaimForm = ({ navigation, route }) => {
 
                     />
                     {
-                        field?.length ? field.map((item, i) => {
+                        field.length ? field.map((item, i) => {
                             if (item.type === 'text') {
                                 return <View style={styles.inputBoxContainer} key={i}>
                                     <TextInput
                                         style={[styles.inputText, styles.lableFont]}
                                         placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
                                         value={formField[item.field_name]}
-
+                                        // required={item.is_mandatory == '1'}
                                         onChangeText={(e) => {
                                             const temp = { ...formField };
                                             temp[item.field_name] = e;

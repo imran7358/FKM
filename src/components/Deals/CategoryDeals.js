@@ -29,7 +29,6 @@ const CategoriesDeals = ({ navigation, route }) => {
                 setNoData(true);
             }
         }).catch((error) => {
-            console.log("Error Aaya", error);
         }).finally(() => {
             setLoader(false);
         });
@@ -37,7 +36,7 @@ const CategoriesDeals = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        console.log("Cat Details", route)
+
         getDeals();
     }, [page, route])
     return (

@@ -35,17 +35,6 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
 
     const sendAPIreq = (opt) => {
         const cpnSel = coupon.find(e => e.code == couponSelected)
-        console.log("==-?>??API_-->>", {
-            apiAuth: Config.API_AUTH,
-            device_type: '4',
-            option: opt,
-            account_ref_id: account[0].account_ref_id,
-            wallet_type: payType,
-            code_reference: couponSelected,
-            amount,
-            code: cpnSel.code,
-            couponid: cpnSel.couponid,
-        })
         setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
@@ -62,7 +51,6 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("RESPIONESs--->>>", data);
             setLoading(false);
             Resp(data);
         }).catch((error) => {

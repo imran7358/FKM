@@ -26,7 +26,6 @@ const CustomDrawer = ({navigation}) => {
     }
 
         useEffect(()=>{
-            console.log("User Info", user)
         }, [user])
     return (
 
@@ -59,7 +58,10 @@ const CustomDrawer = ({navigation}) => {
               </View>
             </View>
             <View style={styles.humburgerMenu}>
-               <View style={styles.menuListCon}>
+              {
+                user.userInfo ?
+                <TouchableOpacity onPress={()=> navigation.navigate('Profile')}>
+                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                     <Grid style={styles.iconSize} width={18}/>
                 </View>
@@ -67,6 +69,9 @@ const CustomDrawer = ({navigation}) => {
                     <Text style={styles.menuTxt}>Dashboard</Text>
                 </View>
                </View>
+               </TouchableOpacity>
+                : null
+              }
                <TouchableOpacity onPress={()=> navigation.navigate('Stores')}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>

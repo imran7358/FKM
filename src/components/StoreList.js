@@ -20,7 +20,7 @@ const MyStore = ({navigation}) => {
         }).then(({data})=>{
             setData(data.response.cbstores);
         }).catch((error)=>{
-            console.log('Cashback Store', error);
+            console.log(error);
         })
     }
 

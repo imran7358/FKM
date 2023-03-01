@@ -24,7 +24,6 @@ const ChangePassword = ({navigation}) => {
             confirmpassword: '',
         }}
             onSubmit={async (values) => {
-                console.log(values.password)
                 try {
                     const { data } = await request.post(navigation, Config.API_URL + END_URL, {
                         apiAuth: Config.API_AUTH,

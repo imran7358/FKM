@@ -30,7 +30,6 @@ const StoreDeals = ({ navigation ,route}) => {
         }
 
        }).catch((error)=>{
-        console.log("Dealsssss Error", error);
        }).finally(()=>{
         setLoader(false);
        })

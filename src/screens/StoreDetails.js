@@ -8,9 +8,12 @@ import Config from 'react-native-config';
 const END_URL = '/store/storedetail';
 import Loader from '../components/Loader';
 import StoreCoupons from '../components/Coupons/StoreCoupons';
+import { useSelector } from 'react-redux';
 
 
 const StoreDetails = ({ props, route, navigation }) => {
+
+    const userInfo = useSelector(state => state.user.userInfo);
     const [deals, setShowDeals] = useState(true);
     const [coupons, setShowCoupons] = useState(false);
     const [rate, setRate] = useState(['']);
@@ -20,7 +23,6 @@ const StoreDetails = ({ props, route, navigation }) => {
         cashback_amount: '',
         store_landing_url: '',
         claim_form_link: '',
-        is_claim: '',
         confirmation: '',
         speed: '',
         is_missing: '',
@@ -233,17 +235,30 @@ const StoreDetails = ({ props, route, navigation }) => {
                     
                 </View>
             </ScrollView>
-            <View style={styles.shopErnCon}>
-                <TouchableOpacity onPress={async()=>{ 
-                     console.log("Ye hai --->>>",store.store_landing_url);
-                    await Linking.openURL(store.store_landing_url)} }>
-                <View style={styles.bottomBtn}>
-                    <Text style={styles.shopearnbtn}>Shop & Earn</Text>
-                </View>
-                </TouchableOpacity>
-               
 
+            {
+                store.is_cashback ? <View>{userInfo ? <View style ={styles.container}>
+                <View style={styles.appButton}>
+                <TouchableOpacity onPress={async()=> { await Linking.openURL(store.store_landing_url)}}>
+                <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+                </TouchableOpacity>
             </View>
+                </View> : <View style ={styles.container}>
+                        <View style={styles.appButton}>
+                        <TouchableOpacity onPress={()=> { navigation.navigate('Login')}}>
+                        <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+                        </TouchableOpacity>
+                    </View>
+                        </View> }</View> : <View style ={styles.container}>
+                        <View style={styles.appButton}>
+                        <TouchableOpacity onPress={async()=> { await Linking.openURL(store.store_landing_url)}}>
+                        <Text style={styles.btnTxt}>Shop Now</Text>
+                        </TouchableOpacity>
+                    </View>
+                        </View>
+            }
+
+
         </SafeAreaView>
     )
 
@@ -509,7 +524,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 15,
     },
-
+    appButton: {
+        backgroundColor: '#f27935',
+        borderRadius: 6,
+        alignItems: 'center',
+        alignContent: 'center',
+    },
+    btnTxt: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        alignContent: 'center',
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+        padding: 14,
+    },
 });
 
 export default StoreDetails;

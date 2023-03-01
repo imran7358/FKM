@@ -32,7 +32,7 @@ const WithdrawRefferal = ({ navigation }) => {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("State set-->>>", { account: data.account, label: data.label_msg })
+
             setDataRes({ account: data.account});
         }).catch((error) => {
             console.log('Error', error);

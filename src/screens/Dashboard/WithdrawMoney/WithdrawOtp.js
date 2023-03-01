@@ -21,18 +21,8 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
         { label: 'Paytm', value: 'paytm' },
     ];
     const sendAPIreq = (opt) => {
-        console.log("==-?>??API aya h_-->>", {
-            apiAuth: Config.API_AUTH,
-            device_type: '4',
-            option: opt,
-            request_id: response.request_id,
-            wallet_name: payType,
-            code: couponSelected.code,
-            couponid: couponSelected.couponid,
-            code_reference: response.code_reference,
-            userotp: OTP,
-        });
-        // setLoading(true);
+        
+        
         request.post(navigation, Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: '4',
@@ -48,9 +38,6 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("RESPIONESs--->>>", data);
-            // setLoading(false);
-            // Resp(data);
         }).catch((error) => {
             console.log('Error', error.message);
         });

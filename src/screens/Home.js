@@ -35,7 +35,7 @@ const Home = ({ navigation }) => {
       setFaq(data.response.earn_cashback);
       setTab(data.response.store_tabbing);
     }).catch((error) => {
-      console.log("Home Error", error);
+      console.log(error);
     });
   };
   useEffect(() => {

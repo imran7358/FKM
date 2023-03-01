@@ -65,8 +65,7 @@ const Login = ({ navigation }) => {
                 })}
             >
                 {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
-         
-                    <View style={styles.container}>
+               <View style={styles.container}>
                         <View style={styles.imageContainer}>
                             <Image source={require('../assets/images/login-image.png')} />
                         </View>
@@ -135,7 +134,6 @@ const Login = ({ navigation }) => {
                 )}
 
             </Formik>
-       
         </KeybaordAvoidingWrapper>
     );
 };
@@ -145,6 +143,7 @@ const styles = StyleSheet.create({
         padding: 24,
         backgroundColor: '#FFFFFF',
         flex: 1,
+        justifyContent: 'center',
     },
     imageContainer: {
         alignItems: centerContainer.alignCenter,

@@ -26,9 +26,6 @@ const MissingCashback = ({ navigation, route }) => {
         initialValues: {
             name: '',
         },
-        onSubmit: async (data) => {
-            console.log("data", data)
-        }
     })
 
     const userToken = useSelector(state => {
@@ -65,7 +62,6 @@ const MissingCashback = ({ navigation, route }) => {
     };
 
     const sendFormReq = async (formD) => {
-        console.log('Sending request-->>>', formD);
         axios.post(Config.API_URL + POST_URL, formD,
             {
                 headers: {
@@ -74,7 +70,6 @@ const MissingCashback = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
-                console.log('rEsponse came', data);
             }).catch((error) => {
                 console.log(error.response);
             });
@@ -144,9 +139,7 @@ const MissingCashback = ({ navigation, route }) => {
         fdata.append('apiAuth', Config.API_AUTH);
         fdata.append('store_id', route.params.storeId);
         fdata.append('clickid', value);
-        // console.log('Form Data', formField);
         fdata.append("fd17", "option");
-        console.log("FOrm data-->>", fdata);
         sendFormReq(fdata);
     }
 
@@ -183,7 +176,6 @@ const MissingCashback = ({ navigation, route }) => {
                         fdata.append("product", values.product),
                             fileError ? '' : fdata.append("invoice", fileResponse[0]),
                             fdata.append("invoice2", uploadFile[0]),
-                            console.log("Data", fdata)
                         sendFormReq(fdata);
                     }}
                     validationSchema={yup.object().shape({
@@ -225,7 +217,6 @@ const MissingCashback = ({ navigation, route }) => {
                                     searchPlaceholder="Search..."
                                     value={value}
                                     onChange={item => {
-                                        console.log("item", item)
                                         setValue(item.clickid);
                                     }}
 

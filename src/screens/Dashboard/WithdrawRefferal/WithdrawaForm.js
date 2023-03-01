@@ -16,14 +16,6 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
     const [pipe, Resp] = useState(null);
     const [loading, setLoading] = useState(false);
     const sendAPIreq = (opt) => {
-        console.log("==-?>??API_-->>", {
-            apiAuth: Config.API_AUTH,
-            device_type: '4',
-            option: opt,
-            account_ref_id: account[0].account_ref_id,
-            wallet_type: payType,
-            amount,
-        })
         setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
@@ -37,7 +29,6 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("RESPIONESs--->>>", data);
             setLoading(false);
             Resp(data);
         }).catch((error) => {
@@ -46,7 +37,6 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
     }
 
     useEffect (()=>{
-console.log("Pipe Info", pipe)
     }, [pipe])
 
     return pipe ? <WidthdarawlOtp response={pipe} payType={payType}  account={account} /> : (

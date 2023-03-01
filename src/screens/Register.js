@@ -9,14 +9,15 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import ErroLabel from "../components/ErrorCom";
 import SucessLbl from '../components/SuccessCom';
+import KeybaordAvoidingWrapper from "../components/keyboardAvoidingWrapper";
 
 const ENDPOINT = "/user/register";
 const Register = ({ navigation }) => {
     const [error, setError]=useState('')
     const [success, setSuccess] = useState('')
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <KeybaordAvoidingWrapper>
+        <ScrollView bounces={false}>
         <Formik initialValues={{
             name:'',
             email: '',
@@ -151,7 +152,7 @@ const Register = ({ navigation }) => {
                           <Text style={styles.loginTxt}>Sign Up</Text>
                         </View>
                       </TouchableOpacity>
-                      <View style={styles.socialLogin}>
+                      {/* <View style={styles.socialLogin}>
                         <View style={styles.googleLogin}>
                           <Image source={require('../assets/images/google.png')} />
                           <Text style={styles.googleLoginTxt}>Goolge</Text>
@@ -162,7 +163,7 @@ const Register = ({ navigation }) => {
                             <Text style={styles.googleLoginTxt}>Facebook</Text>
                           </View>
                         </View>
-                      </View>
+                      </View> */}
                       <View style={styles.newLogin}>
                         <Text style={styles.font16}>New to FreeKaaMaal ?</Text>
                         <Text style={[styles.font16, styles.RegisterLink]} onPress={() => navigation.navigate('Login')}>Login</Text>
@@ -171,8 +172,8 @@ const Register = ({ navigation }) => {
                   </View>
             )}
         </Formik>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </KeybaordAvoidingWrapper>
   );
 };
 
@@ -181,6 +182,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#FFFFFF',
     flex: 1,
+    // justifyContent: 'center',
   },
   imageContainer: {
     alignItems: centerContainer.alignCenter,

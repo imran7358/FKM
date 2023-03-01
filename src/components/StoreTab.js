@@ -25,7 +25,6 @@ const StoreList = (props) => {
 
     useEffect(()=>{
         getTab()
-        console.log("My Tab", props.storeTab)
     },[props.storeTab])
     return (
             props.storeTab.map((item,i)=>{

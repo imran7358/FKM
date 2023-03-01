@@ -33,7 +33,7 @@ const StoreCoupons = ({ navigation, couponsList, route}) => {
                 setNoData(true);
             }
         }).catch((error)=>{
-            console.log("Error Ayaa", error)
+        console.log(error)
         }).finally(()=>{
             setLoader(false)
         })

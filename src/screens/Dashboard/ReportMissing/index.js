@@ -36,7 +36,6 @@ const MissingReport = ({ navigation, route }) => {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
-                console.log('couponsDetails', data.response.claimform);
                 setClick(data.response.userclicks);
             }).catch((error) => {
                 console.log(error);
@@ -57,7 +56,6 @@ const MissingReport = ({ navigation, route }) => {
 
     useEffect(() => {
         getDetails();
-        console.log('date', date.toDateString())
     }, [value, date])
     return (
         <ScrollView style={styles.container}>

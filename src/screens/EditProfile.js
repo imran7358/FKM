@@ -100,7 +100,6 @@ const getProfile = () =>{
         getProfile();
     },[]);
     useEffect(()=>{
-        console.log("User Img", user.name)
     },[user])
 
     return (

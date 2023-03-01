@@ -7,6 +7,7 @@ const END_URL = '/cashback/claimformstore';
 import { centerContainer,fontSize,inputBox } from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector } from 'react-redux';
+import Loader from '../../components/Loader';
 
 const ClaimForm = ({navigation}) => {
     const [value, setValue] = useState([]);
@@ -18,7 +19,7 @@ const ClaimForm = ({navigation}) => {
         return state.user.userToken;
       });
 
-    const getStore = async () => {
+    useEffect(() => {
         setLoader(true);
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
@@ -31,21 +32,20 @@ const ClaimForm = ({navigation}) => {
                setStore(data.response);
 
             }).catch((error) => {
-                console.log(error);
+                console.log("Network Error", error.message);
             }).finally(() => {
                 setLoader(false);
             });
-    };
-
-    useEffect(() => {
-        getStore();
     }, []);
+
     useEffect(() => {
     }, [value]);
     return (
         <ScrollView style={styles.container}>
+           
             <View style={styles.innerContainer}>
-                <View style={styles.margi}>
+                {
+                    loader ? <Loader/> : <><View style={styles.margi}>
                     <Text style={styles.cbform}>Cashback Claimform</Text>
                 </View>
                 <View>
@@ -59,6 +59,7 @@ const ClaimForm = ({navigation}) => {
                 <View>
                     <Text style={styles.storeName}>Store Name</Text>
                 </View>
+
                 <Dropdown
                     style={styles.dropdown}
                     placeholderStyle={styles.placeholderStyle}
@@ -74,6 +75,7 @@ const ClaimForm = ({navigation}) => {
                     searchPlaceholder="Search..."
                     value={value}
                     onChange={item => {
+                        console.log("Value", item.store_id)
                         setValue(item.store_id);
                     }}
                 />
@@ -83,10 +85,8 @@ const ClaimForm = ({navigation}) => {
                         <Text style={styles.loginTxt}>Next</Text>
                     </View>
                 </TouchableOpacity>
-
-
-
-
+                </>
+                }
 
             </View>
         </ScrollView>

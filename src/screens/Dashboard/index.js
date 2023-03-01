@@ -59,8 +59,6 @@ const Profile = ({ navigation }) => {
     };
     useEffect(() => {
         getDetails();
-        console.log("Uname", userinfo.title)
-        console.log("Token", userToken)
     }, []);
     const RedeemCode = () => {
         axios.post(Config.API_URL + PROMO_CODE, {

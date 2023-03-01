@@ -34,23 +34,20 @@ const ResetPassword = ({navigation}) => {
         confirmpassword: '',
       }}
       onSubmit = {async(value)=>{
-        console.log("Values", value)
         const getToken = await AsyncStorage.getItem('fToken');
-        console.log("Forgot Token", getToken)
-        try{
+        try {
             const {data} = await request.post(navigation,Config.API_URL + END_URL, {
                 apiAuth : Config.API_AUTH,
                 device_type: Config.DEVICE_TYPE,
                 verifycode: value.otp,
                 newpass: value.password
             },{
-                
                     headers: {
                         Authorization: getToken,
                     },
             })
 
-            if(data.status === '1' && data.error === '0'){
+            if (data.status === '1' && data.error === '0'){
                 setSucess(data.message)
                 setTimeout(() => {
                     navigation.navigate('Login');

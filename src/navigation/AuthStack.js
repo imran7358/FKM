@@ -45,13 +45,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 //WithDrawRefferal
 import WithdrawRefferal from '../screens/Dashboard/WithdrawRefferal';
 import ChangePassword from '../screens/Dashboard/ChangePassword';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 //WithDrawRefferal
 
 const Tab = createBottomTabNavigator();
 
-const BottomTabs = ({ navigation }) => {
 
+const BottomTabs = ({ navigation }) => {
+    const userToken = useSelector(state => state.user.userToken)
     const horizontalAnimation = {
         cardStyleInterpolator: ({ current, layouts }) => {
             return {
@@ -68,6 +71,11 @@ const BottomTabs = ({ navigation }) => {
             };
         },
     };
+
+    useEffect(()=>{
+
+    },[userToken])
+
     return (
         <Tab.Navigator navigation={navigation} screenOptions={{
             tabBarShowLabel: false,
@@ -141,30 +149,57 @@ const BottomTabs = ({ navigation }) => {
                         </TouchableOpacity>
                     )
                 }} />
-            <Tab.Screen name="Profile" component={Profile}
-                options={{
-                    BottomTabs: false,
-                    tabBarIcon: ({ focused }) => (
-                        <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                            <Image source={require('../assets/images/profileico.png')} style={{
-                                width: 26,
-                                height: 26,
-                                resizeMode: 'contain',
-                                tintColor: focused ? '#333' : 'black',
-                            }} />
-                        </View>
-
-                    ),
-                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                    headerLeft: () => (
-                        <TouchableOpacity onPress={() => { navigation.goBack() }}>
-                            <View style={styles.backArrow}>
-                                <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                    {
+                        userToken ?  <Tab.Screen name="Profile" component={Profile}
+                        options={{
+                            BottomTabs: false,
+                            tabBarIcon: ({ focused }) => (
+                                <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
+                                    <Image source={require('../assets/images/profileico.png')} style={{
+                                        width: 26,
+                                        height: 26,
+                                        resizeMode: 'contain',
+                                        tintColor: focused ? '#333' : 'black',
+                                    }} />
+                                </View>
+        
+                            ),
+                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                            headerLeft: () => (
+                                <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                                    <View style={styles.backArrow}>
+                                        <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }}
+                    /> : <Tab.Screen name="Login" component={Login}
+                    options={{
+                        BottomTabs: false,
+                        tabBarStyle: {display: 'none'},
+                        tabBarIcon: ({ focused }) => (
+                            <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
+                                <Image source={require('../assets/images/profileico.png')} style={{
+                                    width: 26,
+                                    height: 26,
+                                    resizeMode: 'contain',
+                                    tintColor: focused ? '#333' : 'black',
+                                }} />
                             </View>
-                        </TouchableOpacity>
-                    )
-                }}
-            />
+    
+                        ),
+                        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                        headerLeft: () => (
+                            <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                                <View style={styles.backArrow}>
+                                    <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    }}
+                /> 
+                    }
+
         </Tab.Navigator>
     );
 };
@@ -183,6 +218,7 @@ const AuthStack = ({ navigation }) => {
             <Stack.Screen name="Home" component={BottomTabs} options={{ headerShown: false, title: '' }} />
             <Stack.Screen name="Login" component={Login} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                BottomTabs: false,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>
@@ -308,6 +344,7 @@ const AuthStack = ({ navigation }) => {
             }} />
             <Stack.Screen name="Profile" component={Profile} options={{
                 title: 'Profile',
+                BottomTabs: false,
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>

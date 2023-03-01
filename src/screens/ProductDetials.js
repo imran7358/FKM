@@ -7,9 +7,12 @@ import axios from 'axios';
 import RealtedDeals from '../components/Deals/RelatedDeals';
 import { Loader } from 'react-native-feather';
 import { WebView } from 'react-native-webview';
+import { useSelector } from 'react-redux';
 
 
  const ProductDetails = ({navigation, route}) => {
+
+    const userInfo = useSelector(state=> state.user.userInfo);
     const [details, setDetails] = useState({
         title: '',
         dealImg: null,
@@ -18,6 +21,8 @@ import { WebView } from 'react-native-webview';
         offerPrice: '',
         isClaim: '',
         landing_url : '',
+        isCashback: '',
+        storeImg : null,
     });
     const [relatedProduct, setRelatedProduct] = useState([]);
 
@@ -41,6 +46,8 @@ import { WebView } from 'react-native-webview';
                 description: htmltxt,
                 isClaim: data.response.deal.is_claim,
                 landing_url: data.response.deal.landing_url,
+                isCashback: data.response.deal.is_cashback,
+                storeImg: data.response.deal.store_image,
             });
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
@@ -53,6 +60,7 @@ import { WebView } from 'react-native-webview';
 
     useEffect(()=>{
         getDetails();
+        console.log("User Info", userInfo)
     },[]);
 
     return (
@@ -96,7 +104,7 @@ import { WebView } from 'react-native-webview';
                         </View>
                     </View>
                         <View style={styles.logoImages}>
-                            <Image source={require('../assets/images/amzonLogo.png')} style={styles.prodLogo}/>
+                            <Image source={{ uri: details.storeImg }} style={styles.prodLogo}/>
                         </View>
                     </View>
                 </View>
@@ -131,13 +139,30 @@ import { WebView } from 'react-native-webview';
             </View>
             }
             </ScrollView>
-            <View style ={styles.container}>
-            <View style={styles.appButton}>
-            <TouchableOpacity onPress={async()=> { await Linking.openURL(details.landing_url)}}>
-            <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
-            </TouchableOpacity>
-        </View>
+            {
+                details.isCashback ? <View>{userInfo ? <View style ={styles.container}>
+                <View style={styles.appButton}>
+                <TouchableOpacity onPress={async()=> { await Linking.openURL(details.landing_url)}}>
+                <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+                </TouchableOpacity>
             </View>
+                </View> : <View style ={styles.container}>
+                        <View style={styles.appButton}>
+                        <TouchableOpacity onPress={()=> { navigation.navigate('Login')}}>
+                        <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+                        </TouchableOpacity>
+                    </View>
+                        </View> }</View> : <View style ={styles.container}>
+                        <View style={styles.appButton}>
+                        <TouchableOpacity onPress={async()=> { await Linking.openURL(details.landing_url)}}>
+                        <Text style={styles.btnTxt}>Shop Now</Text>
+                        </TouchableOpacity>
+                    </View>
+                        </View>
+            }
+
+
+
         </SafeAreaView>
     );
  };

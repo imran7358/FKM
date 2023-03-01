@@ -1,24 +1,28 @@
 {
   "images" : [
     {
+      "filename" : "i phone notification 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
+      "filename" : "i phone notification 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
+      "filename" : "i phone setting 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
+      "filename" : "i phone setting 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
@@ -37,24 +41,28 @@
       "size" : "38x38"
     },
     {
+      "filename" : "i phone spotlight 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
+      "filename" : "i phone spotlight 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
+      "filename" : "i phone spotlight 3.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
+      "filename" : "i phone app 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
@@ -91,99 +99,10 @@
       "size" : "83.5x83.5"
     },
     {
+      "filename" : "app store.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
-    },
-    {
-      "filename" : "fkm-20@2x.png",
-      "idiom" : "iphone",
-      "scale" : "2x",
-      "size" : "20x20"
-    },
-    {
-      "filename" : "fkm-20@3x.png",
-      "idiom" : "iphone",
-      "scale" : "3x",
-      "size" : "20x20"
-    },
-    {
-      "filename" : "fkm-29.png",
-      "idiom" : "iphone",
-      "scale" : "1x",
-      "size" : "29x29"
-    },
-    {
-      "filename" : "fkm-29@2x.png",
-      "idiom" : "iphone",
-      "scale" : "2x",
-      "size" : "29x29"
-    },
-    {
-      "filename" : "fkm-29@3x.png",
-      "idiom" : "iphone",
-      "scale" : "3x",
-      "size" : "29x29"
-    },
-    {
-      "filename" : "fkm-40@2x.png",
-      "idiom" : "iphone",
-      "scale" : "2x",
-      "size" : "40x40"
-    },
-    {
-      "filename" : "fkm-40@3x.png",
-      "idiom" : "iphone",
-      "scale" : "3x",
-      "size" : "40x40"
-    },
-    {
-      "filename" : "fkm-60@2x.png",
-      "idiom" : "iphone",
-      "scale" : "2x",
-      "size" : "60x60"
-    },
-    {
-      "filename" : "fkm-60@3x.png",
-      "idiom" : "iphone",
-      "scale" : "3x",
-      "size" : "60x60"
-    },
-    {
-      "filename" : "fkm-1024.png",
-      "idiom" : "ios-marketing",
-      "scale" : "1x",
-      "size" : "1024x1024"
-    },
-    {
-      "filename" : "fkm-20.png",
-      "idiom" : "universal",
-      "scale" : "1x",
-      "size" : "20x20"
-    },
-    {
-      "filename" : "fkm-40.png",
-      "idiom" : "universal",
-      "scale" : "1x",
-      "size" : "40x40"
-    },
-    {
-      "filename" : "fkm-76.png",
-      "idiom" : "universal",
-      "scale" : "1x",
-      "size" : "76x76"
-    },
-    {
-      "filename" : "fkm-76@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x",
-      "size" : "76x76"
-    },
-    {
-      "filename" : "fkm-83.5@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x",
-      "size" : "83.5x83.5"
     }
   ],
   "info" : {

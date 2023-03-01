@@ -43,8 +43,6 @@ const ClickHistory = ({ navigation }) => {
                     desc: data.response.top_desc,
                 });
             }).catch((error) => {
-                console.log("not found", error.message);
-
             }).finally(() => {
                 setLoader(false);
             });

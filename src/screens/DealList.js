@@ -31,7 +31,7 @@ const DealList = ({ navigation }) => {
                 setLoadMore(false);
             }
         }).catch((error) => {
-            console.log('Error', error);
+            console.log(error);
         }).finally(() => {
             setLoader(false);
         });

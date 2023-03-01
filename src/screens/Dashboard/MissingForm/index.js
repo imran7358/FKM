@@ -29,7 +29,6 @@ const MissingForm = ({navigation}) => {
                 },
             }).then(({ data }) => {
                setStore(data.response);
-               console.log("Missing Store", data.response);
 
             }).catch((error) => {
                 console.log(error);

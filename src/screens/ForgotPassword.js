@@ -8,6 +8,7 @@ import * as yup from 'yup'
 import ErroLabel from '../components/ErrorCom';
 import SucessLbl from '../components/SuccessCom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import KeybaordAvoidingWrapper from '../components/keyboardAvoidingWrapper';
 
 const END_URL = '/user/forgetpass';
 
@@ -15,19 +16,8 @@ const ForgotPassword = ({ navigation }) => {
     const [success, setSucess] = useState('');
     const [error, setError] = useState('');
     return (
-        <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <Image source={require('../assets/images/login-image.png')} />
-            </View>
-            <View>
-                <Text style={[styles.headingSize]}>Forgot Password</Text>
-            </View>
-            <View style={styles.forgotParagraph}>
-                <Text style={styles.innerPara}>
-                    Don’t worry ! It happens. Please enter the
-                    address Associated with your account.
-                </Text>
-            </View>
+        <KeybaordAvoidingWrapper>
+        
             <Formik initialValues={{
                 username: ''
             }}
@@ -61,7 +51,19 @@ const ForgotPassword = ({ navigation }) => {
 
                 }}>
                 {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
-
+                    <View style={styles.container}>
+                    <View style={styles.imageContainer}>
+                        <Image source={require('../assets/images/login-image.png')} />
+                    </View>
+                    <View>
+                        <Text style={[styles.headingSize]}>Forgot Password</Text>
+                    </View>
+                    <View style={styles.forgotParagraph}>
+                        <Text style={styles.innerPara}>
+                            Don’t worry ! It happens. Please enter the
+                            address Associated with your account.
+                        </Text>
+                    </View>
                     <View style={styles.inputView}>
                         <View style={styles.inputBoxContainer}>
                             <Image
@@ -95,11 +97,10 @@ const ForgotPassword = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
 
-                )}
-
-
+                </View>
+                 )}
             </Formik>
-        </View>
+        </KeybaordAvoidingWrapper>
     );
 };
 
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 24,
         backgroundColor: '#FFFFFF',
-        flex: 1,
+        justifyContent: 'center',
     },
     error: {
         fontSize: 12,

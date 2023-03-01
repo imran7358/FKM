@@ -32,7 +32,6 @@ const WidthdarawlMoney = ({ navigation }) => {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("State set-->>>", { account: data.account, label: data.label_msg, coupon: data.promocodes })
             setDataRes({ account: data.account, label: data.label_msg, coupon: data.promocodes });
         }).catch((error) => {
             console.log('Error', error);
