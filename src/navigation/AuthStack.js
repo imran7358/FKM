@@ -38,6 +38,10 @@ import MissingForm from '../screens/Dashboard/MissingForm';
 import MissingCashBackForm from '../screens/Dashboard/MissingForm/MissingCashback';
 import SearchProduct from '../screens/SearchProducts';
 import Search from '../screens/Search'
+import AllCashback from '../screens/Cashback';
+import AllDeals from '../screens/Cashback/AllCashbackDeals';
+import AllCashbackStores from '../screens/Cashback/AllCashbackStore';
+
 // WithdrawMoney
 import { View, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -237,6 +241,42 @@ const AuthStack = ({ navigation }) => {
                     </TouchableOpacity>
                 )
             }} />
+
+<Stack.Screen name="CashbackDeals" component={AllDeals} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+<Stack.Screen name="AllCashbackStores" component={AllCashbackStores} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+            
+
+<Stack.Screen name="Cashback" component={AllCashback} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
 
 <Stack.Screen name="search" component={Search} initialParams={{ searchKeyword: "" }} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

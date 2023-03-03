@@ -103,6 +103,17 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                </View>
               </TouchableOpacity>
+
+              <TouchableOpacity onPress={()=> navigation.navigate('Cashback')}>
+              <View style={styles.menuListCon}>
+                <View style={styles.menuIcon}>
+                <Percent style={styles.iconSize} width={18}/>
+                </View>
+                <View style={styles.menuName}>
+                <Text style={styles.menuTxt}>All Cashback</Text>
+                </View>
+               </View>
+              </TouchableOpacity>
                {/* <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <Scissors style={styles.iconSize} width={18}/>

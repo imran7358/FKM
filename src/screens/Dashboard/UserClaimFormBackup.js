@@ -150,7 +150,8 @@ const UserClaimForm = ({ navigation, route }) => {
 
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}> 
+        
             <View style={styles.innerContainer}>
                 <View style={styles.margi}>
                     <Text style={styles.cbform}>Cashback Claimform</Text>

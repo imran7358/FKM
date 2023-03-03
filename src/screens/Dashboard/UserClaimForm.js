@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, Platform } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, TextInput, Image, Platform, SafeAreaView } from 'react-native';
+import { ScrollView, TouchableOpacity, } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 import axios, { all } from 'axios';
 const END_URL = '/cashback/userclaimform';
@@ -11,10 +11,11 @@ import DatePicker from 'react-native-date-picker';
 import DocumentPicker from 'react-native-document-picker';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-import ImgToBase64 from 'react-native-image-base64';
 import Loader from '../../components/Loader';
 import ErroLabel from '../../components/ErrorCom';
 import SucessLbl from '../../components/SuccessCom';
+import KeybaordAvoidingWrapper from '../../components/keyboardAvoidingWrapper';
+
 
 
 const UserClaimForm = ({ navigation, route }) => {
@@ -34,8 +35,8 @@ const UserClaimForm = ({ navigation, route }) => {
     const [allowed, setAllowed] = useState(false)
     const [emptyFields, setEmptyFields] = useState([])
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
     useEffect(() => {
-        console.log("Store Id",route.params.storeId)
     }, [fileResponse, allowed, route.params.storeId])
 
     const getDetails = async () => {
@@ -51,6 +52,7 @@ const UserClaimForm = ({ navigation, route }) => {
             }).then(({ data }) => {
                 setClick(data.response.userclicks);
                 setField(data.response.claimform);
+                
 
             }).catch((error) => {
                 console.log("Clicks Error", error.message);
@@ -106,10 +108,11 @@ const UserClaimForm = ({ navigation, route }) => {
 
     useEffect(() => {
 
-    }, [value,field,click]);
+    }, [value, field, click]);
 
     const submitForm = () => {
         let fdata = new FormData();
+
         fdata.append('store', click[0].store);
         fdata.append('device_type', 'ios');
         fdata.append('apiAuth', Config.API_AUTH);
@@ -130,7 +133,8 @@ const UserClaimForm = ({ navigation, route }) => {
                     }
                     break;
                 case "file":
-                    if (fileResponse[item.field_name][0].uri) {
+
+                    if (fileResponse.length && fileResponse[item.field_name][0].uri) {
                         fdata.append(item.field_name, fileResponse[item.field_name][0]);
                     }
                     break;
@@ -154,147 +158,172 @@ const UserClaimForm = ({ navigation, route }) => {
 
 
     return (
-        <ScrollView style={styles.container}>
+        <SafeAreaView style={{ flex: 1 }}>
             {
-                click?.length ? <View><Text>Form Rahega</Text></View> : <View><Text>Form Nahi Rahega</Text></View>
-            }
-            <View style={styles.innerContainer}>
-                <View style={styles.margi}>
-                    <Text style={styles.cbform}>Cashback Claimform</Text>
-                </View>
-                <View>
-                    <Text style={styles.notes}>Kindly fill up this form only after you have completed the purchase at our partner site. We will verify your details and the cashback amount will be added to your account within 2 -3 Business days (except Saturday & Sunday )
-
-                    </Text>
-                </View>
-
-                <View>
-                    <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={click}
-                        maxHeight={300}
-                        labelField="clickid"
-                        valueField="clickid"
-                        placeholder="Select item"
-                        placeholderTextColor="grey"
-                        searchPlaceholder="Search..."
-                        value={value}
-                        onChange={e => {
-                            setValue(e.clickid);
-                        }}
-
-                    />
-                    {
-                        field?.length ? field.map((item, i) => {
-                            if (item.type === 'text') {
-                                return <View style={styles.inputBoxContainer} key={i}>
-                                    <TextInput
-                                        style={[styles.inputText, styles.lableFont]}
-                                        placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
-                                        value={formField[item.field_name]}
-
-                                        onChangeText={(e) => {
-                                            const temp = { ...formField };
-                                            temp[item.field_name] = e;
-                                            setFormField(temp);
-                                        }}
-
-                                    />
-                                </View>
-                            }
-                            else if (item.type === 'file') {
-
-                                return <View style={[styles.inputBoxContainer, styles.dateCon]} key={i}>
-                                    <Text
-                                        key={"FILE" + i}
-                                        style={styles.uri}
-                                        numberOfLines={1}
-                                        ellipsizeMode={'middle'}>
-                                        {fileResponse.hasOwnProperty(item.field_name) ? fileResponse[item.field_name][0].name : "Uploa File"}
-                                    </Text>
-
-
-                                    <TouchableOpacity onPress={(i1) => {
-                                        handleDocumentSelection(i1, item.field_name)
-                                    }}>
-                                        <View style={styles.dateIcon}>
-                                            <Image source={require('../../assets/images/upload.png')} style={styles.dateIcon} />
+                click?.length ?
+                    <>
+                        <KeybaordAvoidingWrapper>
+                            <ScrollView style={{ flex: 1, }}>
+                                <View style={styles.container}>
+                                    <View style={styles.innerContainer}>
+                                        <View style={styles.margi}>
+                                            <Text style={styles.cbform}>Cashback Claimform11</Text>
                                         </View>
-                                    </TouchableOpacity>
+                                        <View>
+                                            <Text style={styles.notes}>Kindly fill up this form only after you have completed the purchase at our partner site. We will verify your details and the cashback amount will be added to your account within 2 -3 Business days (except Saturday & Sunday )
 
-                                </View>
+                                            </Text>
+                                        </View>
 
-                            }
+                                        <View>
+                                            <Dropdown
+                                                style={styles.dropdown}
+                                                placeholderStyle={styles.placeholderStyle}
+                                                selectedTextStyle={styles.selectedTextStyle}
+                                                inputSearchStyle={styles.inputSearchStyle}
+                                                iconStyle={styles.iconStyle}
+                                                data={click}
+                                                maxHeight={300}
+                                                labelField="clickid"
+                                                valueField="clickid"
+                                                placeholder="Select item"
+                                                placeholderTextColor="grey"
+                                                searchPlaceholder="Search..."
+                                                value={value}
+                                                onChange={e => {
+                                                    setValue(e.clickid);
+                                                }}
+
+                                            />
+                                            {
+                                                field?.length ? field.map((item, i) => {
+                                        
+                                                    if (item.type === 'text') {
+                                                        return <View style={styles.inputBoxContainer} key={item.id}>
+                                                            {console.log("Txt fld", item.id)}
+                                                            <TextInput
+                                                                style={[styles.inputText, styles.lableFont]}
+                                                                placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
+                                                                value={formField[item.field_name]}
+                                                                placeholderTextColor="#666"
+                                                                onChangeText={(e) => {
+                                                                    const temp = { ...formField };
+                                                                    temp[item.field_name] = e;
+                                                                    setFormField(temp);
+                                                                }}
+
+                                                            />
+                                                        </View>
+                                                    }
+                                                    else if (item.type === 'file') {
+                    
+                                                        return <View style={[styles.inputBoxContainer, styles.dateCon]} key={item.id}>
+                                                            {console.log("file fld", item.id)}
+                                                            <Text
+                                                                style={styles.uri}
+                                                                numberOfLines={1}
+                                                                ellipsizeMode={'middle'}>
+                                                                {fileResponse.hasOwnProperty(item.field_name) ? fileResponse[item.field_name][0].name : "Upload File"}
+                                                            </Text>
 
 
-                            else if (item.type === 'date') {
-                                return <>
-                                    <View key={i} style={[styles.inputBoxContainer, styles.dateCon]}>
-                                        <Text>{date.toDateString()}</Text>
-                                        <TouchableOpacity onPress={() => setOpen(true)}>
-                                            <View style={styles.dateIcon}>
-                                                <Image source={require('../../assets/images/date.png')} style={styles.dateIcon} />
-                                            </View>
-                                        </TouchableOpacity>
+                                                            <TouchableOpacity onPress={(i1) => {
+                                                                handleDocumentSelection(i1, item.field_name)
+                                                            }}>
+                                                                <View style={styles.dateIcon}>
+                                                                    <Image source={require('../../assets/images/upload.png')} style={styles.dateIcon} />
+                                                                </View>
+                                                            </TouchableOpacity>
+
+                                                        </View>
+
+                                                    }
+
+
+                                                    else if (item.type === 'date') {
+                
+                                                        return <>
+                                                            <View key={item.id} style={[styles.inputBoxContainer, styles.dateCon]}>
+                                                            {console.log("date fld", item.id)}
+                                                                <Text>{date.toDateString()}</Text>
+                                                                <TouchableOpacity onPress={() => setOpen(true)}>
+                                                                    <View style={styles.dateIcon}>
+                                                                        <Image source={require('../../assets/images/date.png')} style={styles.dateIcon} />
+                                                                    </View>
+                                                                </TouchableOpacity>
+                                                            </View>
+                                                        </>
+                                                    }
+
+                                                    else {
+                                                        return <View key={item.id} style={styles.inputBoxContainer}>
+                                                            {console.log("optional Txt fld", item.id)}
+                                                            <TextInput
+                                                                style={[styles.inputText, styles.lableFont]}
+                                                                placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
+                                                                value={formField[item.field_name]}
+                                                                placeholderTextColor="#666"
+                                                                onChangeText={(e) => {
+                                                                    const temp = { ...formField };
+                                                                    temp[item.field_name] = e;
+                                                                    setFormField(temp);
+                                                                }}
+                                                            />
+                                                        </View>
+
+                                                    }
+
+                                                }) : null
+                                            }
+
+                                            <DatePicker 
+                                                key ={34}
+                                                modal
+                                                open={open}
+                                                date={date}
+                                                onConfirm={(date) => {
+                                                    setOpen(false);
+                                                    setDate(date);
+                                                }}
+                                                onCancel={() => {
+                                                    setOpen(false)
+                                                }}
+                                                mode="date"
+                                            />
+                                            {
+                                                allowed ? <View style={styles.allowedImg}>
+                                                    <Text style={styles.allowedlbl}>Only (jpg/png/jpeg) images are allowed</Text>
+                                                </View> : null
+                                            }
+                                            {
+                                                error ? <View>
+                                                    <Text>{error}</Text>
+                                                </View> : null
+                                            }
+
+                                        </View>
+
                                     </View>
-                                </>
-                            }
-
-                            else {
-                                return <View key={i} style={styles.inputBoxContainer}>
-                                    <TextInput
-                                        style={[styles.inputText, styles.lableFont]}
-                                        placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
-                                        value={formField[item.field_name]}
-                                        onChangeText={(e) => {
-                                            const temp = { ...formField };
-                                            temp[item.field_name] = e;
-                                            setFormField(temp);
-                                        }}
-                                    />
                                 </View>
-
-                            }
-
-                        }) : null
-                    }
-
-                    <DatePicker
-                        modal
-                        open={open}
-                        date={date}
-                        onConfirm={(date) => {
-                            setOpen(false);
-                            setDate(date);
-                        }}
-                        onCancel={() => {
-                            setOpen(false)
-                        }}
-                        mode="date"
-                    />
-                    {
-                        allowed ? <View style={styles.allowedImg}>
-                            <Text style={styles.allowedlbl}>Only (jpg/png/jpeg) images are allowed</Text>
-                        </View> : null
-                    }
-                    {
-                        error ? <View>
-                            <Text>{error}</Text>
-                        </View> : null
-                    }
-                    <TouchableOpacity onPress={submitForm}>
-                        <View style={styles.loginButton}>
-                            <Text style={styles.loginTxt}>Submit</Text>
+                            </ScrollView>
+                        </KeybaordAvoidingWrapper>
+                        <View style={styles.buttonCon}>
+                            <TouchableOpacity onPress={submitForm}>
+                                <View style={styles.loginButton}>
+                                    <Text style={styles.loginTxt}>Submit</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
-                </View>
+                    </>
+                    :
+                    <View style={styles.container}>
+                        <View style={styles.noClicks}><Text style={styles.clickTxt}>
+                            Attention!! Our System Hasn't Recorded Any Click Against This Store. You're Requested To Purchase The Product By Revisiting The Offer Again To Record This Click In Your FKM Account. Kindly Visit The Deal/Offer Page & Re-direct Through By Clicking On Shop and Earn Button To Record This Click.
+                        </Text></View>
+                    </View>
+            }
 
-            </View>
-        </ScrollView>
+        </SafeAreaView>
     );
 
 };
@@ -302,11 +331,21 @@ const UserClaimForm = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        flex: 1,
         backgroundColor: '#fff',
+    },
+    noClicks: {
+        backgroundColor: '#fafafa',
+        padding: 15,
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: 'red',
     },
     allowedImg: {
         marginTop: 10,
+    },
+    clickTxt: {
+        fontSize: 12,
+        lineHeight: 22,
 
     },
     allowedlbl: {
@@ -334,7 +373,7 @@ const styles = StyleSheet.create({
         justifyContent: centerContainer.justifyCenter,
         backgroundColor: '#F27935',
         padding: 10,
-        marginTop: 30,
+        marginTop: 10,
         borderRadius: 6,
         fontWeight: 'bold',
         height: 50,
@@ -403,6 +442,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 7,
+    },
+    buttonCon: {
+
+        paddingHorizontal: 24,
     },
     dateCon: {
         position: 'relative',
