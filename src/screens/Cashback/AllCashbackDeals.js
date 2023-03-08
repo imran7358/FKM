@@ -13,14 +13,14 @@ const AllDeals = ({navigation})=> {
     const [success, setSucess] = useState(false);
     const [error, setError] = useState(false);
     const [loader, setLoader] = useState(false);
-    const [deals, setDeals] = useState([])
-    const [store, setStore] = useState([])
+    const [deals, setDeals] = useState([]);
+    const [store, setStore] = useState([]);
     const [page, setPage] = useState(1);
     
 const userToken = useSelector(state => state.user.userToken);
 
 const getCashbackDeals = () => {
-    setLoader(true)
+    setLoader(true);
     request.post(navigation, Config.API_URL + END_URL, {
         apiAuth: Config.API_AUTH,
         device_type: Config.device_type,
@@ -41,6 +41,7 @@ const getCashbackDeals = () => {
 useEffect(()=>{
     getCashbackDeals();
 },[page])
+
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -50,7 +51,7 @@ useEffect(()=>{
                             return <View style={styles.productBox} key={i}>
                                 <TouchableOpacity onPress={() =>{navigation.navigate({ name: 'Details', params: { dealSlug: item.slug_url } })}}>
                                     {
-                                        item.is_cashback == '1' ?
+                                        item.is_cashback === '1' ?
                                         <View style={styles.cashback}>
                                             <Text style={styles.cbtxt}>Cashback</Text>
                                         </View>
@@ -73,7 +74,7 @@ useEffect(()=>{
                                     </View>
                                    <View style={styles.btnCon}>
                                    <View style={styles.cbButton}>
-                                        <Text style={styles.cbTxt}>500</Text>
+                                        <Text style={styles.cbTxt}>{item.cahsback}</Text>
                                     </View>
 
                                    </View>
@@ -88,7 +89,6 @@ useEffect(()=>{
                             </View>
                             : null
                     }
-                   
                 </View>
                 <View style={styles.loaderContainer}>
                         <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
@@ -115,15 +115,16 @@ const styles = StyleSheet.create({
       cbButton: {
         position: 'absolute',
         backgroundColor: '#f27935',
-        bottom: -55,
-        width:'100%',
+        bottom: -50,
+        width:'124%',
         textAlign: 'center',
         justifyContent: 'center',
         display:'flex',
         padding: 10,
-        borderRadius:3,
-
+        borderRadius:0,
+        left:-15,
       },
+
       hotSale: {
         width: 29,
         height: 29,
@@ -136,6 +137,7 @@ const styles = StyleSheet.create({
       loaderContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 20,
     },
     cbtxt:{
         color: '#fff',
@@ -266,17 +268,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '900',
         color: '#fff',
-        fontSize:16,
-    },
-    LoadMore: {
-        borderRadius: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#f27935',
-        borderWidth: 1,
-        paddingHorizontal: 30,
-        paddingVertical: 15,
-        marginVertical: 25,
+        fontSize:12,
     },
     barTxt: {
         color: '#fff',

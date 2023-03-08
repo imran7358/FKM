@@ -2,35 +2,43 @@ import axios from "axios";
 import React from "react";
 import { View, Text,  StyleSheet, SafeAreaView, Image, TouchableOpacity} from "react-native";
 import Config from "react-native-config";
-const END_URL = '/cashback/cashbackpage';
+const END_URL = '/cashback/cashbackstore';
 import { useEffect, useState} from "react";
 import request from "../../utils/request";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
 import Loader from "../../components/Loader";
 
-const Stores = ({navigation})=> {
+const HundredCashback = ({navigation})=> {
     const [success, setSucess] = useState(false);
     const [error, setError] = useState(false);
     const [loader, setLoader] = useState(false);
-    const [deals, setDeals] = useState([])
-    const [store, setStore] = useState([])
-    
+    const [store, setStore] = useState([]);
+    const [page, setPage] = useState(1);
+    const [noData, setNoData] = useState(false);
 const userToken = useSelector(state => state.user.userToken);
 
-const getCashbackDeals = (navigation) => {
-    setLoader(true)
+const getCashbackDeals = () => {
+    setLoader(true);
     request.post(navigation, Config.API_URL + END_URL, {
         apiAuth: Config.API_AUTH,
         device_type: Config.device_type,
+        page,
+        option:'hundredpercent',
     },{
         headers: {
             Authorization: userToken,
         },
     }).then(({data})=>{
-        setStore(data.response.cahsbackstore)
+        if (data.response.cahsbackstore && data.response.cahsbackstore.length)
+       {
+        setStore(data.response.cahsbackstore);
+       }
+       else {
+        setNoData(true);
+       }
     }).catch((error)=>{
-        console.log("Error Aaya hai", error)
+        console.log("Error Aaya hai", error);
     }).finally(()=>{
         setLoader(false);
     })
@@ -40,11 +48,8 @@ useEffect(()=>{
     getCashbackDeals()
 },[])
     return (
-        
-        
-    
-            <View style={styles.productContainer}>
-                    <View style={styles.storeInner}>
+        <View style={styles.container}>
+            <View style={styles.storeCon}>
                         {
                             store.length ? store.map((item, i) => {
                                 return <View style={styles.storeBox} key={i}>
@@ -60,47 +65,26 @@ useEffect(()=>{
                                         </View>
                                     </TouchableOpacity>
                                 </View>
-                            }) : <Loader />
+                            }) :  null
                         }
-                    </View>
+                </View>
+                {
+                    noData ? <View style={styles.noData}><Text>No data found !!</Text></View> : null 
+                }
                 </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
         backgroundColor: '#fff',
+        flex:1,
     },
-      headingArea: {
-        flexDirection: 'row',
-        alignContent: 'center',
-        alignItems: 'center',
-      },
-      hotSale: {
-        width: 29,
-        height: 29,
-        resizeMode: 'contain',
-      },
-      cbButton: {
-        position: 'absolute',
-        backgroundColor: '#f27935',
-        bottom: -30,
-        width:'134%',
-        textAlign: 'center',
-        justifyContent: 'center',
-        display:'flex',
-        padding: 10,
-        borderRadius:0,
-        left:-20,
-      },
-      topHeading: {
-        fontSize: 18,
-        marginLeft: 10,
-      },
       loaderContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+        alignContent: 'center',
+        width:'100%',
     },
     cbtxt:{
         color: '#fff',
@@ -127,75 +111,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    dealsContainer: {
-        justifyContent: 'center',
-        alignContent: 'center',
-        alignItems: 'center',
-    },
-    productImage: {
-        width: 100,
-        height: 100,
-        padding: 10,
-        backgroundColor: '#fff',
-        borderRadius: 9,
-        justifyContent: 'center',
-        alignContent: 'center',
-        alignItems: 'center',
-    },
+
     noData: {
         alignContent: 'center',
         alignItems: 'center',
         margin: 20,
-    },
-    productImageCon: {
-        width: '100%',
-        alignItems: 'center',
         justifyContent: 'center',
-    },
-    brandLogo: {
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        marginTop: 20,
-        textAlign: 'left'
-    },
-    prodDescr: {
-        fontSize: 10,
-        marginTop: 10,
-    },
-    prdLine: {
-        fontSize: 11,
-        lineHeight: 18,
-    },
-    priceContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 10,
-    },
-    innerPrice: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        position: 'relative',
-    },
-    rpImage: {
-        width: 11,
-        height: 11,
-        resizeMode: 'contain',
-    },
-    priceTxt: {
-        fontSize: 15,
-        fontWeight: '800',
-        marginLeft: 3,
-    },
-    cutprice: {
-        color: '#888888',
-    },
-    cutLine: {
-        position: 'absolute',
-        width: '100%',
-        height: 2,
-        backgroundColor: '#f27935',
-
     },
     LoadMore: {
         borderRadius: 6,
@@ -214,23 +135,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textTransform: 'uppercase',
     },
-    cashback: {
-        backgroundColor: '#f27935',
-        borderRadius:3,
-       paddingHorizontal: 7,
-        position:'absolute',
-        zIndex: 999,
-        paddingVertical: 4,
-        right:0,
-        opacity: 0.8,
-    },
-    cashbackDeals: {
-        marginTop:20,
-    },
-    storeInner: {
+
+    storeCon:{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        alignContent:'center',
         flexWrap: 'wrap',
     },
     storeBox: {
@@ -241,6 +151,18 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 40,
     },
+    cbButton: {
+        position: 'absolute',
+        backgroundColor: '#f27935',
+        bottom: -30,
+        width:'134%',
+        textAlign: 'center',
+        justifyContent: 'center',
+        display:'flex',
+        padding: 10,
+        borderRadius:0,
+        left:-20,
+      },
     logoContinaer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -258,13 +180,14 @@ const styles = StyleSheet.create({
     },
 
     cbBtn: {
-        textAlign: 'center',
-        fontWeight: '900',
+        borderRadius: 6,
+        fontWeight: '800',
         color: '#fff',
         fontSize:12,
+        textAlign:"center",
     },
     btnContainer: {
-        width: 112,
+        width: '100%',
         backgroundColor: '#f27935',
         borderRadius: 6,
         alignItems: 'center',
@@ -273,4 +196,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Stores;
+export default HundredCashback;

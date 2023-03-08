@@ -62,7 +62,7 @@ useEffect(()=>{
                                         </View>
                                     </View>
                                     <View style={styles.brandLogo}>
-                                        <Image source={{ uri: item.store_img_url }} style={{ height: 16, width: 55 }} />
+                                        <Image source={{ uri: item.store_img }} style={{ height: 16, width: 55 }} />
                                     </View>
                                     <View style={styles.prodDescr}>
                                         <Text style={styles.prdLine} numberOfLines={2}>
@@ -72,16 +72,10 @@ useEffect(()=>{
                                     </View>
                                    <View style={styles.btnCon}>
                                    <View style={styles.cbButton}>
-                                        <Text style={styles.cbTxt}>500</Text>
+                                        <Text style={styles.cbTxt}>{item.cahsback}</Text>
                                     </View>
 
                                    </View>
-                                    {/* <View style={styles.priceContainer}>
-                                        <View style={styles.innerPrice}>
-                                            <Image source={require('../../assets/images/rupee-icon.png')} style={styles.rpImage} />
-                                            <Text style={styles.priceTxt}>{item.offer_price}</Text>
-                                        </View>
-                                    </View> */}
                                 </TouchableOpacity>
                             </View>
                         }) : null
@@ -110,15 +104,16 @@ const styles = StyleSheet.create({
       cbButton: {
         position: 'absolute',
         backgroundColor: '#f27935',
-        bottom: -55,
-        width:'100%',
+        bottom: -50,
+        width:'124%',
         textAlign: 'center',
         justifyContent: 'center',
         display:'flex',
         padding: 10,
-        borderRadius:3,
-
+        borderRadius:0,
+        left:-15,
       },
+
       hotSale: {
         width: 29,
         height: 29,
@@ -151,7 +146,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: 45,
         position: 'relative',
-        paddingBottom:40,
+        paddingBottom:50,
     },
     loadContainer: {
         marginTop: 50,
@@ -262,7 +257,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '900',
         color: '#fff',
-        fontSize:16,
+        fontSize:12,
     }
 })
 

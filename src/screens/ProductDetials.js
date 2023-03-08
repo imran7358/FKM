@@ -10,8 +10,11 @@ import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
 
 
+
  const ProductDetails = ({navigation, route}) => {
 
+
+    const userToken = useSelector(state=> state.user.userToken)
     const userInfo = useSelector(state=> state.user.userInfo);
     const [details, setDetails] = useState({
         title: '',
@@ -23,6 +26,7 @@ import { useSelector } from 'react-redux';
         landing_url : '',
         isCashback: '',
         storeImg : null,
+        cashbackAmount: ''
     });
     const [relatedProduct, setRelatedProduct] = useState([]);
 
@@ -34,20 +38,26 @@ import { useSelector } from 'react-redux';
             'apiAuth': Config.API_AUTH,
             'deal_slug': route.params.dealSlug,
             'device_type':'4',
+        },{
+            headers: {
+                Authorization: userToken,
+            },
         }).then(({data})=>{
+            console.log("Details", data)
             const regex = /(<([^>]+)>)/ig;
-            const result = data.response.deal.deal_description_url.replace(regex, '');
-             const htmltxt = data.response.deal.deal_description_url;
+            const result = data.response.deal.description.replace(regex, '');
+
             setDetails({
                 title: data.response.deal.deal_title,
                 dealImg:data.response.deal.deal_img_url,
                 price: data.response.deal.price,
                 offerPrice: data.response.deal.offer_price,
-                description: htmltxt,
+                description: result,
                 isClaim: data.response.deal.is_claim,
                 landing_url: data.response.deal.landing_url,
                 isCashback: data.response.deal.is_cashback,
                 storeImg: data.response.deal.store_image,
+                cashbackAmount: data.response.deal.cashback_amount,
             });
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
@@ -60,7 +70,7 @@ import { useSelector } from 'react-redux';
 
     useEffect(()=>{
         getDetails();
-        console.log("User Info", userInfo)
+        console.log("myToken", userToken)
     },[]);
 
     return (
@@ -97,7 +107,7 @@ import { useSelector } from 'react-redux';
                         <View style={styles.cashbckPrice}>
                         <View style={styles.innerPrice}>
                                 <Image source={require('../assets/images/rupee-icon.png')} style={styles.cbSize}/>
-                                <Text style={styles.cbTxt}>250</Text>
+                                <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
                                 <Text>Cashback</Text>
                                 <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
                             </View>

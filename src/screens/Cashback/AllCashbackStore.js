@@ -8,73 +8,64 @@ import request from "../../utils/request";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
 import Loader from "../../components/Loader";
+import All from "./All";
+import HundredCashback from "./HundredCashback";
+import PopularCashback from "./Popular";
+import NewestCashback from "./Newest";
 
 const AllStores = ({navigation})=> {
     const [success, setSucess] = useState(false);
     const [error, setError] = useState(false);
     const [loader, setLoader] = useState(false);
     const [store, setStore] = useState([]);
-    const [page, setPage] = useState(1)
-    
+    const [page, setPage] = useState(1);
+    const cbTab = ["All","Hundredpercent", "Newest","Popular"];
+    const [tab, setTab] = useState('All');
+
 const userToken = useSelector(state => state.user.userToken);
-
-const getCashbackDeals = (navigation) => {
-    setLoader(true)
-    request.post(navigation, Config.API_URL + END_URL, {
-        apiAuth: Config.API_AUTH,
-        device_type: Config.device_type,
-        page,
-        "option":"hundredpercent",
-    },{
-        headers: {
-            Authorization: userToken,
-        },
-    }).then(({data})=>{
-        setStore([...store, ...data.response.cahsbackstore])
-        console.log("Store Data", data.response.cahsbackstore)
-    }).catch((error)=>{
-        console.log("Error Aaya hai", error)
-    }).finally(()=>{
-        setLoader(false);
-    })
-}
-
 useEffect(()=>{
-    getCashbackDeals()
-},[])
+},[tab])
     return (
-        
-        
         <ScrollView>
         <View style={styles.container}>
-            <View style={styles.productContainer}>
-                    <View style={styles.storeInner}>
+            <View style={styles.historyTab}>
+                        {cbTab.map((e,i)=><View key={i}><Text  style={e==tab?[styles.tabList,styles.activeTab]:[styles.tabList]} onPress={(ev)=>{setTab(e)}}>
+                            {
+                                e ==="Hundredpercent" ? '100% Cashback' : e
+                            }
+                            </Text></View>)}
+                    </View>
+                   
                         {
-                            store.length ? store.map((item, i) => {
-                                return <View style={styles.storeBox} key={i}>
-                                    <TouchableOpacity onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.name } })}>
-                                        <View style={styles.logoContinaer}>
-                                            <View>
-                                                <Image source={{ uri: item.img_url}} style={styles.logo} />
-                                            </View>
-                                            <View><Text style={styles.logoTxt}>{item.name}</Text></View>
-                                            <View style={styles.btnContainer}>
-                                                <Text style={styles.cbBtn}>₹ {item.cahsback}</Text>
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            }) : <Loader />
+                            tab === "All" ?
+                            <View style={styles.storeCon}>
+                           <All navigation = {navigation}/>
+                        </View>
+                         : null
                         }
-                    </View>
-                </View>
-                <View style={styles.loaderContainer}>
-                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
-                            <View>
-                                <Text style={styles.loadTxt}>Load More</Text>
+
+                        {
+                            tab === "Hundredpercent" ? 
+
+                            <View style={styles.storeCon}>
+                               <HundredCashback navigation = {navigation}/>
                             </View>
-                        </TouchableOpacity>
-                    </View>
+                            : null
+                        }
+                        {
+                            tab === "Popular" ?
+                            <View style={styles.storeCon}>
+                            <PopularCashback navigation = {navigation}/>
+                        </View>
+                            : null
+                        }
+                        {
+                            tab === "Newest" ?
+                            <View style={styles.storeCon}>
+                            <NewestCashback navigation = {navigation}/>
+                        </View>
+                            : null
+                        }
                 </View>
                 </ScrollView>
     )
@@ -84,6 +75,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 20,
         backgroundColor: '#fff',
+        flex:1,
     },
       headingArea: {
         flexDirection: 'row',
@@ -95,6 +87,28 @@ const styles = StyleSheet.create({
         height: 29,
         resizeMode: 'contain',
       },
+      tabList: {
+        fontSize:16,
+        fontWeight: '500',
+    },
+      historyTab: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 15,
+        width: '100%',
+    },
+    activeTab: {
+        color: '#F27935',
+        fontWeight: '900',
+        borderColor: '#f27935',
+        borderBottomWidth: 1,
+    },
+    txtActive: {
+        color: '#f27935',
+        fontSize: 16,
+        fontWeight: '900',
+        textTransform:'capitalize',
+    },
       topHeading: {
         fontSize: 18,
         marginLeft: 10,
@@ -106,12 +120,6 @@ const styles = StyleSheet.create({
     cbtxt:{
         color: '#fff',
         fontSize: 12,
-    },
-    productContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
     },
     productBox: {
         width: '47%',
@@ -228,7 +236,8 @@ const styles = StyleSheet.create({
     cashbackDeals: {
         marginTop:20,
     },
-    storeInner: {
+ 
+    storeCon:{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
