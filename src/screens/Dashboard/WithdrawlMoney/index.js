@@ -4,15 +4,18 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import Config from 'react-native-config';
-import request from '../../utils/request';
+import request from '../../../utils/request';
 import { useSelector, useDispatch } from 'react-redux';
 const END_URL = '/cashback/withdraw-payment-mode';
 import WidthdarawlForm from './WithdrawaForm';
 import WidthdarawlOtp from './WithdrawOtp';
+import ErroLabel from '../../../components/ErrorCom';
 
 const WidthdarawlMoney = ({ navigation }) => {
     const [value, setValue] = useState('');
     const [dataRes, setDataRes] = useState(null);
+    const [error, setError] = useState(false);
+    const [sucess, setSuccess] = useState(false);
     const dispatch = useDispatch();
 
     const userToken = useSelector(state => {
@@ -32,9 +35,15 @@ const WidthdarawlMoney = ({ navigation }) => {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            setDataRes({ account: data.account, label: data.label_msg, coupon: data.promocodes });
+            if(data.status == 1 && data.error == 0){
+                setDataRes({ account: data.account, label: data.label_msg, coupon: data.promocodes });
+            } 
+            else {
+                setError(data.message)
+            }
+           
         }).catch((error) => {
-            console.log('Error', error);
+            setError(error.message)
         });
     };
 
@@ -79,11 +88,9 @@ const WidthdarawlMoney = ({ navigation }) => {
                     </View>
                         : null
                 }
-                {/* <TouchableOpacity>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Next</Text>
-                    </View>
-                </TouchableOpacity> */}
+                {
+                    error ? <ErroLabel message={error}/> : null
+                }
             </View>
             {value && dataRes ? <WidthdarawlForm payType={value} label={dataRes.label} account={dataRes.account} coupon={[
                 { "code": dataRes.coupon.code, "couponid": dataRes.coupon.couponid, "request_amount": 0, "usage_text": "Use No coupon" },

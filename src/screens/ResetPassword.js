@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   centerContainer,
   fontSize,
@@ -16,17 +16,20 @@ import * as yup from 'yup';
 const END_URL = '/user/resetpass'
 import ErroLabel from '../components/ErrorCom';
 import SucessLbl from '../components/SuccessCom';
+import KeybaordAvoidingWrapper from '../components/keyboardAvoidingWrapper';
 
 const ResetPassword = ({navigation}) => {
     const [success, setSucess] = useState('');
     const [error, setError] = useState('');
   return (
+    <ScrollView contentContainerStyle={{flex:1}}>
+    <KeybaordAvoidingWrapper>
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={require('../assets/images/login-image.png')} />
       </View>
       <View>
-        <Text style={[styles.headingSize]}>Login</Text>
+        <Text style={[styles.headingSize]}>Reset Password</Text>
       </View>
       <Formik initialValues={{
         otp: '',
@@ -144,6 +147,8 @@ const ResetPassword = ({navigation}) => {
       </Formik>
      
     </View>
+    </KeybaordAvoidingWrapper>
+    </ScrollView>
   );
 };
 
@@ -152,6 +157,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#FFFFFF',
     flex: 1,
+    justifyContent: 'center',
   },
   error: {
     fontSize: 12,

@@ -7,6 +7,9 @@ import request from '../../../utils/request';
 import { useSelector } from 'react-redux';
 import WidthdarawlOtp from './WithdrawOtp';
 const END_URL = '/cashback/withdraw-money';
+import { Formik } from 'formik';
+import * as yup from "yup"
+
 
 const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
     const [userToken, withdrawInfo] = useSelector(state => {
@@ -20,6 +23,8 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
     }));
     const [pipe, Resp] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [sucess, setSuccess] = useState(false);
     const RadioButton = ({ onPress, selected, children }) => {
         return (
             <View style={styles.radioButtonContainer}>
@@ -33,16 +38,24 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
         );
     };
 
-    const sendAPIreq = (opt) => {
-        const cpnSel = coupon.find(e => e.code == couponSelected)
+    return pipe ? <WidthdarawlOtp response={pipe} payType={payType} couponSelected={{code: pipe.coupon_code, couponid: pipe.couponid}} account={account} /> : (
+        <ScrollView style={styles.container}>
+            <Formik initialValues={{
+                amount:'',
+            }}
+            validationSchema = {yup.object().shape({
+                amount:yup.string().required("Please enter the amount")
+            })}
+            onSubmit ={async(values,opt)=>{
+                const cpnSel = coupon.find(e => e.code == couponSelected)
         setLoading(true);
         request.post(navigation, Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: '4',
-            option: opt,
+            option: 'cbrequest',
             account_ref_id: account[0].account_ref_id,
             wallet_type: payType,
-            amount,
+            amount:values.amount,
             code_reference: couponSelected,
             code: cpnSel.code || null,
             couponid: cpnSel.couponid || null,
@@ -53,74 +66,77 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
         }).then(({ data }) => {
             setLoading(false);
             Resp(data);
+            console.log("Submit Data", data)
         }).catch((error) => {
-            console.log('Error', error);
+            console.log('Error', error.message);
         });
-    }
+            }}
+            >
+                {({values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit})=>(
 
-    return pipe ? <WidthdarawlOtp response={pipe} payType={payType} couponSelected={{code: pipe.coupon_code, couponid: pipe.couponid}} account={account} /> : (
-        <ScrollView style={styles.container}>
-            <View style={styles.innerContainer}>
+<View style={styles.innerContainer}>
+<Text style={styles.storeName}>Selectd Account</Text>
+<View style={styles.inputView}>
+    <View style={styles.inputBoxContainer}>
+        <TextInput
+            autoCapitalize="none"
+            style={styles.inputText}
+            placeholderTextColor="#666"
+            value={account[0].name}
+        />
+    </View>
+</View>
+<View style={styles.inputView}>
+    <View style={styles.inputBoxContainer}>
+        <TextInput
+            autoCapitalize="none"
+            style={styles.inputText}
+            placeholder="Amount"
+            placeholderTextColor="#666"
+            onChangeText={handleChange('amount')}
+            onBlur={() => setFieldTouched('amount')}
+            value={values.amount}
+        />
+         {touched.amount && errors.amount &&
+                                    <Text style={styles.error}>{errors.amount}</Text>
+                                }
+        <Text style={styles.cpLabel}>{label}</Text>
+    </View>
+</View>
+<View style={styles.savedCoupons}>
+    <Text style={styles.svedcponText}>Your Saved Coupons</Text>
+    <View style={styles.app}>
+        {
+            allCoupon.map(item => (
+            <RadioButton style ={styles.radioLbl} key={item.code} selected={item.selected} 
+            onPress={() => {
+                let tempCoupon = [...coupon];
+                tempCoupon = tempCoupon.map(e => {
+                    if (e.couponid === item.couponid) {
+                        e.selected = true;
+                        setCouponSelected(e.code);
+                    }
+                    else {
+                        e.selected = false;
+                    }
+                    return e;
+                });
+                setAllCoupon(tempCoupon);
+            }}>
+                <Text>{item.usage_text}</Text>
+            </RadioButton>))}
 
-                <Text style={styles.storeName}>Selectd Account</Text>
-                <View style={styles.inputView}>
-                    <View style={styles.inputBoxContainer}>
-                        <TextInput
-                            autoCapitalize="none"
-                            style={styles.inputText}
-                            placeholderTextColor="#666"
-                            value={account[0].name}
-                        />
-                    </View>
-                </View>
-                <View style={styles.inputView}>
-                    <View style={styles.inputBoxContainer}>
-                        <TextInput
-                            autoCapitalize="none"
-                            style={styles.inputText}
-                            placeholderTextColor="#666"
-                            placeholder="Amount"
-                            onChangeText={(e) => {
-                                setAmount(e)
-                            }}
-                            value={amount}
-                        />
-                        <Text style={styles.cpLabel}>{label}</Text>
-                    </View>
-                </View>
-                <View style={styles.savedCoupons}>
-                    <Text style={styles.svedcponText}>Your Saved Coupons</Text>
-                    <View style={styles.app}>
-                        {
-                            allCoupon.map(item => (
-                            <RadioButton style ={styles.radioLbl} key={item.code} selected={item.selected} 
-                            onPress={() => {
-                                let tempCoupon = [...coupon];
-                                tempCoupon = tempCoupon.map(e => {
-                                    if (e.couponid === item.couponid) {
-                                        e.selected = true;
-                                        setCouponSelected(e.code);
-                                    }
-                                    else {
-                                        e.selected = false;
-                                    }
-                                    return e;
-                                });
-                                setAllCoupon(tempCoupon);
-                            }}>
-                                <Text>{item.usage_text}</Text>
-                            </RadioButton>))}
+    </View>
+</View>
+<TouchableOpacity onPress={handleSubmit}>
+    <View style={styles.loginButton}>
+        <Text style={styles.loginTxt}>Submit</Text>
+    </View>
+</TouchableOpacity>
+</View>
 
-                    </View>
-                </View>
-                <TouchableOpacity onPress={(e) => {
-                    sendAPIreq("cbrequest");
-                }}>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Submit</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
+                )}
+            </Formik>
         </ScrollView>);
 };
 
@@ -292,6 +308,19 @@ const styles = StyleSheet.create({
         lineHeight: 30,
         fontSize: 20,
         marginVertical: 5,
+    },
+    error: {
+        fontSize: 12,
+        color: '#FF0D10',
+        marginTop: 7,
+    },
+    errorLabel: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 10,
+    },
+    lableFont: {
+        fontSize: fontSize.inputFont,
     },
 
 });

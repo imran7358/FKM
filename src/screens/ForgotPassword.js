@@ -9,6 +9,7 @@ import ErroLabel from '../components/ErrorCom';
 import SucessLbl from '../components/SuccessCom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import KeybaordAvoidingWrapper from '../components/keyboardAvoidingWrapper';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const END_URL = '/user/forgetpass';
 
@@ -16,8 +17,8 @@ const ForgotPassword = ({ navigation }) => {
     const [success, setSucess] = useState('');
     const [error, setError] = useState('');
     return (
+        <ScrollView contentContainerStyle={{flex:1}}>
         <KeybaordAvoidingWrapper>
-        
             <Formik initialValues={{
                 username: ''
             }}
@@ -101,6 +102,7 @@ const ForgotPassword = ({ navigation }) => {
                  )}
             </Formik>
         </KeybaordAvoidingWrapper>
+        </ScrollView>
     );
 };
 
@@ -109,6 +111,7 @@ const styles = StyleSheet.create({
         padding: 24,
         backgroundColor: '#FFFFFF',
         justifyContent: 'center',
+        flex:1,
     },
     error: {
         fontSize: 12,
@@ -153,9 +156,6 @@ const styles = StyleSheet.create({
         color: '#333333',
     },
 
-    lableFont: {
-        fontSize: fontSize.inputFont,
-    },
     forgotPassword: {
         color: fontColor.linkColor,
         fontSize: fontSize.inputFont,

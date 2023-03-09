@@ -32,8 +32,8 @@ import EditProfile from '../screens/EditProfile';
 import UserClaimForm from '../screens/Dashboard/UserClaimForm';
 import DealList from '../screens/DealList';
 // WithdrawMoney
-import WidthdarawlMoney from '../screens/Dashboard/WithdrawMoney';
-import WidthdarawlForm from '../screens/Dashboard/WithdrawMoney/WithdrawaForm';
+import WidthdarawlMoney from '../screens/Dashboard/WithdrawlMoney';
+import WidthdarawlForm from '../screens/Dashboard/WithdrawlMoney/WithdrawaForm';
 import MissingForm from '../screens/Dashboard/MissingForm';
 import MissingCashBackForm from '../screens/Dashboard/MissingForm/MissingCashback';
 import SearchProduct from '../screens/SearchProducts';

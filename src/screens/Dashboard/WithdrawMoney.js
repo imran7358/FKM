@@ -50,7 +50,7 @@ const WidthdarawlMoney = ({ navigation }) => {
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
                 <View>
-                    <Text style={styles.storeName}>Select Account</Text>
+                    <Text style={styles.storeName}>Select Account11</Text>
                 </View>
                 <Dropdown
                     style={styles.dropdown}

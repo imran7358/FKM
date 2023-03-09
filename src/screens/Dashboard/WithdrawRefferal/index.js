@@ -9,10 +9,14 @@ import { useSelector, useDispatch } from 'react-redux';
 const END_URL = '/cashback/refferal-payment-mode';
 import WidthdarawlForm from './WithdrawaForm';
 import WidthdarawlOtp from './WithdrawOtp';
+import ErroLabel from '../../../components/ErrorCom';
+import SucessLbl from '../../../components/SuccessCom';
 
 const WithdrawRefferal = ({ navigation }) => {
     const [value, setValue] = useState('');
     const [dataRes, setDataRes] = useState(null);
+    const [error, setError] = useState(false);
+    const [sucess, setSucess] = useState(false);
     const dispatch = useDispatch();
 
     const userToken = useSelector(state => {
@@ -32,10 +36,14 @@ const WithdrawRefferal = ({ navigation }) => {
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-
-            setDataRes({ account: data.account});
+            if(data.status == 1 && data.error == 0){
+                setDataRes({ account: data.account});
+            }
+            else {
+                setError(data.message)
+            }
         }).catch((error) => {
-            console.log('Error', error);
+            setError(error.message)
         });
     };
 
@@ -81,6 +89,9 @@ const WithdrawRefferal = ({ navigation }) => {
                         </Text>
                     </View>
                         : null
+                }
+                {
+                    error ? <ErroLabel message={error} /> : null
                 }
             </View>
             {value && dataRes ? <WidthdarawlForm payType={value} label={dataRes.label} account={dataRes.account}/> : null}

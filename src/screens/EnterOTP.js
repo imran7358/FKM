@@ -14,6 +14,7 @@ import {
   commonMargin,
 } from '../assets/styles/common';
 import OTPin from '../components/OTPin';
+import KeybaordAvoidingWrapper from '../components/keyboardAvoidingWrapper';
 const ENDPOINT = "/user/verifyuser";
 const BASE_URL = Config.API_URL;
 const API_AUTH = Config.API_AUTH;
@@ -56,6 +57,7 @@ const EnterOTP = ({navigation}) => {
     }
   };
   return (
+    <KeybaordAvoidingWrapper>
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={require('../assets/images/login-image.png')} />
@@ -104,6 +106,7 @@ const EnterOTP = ({navigation}) => {
     </TouchableOpacity> */}
       </View>
     </View>
+    </KeybaordAvoidingWrapper>
   );
 };
 
