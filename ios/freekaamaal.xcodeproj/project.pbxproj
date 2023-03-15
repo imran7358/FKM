@@ -530,7 +530,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = freekaamaalv1;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = freekaamaalv1.0;
 				PRODUCT_NAME = freekaamaal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

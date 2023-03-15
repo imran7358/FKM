@@ -9,12 +9,16 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Config from 'react-native-config';
 const END_URL = '/cashback/add-account';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ErroLabel from '../../components/ErrorCom';
+import SucessLbl from '../../components/SuccessCom';
+import { useSelector } from 'react-redux';
 
 const AddAccount = () => {
+const userToken = useSelector(state=> state.user.userToken);
   const [value, setValue] = useState('Bank');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+
   useEffect(() => {
   }, [value]);
   const mydata = [
@@ -62,7 +66,6 @@ const AddAccount = () => {
                 accountType: 'bank',
               }}
               onSubmit={async (values) => {
-                const userToken = await AsyncStorage.getItem('userToken')
                 axios.post(Config.API_URL + END_URL, {
                   apiAuth: Config.API_AUTH,
                   device_type: 4,
@@ -78,11 +81,16 @@ const AddAccount = () => {
                       Authorization: userToken,
                     },
                   }).then(({ data }) => {
-                    if (data.status === 1 && error === 0) {
-                      setSuccess(true);
+                    console.log("Add acount", data)
+                    if (data.status == 1 && data.error == 0) {
+                      setSuccess(data.message);
+                    }
+                    else {
+                        setError(data.message)
                     }
                   }).catch((error) => {
-                    setError(true);
+                    setError(error.message);
+                    console.log("Error", error)
                   }).finally(() => {
                   });
               }
@@ -92,11 +100,11 @@ const AddAccount = () => {
                   .string()
                   .required('Please, provide your name!'),
                 phone: yup
-                  .string().required('Please enter mobile number').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }),
+                  .string().required('Please enter mobile number').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter valid phone number'),
                 account: yup
-                  .string().required('Enter account Number'),
+                  .string().required('Enter account Number').max(22, 'Please enter a valid account number'),
                 ifsc: yup
-                  .string().required('Please enter IFSC Code').min(11, 'IFSC required 11 digit'),
+                  .string().required('Please enter IFSC Code').min(11, 'IFSC required 11 digit').max(11,'Please enter a valid IFSC code'),
                 bankname: yup
                   .string().required('Please enter Bank Name'),
               })}
@@ -110,6 +118,7 @@ const AddAccount = () => {
                       onChangeText={handleChange('name')}
                       onBlur={() => setFieldTouched('name')}
                       placeholder="Account Holder Name"
+                      placeholderTextColor="#666"
                     />
                     {touched.name && errors.name &&
                       <Text style={styles.error}>{errors.name}</Text>
@@ -123,6 +132,7 @@ const AddAccount = () => {
                       onChangeText={handleChange('phone')}
                       onBlur={() => setFieldTouched('phone')}
                       placeholder="Phone"
+                      placeholderTextColor="#666"
                     />
                     {touched.phone && errors.phone &&
                       <Text style={styles.error}>{errors.phone}</Text>
@@ -136,6 +146,7 @@ const AddAccount = () => {
                       onChangeText={handleChange('account')}
                       onBlur={() => setFieldTouched('account')}
                       placeholder="Account Number"
+                      placeholderTextColor="#666"
                     />
                     {touched.account && errors.account &&
                       <Text style={styles.error}>{errors.account}</Text>
@@ -149,6 +160,7 @@ const AddAccount = () => {
                       onChangeText={handleChange('ifsc')}
                       onBlur={() => setFieldTouched('ifsc')}
                       placeholder="IFSC Code"
+                      placeholderTextColor="#666"
                     />
                     {touched.ifsc && errors.ifsc &&
                       <Text style={styles.error}>{errors.ifsc}</Text>
@@ -161,6 +173,7 @@ const AddAccount = () => {
                       onChangeText={handleChange('bankname')}
                       onBlur={() => setFieldTouched('bankname')}
                       placeholder="Bank Name"
+                      placeholderTextColor="#666"
                     />
                     {touched.bankname && errors.bankname &&
                       <Text style={styles.error}>{errors.bankname}</Text>
@@ -172,7 +185,10 @@ const AddAccount = () => {
                     </View>
                   </TouchableOpacity>
                   {
-                    success ? <View><Text>Record has been Updated !</Text></View> : null
+                    success ? <SucessLbl message={success} /> : null
+                  }
+                  {
+                    error ? <ErroLabel message={error} /> : null
                   }
                 </View>
               )}
@@ -190,8 +206,6 @@ const AddAccount = () => {
                   accountType: 'paytm',
                 }}
                 onSubmit={async (values) => {
-                  Alert.alert(JSON.stringify(values))
-                  const userToken = await AsyncStorage.getItem('userToken')
                   axios.post(Config.API_URL + END_URL, {
                     apiAuth: Config.API_AUTH,
                     device_type: 4,
@@ -204,14 +218,15 @@ const AddAccount = () => {
                         Authorization: userToken,
                       },
                     }).then(({ data }) => {
-                      console.log("Data", data);
-                      if (data.status === 1) {
-                        setSuccess(true);
-                        console.log('Paytm Addedd');
+                     
+                      if (data.status == 1 && data.error == 0) {
+                        setSuccess(data.message);
+                      }
+                      else{
+                        setError(data.message)
                       }
                     }).catch((error) => {
-                      setError(true);
-                      console.log('Error', error);
+                      setError(error.message);
                     }).finally(() => {
                     })
                 }
@@ -219,7 +234,7 @@ const AddAccount = () => {
                 validationSchema={yup.object().shape({
 
                   phone: yup
-                    .string().required('Please Enter phone no').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }),
+                    .string().required('Please Enter phone no').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter a valide phone number'),
                   accountHolder: yup
                     .string().required('Please enter account name'),
                 })}
@@ -233,6 +248,7 @@ const AddAccount = () => {
                         onChangeText={handleChange('accountHolder')}
                         onBlur={() => setFieldTouched('accountHolder')}
                         placeholder="Account Holder Name"
+                        placeholderTextColor="#666"
                       />
                       {touched.accountHolder && errors.accountHolder &&
                         <Text style={styles.error}>{errors.accountHolder}</Text>
@@ -246,6 +262,7 @@ const AddAccount = () => {
                         onChangeText={handleChange('phone')}
                         onBlur={() => setFieldTouched('phone')}
                         placeholder="Phone"
+                        placeholderTextColor="#666"
                       />
                       {touched.phone && errors.phone &&
                         <Text style={styles.error}>{errors.phone}</Text>
@@ -256,6 +273,12 @@ const AddAccount = () => {
                         <Text style={styles.loginTxt}>Submit</Text>
                       </View>
                     </TouchableOpacity>
+                    {
+                        success ? <SucessLbl message = {success}/> : null
+                    }
+                    {
+                        error ? <ErroLabel message = {error} /> : null
+                    }
                   </View>
                 )}
               </Formik>

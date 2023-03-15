@@ -12,6 +12,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DatePicker from 'react-native-date-picker';
 import DocumentPicker from 'react-native-document-picker';
+import KeybaordAvoidingWrapper from '../../../components/keyboardAvoidingWrapper';
 
 
 const MissingReport = ({ navigation, route }) => {
@@ -58,6 +59,7 @@ const MissingReport = ({ navigation, route }) => {
         getDetails();
     }, [value, date])
     return (
+        <KeybaordAvoidingWrapper>
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
                 <View style={styles.margi}>
@@ -254,6 +256,7 @@ const MissingReport = ({ navigation, route }) => {
 
             </View>
         </ScrollView>
+        </KeybaordAvoidingWrapper>
     );
 
 };

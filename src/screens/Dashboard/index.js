@@ -171,7 +171,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Click History</Text>
-                                        <Text>List of stores you visited recently</Text>
+                                        <Text style={{fontSize:12}}>List of stores you visited recently</Text>
                                     </View>
                                 </View>
 
@@ -190,7 +190,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Cashback History</Text>
-                                        <Text>Find History of your cashback purchases</Text>
+                                        <Text style={{fontSize:12}}>Find History of your cashback purchases</Text>
                                     </View>
                                 </View>
 
@@ -209,7 +209,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Withdrawal History</Text>
-                                        <Text>Withdrawal requests submitted by you</Text>
+                                        <Text style={{fontSize:12}}>Withdrawal requests submitted by you</Text>
                                     </View>
                                 </View>
 
@@ -228,7 +228,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Report Missing</Text>
-                                        <Text>Submit missing cashback request</Text>
+                                        <Text style={{fontSize:12}}>Submit missing cashback request</Text>
                                     </View>
                                 </View>
 
@@ -246,7 +246,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Refer and earn</Text>
-                                        <Text>Refer to your friend and earn more</Text>
+                                        <Text style={{fontSize:12}}>Refer to your friend and earn more</Text>
                                     </View>
                                 </View>
 
@@ -263,7 +263,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Referral History</Text>
-                                        <Text>Find Your Referral History of Earning </Text>
+                                        <Text style={{fontSize:12}}>Find Your Referral History of Earning </Text>
                                     </View>
                                 </View>
 
@@ -282,7 +282,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Withdraw Money</Text>
-                                        <Text>Withdraw your cashback money</Text>
+                                        <Text style={{fontSize:12}}>Withdraw your cashback money</Text>
                                     </View>
                                 </View>
 
@@ -299,7 +299,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Referral Money</Text>
-                                        <Text>Withdraw referral money</Text>
+                                        <Text style={{fontSize:12}}>Withdraw referral money</Text>
                                     </View>
                                 </View>
                                 <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
@@ -316,7 +316,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Cashback Claim Form</Text>
-                                        <Text>Fill the form Within 24 hrs of your order Only </Text>
+                                        <Text style={{fontSize:12}}>Fill the form Within 24 hrs of your order Only </Text>
                                     </View>
                                 </View>
 
@@ -335,7 +335,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Missing Cashback History</Text>
-                                        <Text>Check your missing cashback status here</Text>
+                                        <Text style={{fontSize:12}}>Check your missing cashback status here</Text>
                                     </View>
                                 </View>
 
@@ -354,7 +354,7 @@ const Profile = ({ navigation }) => {
                                     </View>
                                     <View style={styles.menuNameTxt}>
                                         <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Add account</Text>
-                                        <Text>Add a new Bank/Paytm account to withdraw </Text>
+                                        <Text style={{fontSize:12}}>Add  account to withdraw </Text>
                                     </View>
                                 </View>
                                 <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
@@ -369,7 +369,7 @@ const Profile = ({ navigation }) => {
                                 </View>
                                 <View style={styles.menuNameTxt}>
                                     <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Notification</Text>
-                                    <Text>Find the list of FKM activities</Text>
+                                    <Text style={{fontSize:12}}>Find the list of FKM activities</Text>
                                 </View>
                             </View>
                             <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />

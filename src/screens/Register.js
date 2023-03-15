@@ -15,6 +15,7 @@ const ENDPOINT = "/user/register";
 const Register = ({ navigation }) => {
     const [error, setError]=useState('')
     const [success, setSuccess] = useState('')
+
   return (
     <KeybaordAvoidingWrapper>
         <ScrollView bounces={false}>
@@ -51,12 +52,16 @@ const Register = ({ navigation }) => {
                     }
           }
           }
+          
         validationSchema = { yup.object().shape({
-            name:yup.string().required("Please enter name"),
+           
+            name:yup.string().required("Please enter name").matches(/^[A-Za-z ]*$/, "Please enter valid name").max(20,"Maximum 20 character are allowed"),
             email: yup.string().required('Please enter Usename / Email id'),
-            phone: yup.string().required("Please enter mobile number"),
+            phone: yup.string().required("Please enter mobile number").matches(/^[0]?[789]\d{9}$/
+            , "Please enter valid phone"),
             password:yup.string().required('Please Enter password').min(6,'Minimum 6 Chareter are required').max(8,'Maxmimum 8 Chareter are required')})}
             >
+
             {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
                     <View style={styles.container}>
                     <View style={styles.imageContainer}>
@@ -139,6 +144,23 @@ const Register = ({ navigation }) => {
                             {touched.password && errors.password &&
                       <Text style={styles.error}>{errors.password}</Text>
                     }
+                      </View>
+
+                      <View style={styles.inputBoxContainer}>
+                      <Image
+                          source={require('../assets/images/user-ico.png')}
+                          style={styles.icon}
+                        />
+                        <TextInput
+                          autoCapitalize="none"
+                          style={styles.inputText}
+                          placeholder="Referral Code"
+                          placeholderTextColor="#666"
+                          secureTextEntry={true}
+                          value ={values.referral}
+                          onChangeText={handleChange('referral')}
+                          onBlur={() => setFieldTouched('referral')}
+                          />
                       </View>
                      {
                         error && <ErroLabel message={error} />

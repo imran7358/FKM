@@ -1,6 +1,6 @@
 import React, { useEffect,useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import { Grid,ShoppingBag, Percent, Scissors, Briefcase, BookOpen, PhoneCall, HelpCircle, LogOut} from "react-native-feather";
+import { View, Text, TouchableOpacity, StyleSheet, Image,Linking} from 'react-native';
+import { Grid,ShoppingBag, Percent, PhoneCall, HelpCircle, LogOut, Tag} from "react-native-feather";
 import { useDispatch } from 'react-redux';
 import { LOGGEDOUT } from '../redux/actionTypes';
 import { useSelector } from 'react-redux';
@@ -107,7 +107,7 @@ const CustomDrawer = ({navigation}) => {
               <TouchableOpacity onPress={()=> navigation.navigate('Cashback')}>
               <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
-                <Percent style={styles.iconSize} width={18}/>
+                <Tag style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
                 <Text style={styles.menuTxt}>All Cashback</Text>
@@ -146,14 +146,18 @@ const CustomDrawer = ({navigation}) => {
                     <Text style={styles.menuTxt}>Career</Text>
                 </View>
                </View> */}
+
+<TouchableOpacity onPress={async()=> { await Linking.openURL('https://m.freekaamaal.com/contact-us')}}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <PhoneCall style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text style={styles.menuTxt}>Conatc Us</Text>
+                    <Text style={styles.menuTxt}>Contact Us</Text>
                 </View>
                </View>
+               </TouchableOpacity>
+               <TouchableOpacity onPress={async()=> { await Linking.openURL('https://m.freekaamaal.com/faq')}}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <HelpCircle style={styles.iconSize} width={18}/>
@@ -162,6 +166,7 @@ const CustomDrawer = ({navigation}) => {
                     <Text style={styles.menuTxt}>Help & Support</Text>
                 </View>
                </View>
+               </TouchableOpacity>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <LogOut style={styles.iconSize} width={18}/>
@@ -172,7 +177,9 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                </TouchableOpacity>
                </View>
-               
+               <View style={styles.appVersion}>
+                <Text style={styles.apptxt}>App Version v9.0.0</Text>
+               </View>
             </View>
         </View>
     )
@@ -184,6 +191,15 @@ const styles = StyleSheet.create({
     humburgerContainer: {
         padding: 20,
         paddingBottom: 0,
+    },
+    appVersion:{
+        marginTop:50,
+        justifyContent: 'center',
+        alignContent: 'center',
+        flexDirection: 'row',
+    },
+    apptxt:{
+        color:'#666',
     },
     profileInfo: {
         backgroundColor: '#FAFAFA',

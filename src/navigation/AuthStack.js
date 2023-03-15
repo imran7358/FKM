@@ -43,7 +43,7 @@ import AllDeals from '../screens/Cashback/AllCashbackDeals';
 import AllCashbackStores from '../screens/Cashback/AllCashbackStore';
 
 // WithdrawMoney
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 //WithDrawRefferal
@@ -51,6 +51,7 @@ import WithdrawRefferal from '../screens/Dashboard/WithdrawRefferal';
 import ChangePassword from '../screens/Dashboard/ChangePassword';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import {ShoppingCart} from "react-native-feather";
 
 //WithDrawRefferal
 
@@ -127,8 +128,8 @@ const BottomTabs = ({ navigation }) => {
                     </TouchableOpacity>
                 )
             }} />
-            <Tab.Screen name="Refer & Earn" component={ReferEarn}
-
+            {
+                userToken ? <Tab.Screen name="Refer & Earn" component={ReferEarn}
                 options={{
 
                     BottomTabs: false,
@@ -152,7 +153,34 @@ const BottomTabs = ({ navigation }) => {
                             </View>
                         </TouchableOpacity>
                     )
-                }} />
+                }} /> : <Tab.Screen name="Login1" component={Login}
+                options={{
+                    BottomTabs: false,
+                    title: 'Login',
+                    tabBarStyle: {display: 'none'},
+                    tabBarIcon: ({ focused }) => (
+                        <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
+                            <Image source={require('../assets/images/earn.png')} style={{
+                                width: 26,
+                                height: 26,
+                                resizeMode: 'contain',
+                                tintColor: focused ? '#333' : 'black',
+                            }} />
+                        </View>
+
+                    ),
+                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                    headerLeft: () => (
+                        <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                            <View style={styles.backArrow}>
+                                <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                            </View>
+                        </TouchableOpacity>
+                    )
+                }}
+            /> 
+            }
+
                     {
                         userToken ?  <Tab.Screen name="Profile" component={Profile}
                         options={{

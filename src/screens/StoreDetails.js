@@ -175,8 +175,6 @@ const StoreDetails = ({ props, route, navigation }) => {
                     </View> : null
                     }
 
-                    
-
                     {
                         store.isClaim == '1' ?
                             <View style={styles.claimForm}>
@@ -184,9 +182,11 @@ const StoreDetails = ({ props, route, navigation }) => {
                                     <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>Cashback claim form</Text>
                                     <Text> Fill up this form within 24 hrs</Text>
                                 </View>
+                                <TouchableHighlight onPress={()=> navigation.navigate('ClaimForm')}>
                                 <View style={styles.claimFormbtn}>
                                     <Text style={{ color: '#fff', fontWeight: '900' }}>Claim Form</Text>
                                 </View>
+                                </TouchableHighlight>
                             </View>
                             : null
                     }
@@ -237,7 +237,7 @@ const StoreDetails = ({ props, route, navigation }) => {
             </ScrollView>
 
             {
-                store.is_cashback ? <View>{userInfo ? <View style ={styles.container}>
+                store.is_cashback == '1' ? <View>{userInfo ? <View style ={styles.container}>
                 <View style={styles.appButton}>
                 <TouchableOpacity onPress={async()=> { await Linking.openURL(store.store_landing_url)}}>
                 <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>

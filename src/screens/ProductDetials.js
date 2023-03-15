@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
  const ProductDetails = ({navigation, route}) => {
 
 
-    const userToken = useSelector(state=> state.user.userToken)
+    const userToken = useSelector(state=> state.user.userToken);
     const userInfo = useSelector(state=> state.user.userInfo);
     const [details, setDetails] = useState({
         title: '',
@@ -43,7 +43,6 @@ import { useSelector } from 'react-redux';
                 Authorization: userToken,
             },
         }).then(({data})=>{
-            console.log("Details", data)
             const regex = /(<([^>]+)>)/ig;
             const result = data.response.deal.description.replace(regex, '');
 
@@ -84,9 +83,9 @@ import { useSelector } from 'react-redux';
                 : <View style={styles.container}>
                 <Text style={styles.heading}>{details.title}</Text>
                 <View style={styles.prodImage}>
-                    <View style={styles.offerCon}>
+                    {/* <View style={styles.offerCon}>
                     <Text style={styles.offPrice}>50% OFF</Text>
-                    </View>
+                    </View> */}
                     <View style={styles.imgCon}>
                        <Image source={{ uri: details.dealImg}} style={{height:300, width:300, resizeMode: 'contain'}}/>
                     </View>
@@ -104,14 +103,16 @@ import { useSelector } from 'react-redux';
                                 <Text style={[styles.priceTxt, styles.cutprice]}>{details.price}</Text>
                             </View>
                         </View>
-                        <View style={styles.cashbckPrice}>
-                        <View style={styles.innerPrice}>
-                                <Image source={require('../assets/images/rupee-icon.png')} style={styles.cbSize}/>
-                                <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
-                                <Text>Cashback</Text>
-                                <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
-                            </View>
-                        </View>
+                        {
+                            details.isCashback == '1' ? <View style={styles.cashbckPrice}>
+                            <View style={styles.innerPrice}>
+                                    <Image source={require('../assets/images/rupee-icon.png')} style={styles.cbSize}/>
+                                    <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
+                                    <Text>Cashback</Text>
+                                    <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
+                                </View>
+                            </View> : null
+                        }
                     </View>
                         <View style={styles.logoImages}>
                             <Image source={{ uri: details.storeImg }} style={styles.prodLogo}/>
@@ -119,6 +120,9 @@ import { useSelector } from 'react-redux';
                     </View>
                 </View>
                 {
+
+                    userToken ? <View>
+                        {
                     details.isClaim == '1' ?
                     <View style={styles.claimForm}>
                    <View>
@@ -132,6 +136,20 @@ import { useSelector } from 'react-redux';
                   </TouchableHighlight>
                 </View>
                 : null
+                }
+                        </View> : 
+                   
+                    <View style={styles.claimForm}>
+                   <View>
+                    <Text style={styles.claimHead}>cashback claim form</Text>
+                    <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
+                   </View>
+                  <TouchableHighlight onPress={()=> navigation.navigate('Login')}>
+                  <View style={styles.FormBtn}>
+                    <Text style={styles.submitBtn}>Submit</Text>
+                   </View>
+                  </TouchableHighlight>
+                </View>
                 }
                 <View style={styles.prodDetails}>
                     {/* <WebView
@@ -150,7 +168,7 @@ import { useSelector } from 'react-redux';
             }
             </ScrollView>
             {
-                details.isCashback ? <View>{userInfo ? <View style ={styles.container}>
+                details.isCashback == '1' ? <View>{userInfo ? <View style ={styles.container}>
                 <View style={styles.appButton}>
                 <TouchableOpacity onPress={async()=> { await Linking.openURL(details.landing_url)}}>
                 <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>

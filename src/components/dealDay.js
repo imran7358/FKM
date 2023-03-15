@@ -16,7 +16,7 @@ const DealsDay = ({navigation, stickyImages}) =>{
     indicator={false}
     autoscroll ={false}
     onPress={item => {
-        if (item.option === 'deal'){
+        if (item.option == 'deal'){
             navigation.navigate({name:'Details',params:{dealSlug:item.slug_url}})
         }
         else {
