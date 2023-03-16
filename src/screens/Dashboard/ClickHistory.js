@@ -12,7 +12,7 @@ const ClickHistory = ({ navigation }) => {
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
-    const [page, setPage] = useState(15);
+    const [page, setPage] = useState(1);
     const [loader, setLoader] = useState(false);
     const [noData, setNoData] = useState(false);
     const [history, setHistory] = useState([]);

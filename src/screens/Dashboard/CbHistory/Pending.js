@@ -58,7 +58,7 @@ const PendingCashback = ({setTop}) => {
              <View style={styles.recordCon}>
              <View style={styles.headingCond}>
                  <View style={styles.srNo}>
-                     <Text style={styles.barTxt}>SN</Text>
+                     <Text style={styles.barTxt}>SN0</Text>
                  </View>
                  <View style={styles.storeName}>
                      <Text style={styles.barTxt}>Store</Text>
@@ -84,12 +84,12 @@ const PendingCashback = ({setTop}) => {
                 allcb.length ? allcb.map((item, i)=>{
                     return  <View style={styles.innerReocrd}>
                     <Text style={styles.srNo}>1</Text>
-                    <Text  style={styles.storeName}>{item.store_name}</Text>
+                    <Text  style={styles.storeName}>{item.store}</Text>
                     <Text style={styles.amount}>{item.amount}</Text>
                     <Text style={styles.status}>{item.status}</Text>
                     <Text style={styles.status}>{item.transaction_date}</Text>
-                    <Text style={styles.status}>xyxxcrew</Text>
-                    <Text style={styles.status}>xyxxcrew</Text>
+                    <Text style={styles.status}>{item.orderid}</Text>
+                    <Text style={styles.status}>{item.expected_date}</Text>
                 </View>
                 }) 
                 : null
