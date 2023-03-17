@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet,Linking, Button, TouchableOpacity, Image} from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import { useSelector } from 'react-redux';
 import Config from "react-native-config";
 import axios from 'axios';
 const ENDPOINT = '/coupons/coupon-detail';
 
 const CouponsDetails = ({navigation, route, props}) => {
+    const userToken = useSelector(state=> state.user.userToken);
+    const userInfo = useSelector(state=> state.user.userInfo);
     const [couponsdetails, setCouponDetails] = useState({
         storeImage: null,
         description:'',
@@ -33,6 +35,11 @@ const CouponsDetails = ({navigation, route, props}) => {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
             'coupon_id': route.params.couponId,
+        },{
+        headers: {
+                Authorization: userToken,
+                },
+            
         }).then(({data})=>{
             setCouponDetails({
                 storeImage: data.response.coupon.store_image,
