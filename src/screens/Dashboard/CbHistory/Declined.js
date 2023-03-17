@@ -75,6 +75,9 @@ const Declined = ({ setTop }) => {
                             <Text style={styles.barTxt}>Declined Date</Text>
                         </View>
                         <View style={styles.status}>
+                            <Text style={styles.barTxt}>Status</Text>
+                        </View>
+                        <View style={styles.status}>
                             <Text style={styles.barTxt}>Reason</Text>
                         </View>
 
@@ -85,10 +88,13 @@ const Declined = ({ setTop }) => {
                                 return <View style={styles.innerReocrd} key={i}>
                                     <Text style={styles.srNo}>{i + 1}</Text>
                                     <Text style={styles.storeName}>{item.store_name}</Text>
-                                    <Text style={styles.amount}>4</Text>
+                                    
                                     <Text style={styles.status}>{item.amount}</Text>
-                                    <Text style={styles.status}>{item.status}</Text>
+                                    <Text style={styles.status}>{item.orderid}</Text>
+                            
                                     <Text style={styles.status}>{item.transaction_date}</Text>
+                                    <Text style={styles.status}>{item.status}</Text>
+                                    <Text style={styles.status}>{item.reason}</Text>
                                 </View>
                             })
                                 : null

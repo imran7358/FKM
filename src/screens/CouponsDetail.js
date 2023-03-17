@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, Button, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet,Linking, Button, TouchableOpacity, Image} from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -12,6 +12,10 @@ const CouponsDetails = ({navigation, route, props}) => {
         storeImage: null,
         description:'',
         cpCode: '',
+        cb_landing_url:'',
+        noncb_landing_url:'',
+        is_cashback:''
+
 
     });
     const [success, setSuccess] = useState(false);
@@ -34,6 +38,9 @@ const CouponsDetails = ({navigation, route, props}) => {
                 storeImage: data.response.coupon.store_image,
                 description:data.response.coupon.description,
                 cpCode:data.response.coupon.coupon_code,
+                cb_landing_url:data.response.coupon.cb_landing_url,
+                noncb_landing_url:data.response.coupon.noncb_landing_url,
+                is_cashback:data.response.coupon.is_cashback
             });
             setCode(data.response.coupon.type);
         }).catch((error)=>{
@@ -73,11 +80,25 @@ const CouponsDetails = ({navigation, route, props}) => {
                 success ? <View style={styles.copyCode}>
                     <Text style={styles.copiedTxt}>Successfully Copied !!</Text></View> : null
             }
+            {
+            couponsdetails.is_cashback == '1' ?
             <View style={styles.linkContainer}>
-                <Text style={styles.ernCb}>Earn Cashback</Text>
+            
+            
+                <Text style={styles.ernCb} onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>Earn Cashback</Text>
                 <View></View>
-                <Text style={styles.sckipCb}>Skip  Cashback</Text>
-            </View>
+                <Text style={styles.sckipCb} onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>Skip  Cashback</Text>
+            
+                </View>
+           : 
+           <View style={styles.linkContainer}>
+            
+            
+                
+                <Text style={styles.sckipCb} onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>Skip  Cashback</Text>
+            
+                </View>
+                }      
            </View>
         </View>
        </ScrollView>
