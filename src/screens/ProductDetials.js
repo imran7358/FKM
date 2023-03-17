@@ -6,7 +6,7 @@ const END_URL = '/deals/dealdetail';
 import axios from 'axios';
 import RealtedDeals from '../components/Deals/RelatedDeals';
 import { Loader } from 'react-native-feather';
-import { WebView } from 'react-native-webview';
+import CustomWebView from 'react-native-render-html';
 import { useSelector } from 'react-redux';
 
 
@@ -43,21 +43,23 @@ import { useSelector } from 'react-redux';
                 Authorization: userToken,
             },
         }).then(({data})=>{
-            const regex = /(<([^>]+)>)/ig;
-            const result = data.response.deal.description.replace(regex, '');
+            // const regex = /(<([^>]+)>)/ig;
+            // const result = data.response.deal.description.replace(regex, '');
+            
 
             setDetails({
                 title: data.response.deal.deal_title,
                 dealImg:data.response.deal.deal_img_url,
                 price: data.response.deal.price,
                 offerPrice: data.response.deal.offer_price,
-                description: result,
+                description: data.response.deal.description,
                 isClaim: data.response.deal.is_claim,
                 landing_url: data.response.deal.landing_url,
                 isCashback: data.response.deal.is_cashback,
                 storeImg: data.response.deal.store_image,
                 cashbackAmount: data.response.deal.cashback_amount,
             });
+            console.log(details.description);
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
         }).catch((error)=>{
@@ -89,7 +91,7 @@ import { useSelector } from 'react-redux';
                     <View style={styles.imgCon}>
                        <Image source={{ uri: details.dealImg}} style={{height:300, width:300, resizeMode: 'contain'}}/>
                     </View>
-                    <Text>Choose the best price and the rertailer</Text>
+                    {/* <Text>Choose the best price and the rertailer</Text> */}
                     <View style={styles.pricLogoCon}>
                     <View style={styles.leftPrice}>
                     <View style={styles.priceContainer}>
@@ -152,17 +154,9 @@ import { useSelector } from 'react-redux';
                 </View>
                 }
                 <View style={styles.prodDetails}>
-                    {/* <WebView
-                    originWhitelist={['*']}
-                   html={{}}/> */}
-                    <Text style={styles.abtDeals}>About the Deals</Text>
-                    <Text style={styles.hastag}>#Neversettle #Oneplus #Dealoftheday </Text>
-                    <Text style={styles.detailsPara}>
-                 {details.description}
-                    </Text>
-
-
-                </View>
+                <Text style={styles.abtDeals}>About the Deals</Text>
+                <CustomWebView source={{ html: details.description }}/>
+                 </View>
                 <RealtedDeals relatedProduct = {relatedProduct} navigation={navigation}/>
             </View>
             }
