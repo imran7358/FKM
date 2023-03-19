@@ -90,11 +90,6 @@ import { useSelector } from 'react-redux';
                     <View style={styles.imgCon}>
                        <Image source={{ uri: details.dealImg}} style={{height:200, width:200, resizeMode: 'contain'}}/>
                     </View>
-<<<<<<< HEAD
-                    {/* <Text>Choose the best price and the rertailer</Text> */}
-=======
-
->>>>>>> 0f4080f (Bux Fixes)
                     <View style={styles.pricLogoCon}>
                     <View style={styles.leftPrice}>
                     <View style={styles.priceContainer}>
