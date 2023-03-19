@@ -71,7 +71,6 @@ import { useSelector } from 'react-redux';
 
     useEffect(()=>{
         getDetails();
-        console.log("myToken", userToken)
     },[]);
 
     return (
@@ -89,13 +88,17 @@ import { useSelector } from 'react-redux';
                     <Text style={styles.offPrice}>50% OFF</Text>
                     </View> */}
                     <View style={styles.imgCon}>
-                       <Image source={{ uri: details.dealImg}} style={{height:300, width:300, resizeMode: 'contain'}}/>
+                       <Image source={{ uri: details.dealImg}} style={{height:200, width:200, resizeMode: 'contain'}}/>
                     </View>
+<<<<<<< HEAD
                     {/* <Text>Choose the best price and the rertailer</Text> */}
+=======
+
+>>>>>>> 0f4080f (Bux Fixes)
                     <View style={styles.pricLogoCon}>
                     <View style={styles.leftPrice}>
                     <View style={styles.priceContainer}>
-                            <View style={styles.innerPrice}>
+                            <View style={[styles.innerPrice, styles.mainPrice]}>
                                 <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
                                 <Text style={styles.priceTxt}>{details.offerPrice}</Text>
                             </View>
@@ -105,21 +108,22 @@ import { useSelector } from 'react-redux';
                                 <Text style={[styles.priceTxt, styles.cutprice]}>{details.price}</Text>
                             </View>
                         </View>
-                        {
+                        
+                         <View style={styles.logoImages}>
+                            <Image source={{ uri: details.storeImg }} style={styles.prodLogo}/>
+                        </View>
+                    </View>
+                   
+                    </View>
+                    {
                             details.isCashback == '1' ? <View style={styles.cashbckPrice}>
                             <View style={styles.innerPrice}>
-                                    <Image source={require('../assets/images/rupee-icon.png')} style={styles.cbSize}/>
                                     <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
                                     <Text>Cashback</Text>
                                     <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
                                 </View>
                             </View> : null
                         }
-                    </View>
-                        <View style={styles.logoImages}>
-                            <Image source={{ uri: details.storeImg }} style={styles.prodLogo}/>
-                        </View>
-                    </View>
                 </View>
                 {
 
@@ -195,6 +199,18 @@ import { useSelector } from 'react-redux';
         backgroundColor: '#fff',
         flex: 1,
     },
+    mainPrice:{
+        marginRight:20,
+    },
+    leftPrice:{
+
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        alignContent: 'center',
+        width: '100%'
+
+    },
     loadContainer: {
         marginTop: 50,
         marginBottom: 50,
@@ -207,6 +223,7 @@ import { useSelector } from 'react-redux';
     heading: {
         fontSize: 16,
         fontWeight: '900',
+        lineHeight: 30,
     },
     prodImage: {
         marginTop: 20,
@@ -234,12 +251,10 @@ import { useSelector } from 'react-redux';
     imgCon: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30,
-        marginBottom: 30,
     },
     priceContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         marginTop: 10,
     },
     innerPrice: {
@@ -281,6 +296,9 @@ import { useSelector } from 'react-redux';
         padding: 8,
         marginTop: 15,
         backgroundColor: '#FFEFE5',
+        justifyContent:'center',
+        alignContent:'center',
+        flexDirection: 'row'
     },
     cbTxt: {
         fontSize: 16,

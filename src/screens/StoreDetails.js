@@ -118,7 +118,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5, }}><Text style={{ fontSize: 14, fontWeight: 'bold' }}>{store.cashback_amount} </Text></View>
                             <Image source={require('../assets/images/info.png')} />
                         </View>
-                        <View>
+                        {/* <View>
                             <Text style={styles.storePara}>{readMore ? store.top_desc.substring(0, 200) : store.top_desc}</Text>
 
                         </View>
@@ -128,7 +128,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                                     readMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
                                 }
                             </View>
-                        </TouchableHighlight>
+                        </TouchableHighlight> */}
                         {
                             store.is_cashback == '1' ? <View style={styles.cashbackInfo}>
                             <View style={styles.confirmTime}>
@@ -165,8 +165,10 @@ const StoreDetails = ({ props, route, navigation }) => {
                                         </View>
 
                                         <View style={styles.cbTxt}>
-                                            <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>{item.cashback_tag}</Text>
-                                            <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '59%', lineHeight: 18, flex: 1, }}>{item.tag_desc}</Text>
+                                            <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
+                                            <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
+                                            <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
@@ -342,7 +344,8 @@ const styles = StyleSheet.create({
     },
     cbTxt: {
         padding: 20,
-        flexWrap: 'wrap',
+        flexDirection: 'column',
+        width: '65%'
     },
     cbRupee: {
         backgroundColor: '#f27935',
