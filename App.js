@@ -5,8 +5,9 @@
  * @format
  * @flow strict-local
  */
-import 'react-native-gesture-handler';
-import React from 'react';
+
+
+import React, { useEffect } from 'react';
 import { Typography } from './src/assets/styles';
 
 import {
@@ -24,10 +25,7 @@ import { PersistGate } from 'redux-persist/integration/react';
  * LTI update could not be added via codemod */
 
 const App = () => {
-    // const isDarkMode = useColorScheme() === 'dark';
-    // const backgroundStyle = {
-    //     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    // };
+
 
     return (
         <Provider store={store}>
