@@ -138,8 +138,7 @@ import { useSelector } from 'react-redux';
                 </View>
                 : null
                 }
-                        </View> : 
-                   
+                        </View> :
                     <View style={styles.claimForm}>
                    <View>
                     <Text style={styles.claimHead}>cashback claim form</Text>
