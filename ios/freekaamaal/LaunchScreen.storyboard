@@ -17,13 +17,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="MN2-I3-ftu">
-                                <rect key="frame" x="0.0" y="878" width="375" height="0.0"/>
+                                <rect key="frame" x="0.0" y="758" width="375" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" systemColor="secondarySystemBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dz7-mX-k6G">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="938"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="818"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="India's largest deal hunting sites" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Eb-QP-Lvg">
                                         <rect key="frame" x="-8" y="477" width="375" height="21"/>
@@ -31,11 +31,11 @@
                                         <color key="textColor" systemColor="secondarySystemGroupedBackgroundColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="Splash 1" translatesAutoresizingMaskIntoConstraints="NO" id="oR1-VX-1gf">
-                                        <rect key="frame" x="8" y="400" width="375" height="69"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="oR1-VX-1gf">
+                                        <rect key="frame" x="-42" y="-180" width="558" height="1047"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.88627451660000001" green="0.48627454040000001" blue="0.2588235438" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="oR1-VX-1gf" firstAttribute="leading" secondItem="Dz7-mX-k6G" secondAttribute="leading" id="0CM-mD-LUp"/>
                                     <constraint firstAttribute="trailing" secondItem="oR1-VX-1gf" secondAttribute="trailing" id="1Uy-Xd-0Hx"/>
@@ -71,11 +71,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="348.83720930232556" y="42.489270386266099"/>
+            <point key="canvasLocation" x="344.80000000000001" y="39.90147783251232"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Splash 1" width="220" height="48"/>
+        <image name="Image" width="178.66667175292969" height="310.66665649414062"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

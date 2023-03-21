@@ -171,7 +171,7 @@ import { useSelector } from 'react-redux';
                 </View> : <View style ={styles.container}>
                         <View style={styles.appButton}>
                         <TouchableOpacity onPress={()=> { navigation.navigate('Login')}}>
-                        <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+                        <Text style={styles.btnTxt}>Login & Earn Cashback</Text>
                         </TouchableOpacity>
                     </View>
                         </View> }</View> : <View style ={styles.container}>

@@ -63,7 +63,7 @@ const EnterOTP = ({navigation}) => {
         <Image source={require('../assets/images/login-image.png')} />
       </View>
       <View>
-        <Text style={[styles.headingSize]}>Forgot Password</Text>
+        <Text style={[styles.headingSize]}>Verify OTP</Text>
       </View>
       <View style={styles.forgotParagraph}>
         <Text style={styles.innerPara}>An 6 digit code has been send to</Text>

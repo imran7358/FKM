@@ -88,11 +88,18 @@ const CouponsDetails = ({navigation, route, props}) => {
                     <Text style={styles.copiedTxt}>Successfully Copied !!</Text></View> : null
             }
             {
-            couponsdetails.is_cashback == '1' && userInfo ?
+            couponsdetails.is_cashback == '1' ?
+            
             <View style={styles.linkContainer}>
-            
-            
+            {
+                userInfo ?
                 <Text style={styles.ernCb} onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>Earn Cashback</Text>
+                :
+                
+                <Text style={styles.ernCb} onPress={()=> { navigation.navigate('Login')}}>Login & Earn Cashback</Text>
+            }
+            
+                
                 <View></View>
                 <Text style={styles.sckipCb} onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>Skip  Cashback</Text>
             

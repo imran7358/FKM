@@ -98,7 +98,7 @@ const userToken = useSelector(state=> state.user.userToken);
               validationSchema={yup.object().shape({
                 name: yup
                   .string()
-                  .required('Please, provide your name!'),
+                  .required('Please, provide your name!').matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms,{message:"Please use only alphabets"}),
                 phone: yup
                   .string().required('Please enter mobile number').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter valid phone number'),
                 account: yup
@@ -132,6 +132,7 @@ const userToken = useSelector(state=> state.user.userToken);
                       onChangeText={handleChange('phone')}
                       onBlur={() => setFieldTouched('phone')}
                       placeholder="Phone"
+                      maxLength={10}
                       placeholderTextColor="#666"
                     />
                     {touched.phone && errors.phone &&
@@ -236,7 +237,7 @@ const userToken = useSelector(state=> state.user.userToken);
                   phone: yup
                     .string().required('Please Enter phone no').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter a valide phone number'),
                   accountHolder: yup
-                    .string().required('Please enter account name'),
+                    .string().required('Please, provide your name!').matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms,{message:"Please use only alphabets"}),
                 })}
               >
                 {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
@@ -260,6 +261,7 @@ const userToken = useSelector(state=> state.user.userToken);
                         style={[styles.inputText, styles.lableFont]}
                         value={values.phone}
                         onChangeText={handleChange('phone')}
+                        maxLength={10}
                         onBlur={() => setFieldTouched('phone')}
                         placeholder="Phone"
                         placeholderTextColor="#666"

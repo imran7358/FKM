@@ -65,7 +65,8 @@ const StoreDetails = ({ props, route, navigation }) => {
         }).then(({ data }) => {
             if (opt == "") {
                 const regex = /(<([^>]+)>)/ig;
-                const result = data.response.store_details.top_desc.replace(regex, '');
+                const result = "Store name"
+                // /const result = data.response.store_details.top_desc.replace(regex, '');
                 storeDetails({
                     is_cashback: data.response.store_details.is_cashback,
                     store_name: data.response.store_details.store_name,
@@ -101,6 +102,7 @@ const StoreDetails = ({ props, route, navigation }) => {
 
     }, [page, opt, route.params.storeSlug]);
     useEffect(() => {
+        console.log(route.params.storeSlug)
     }, [storeDeals,route.params.storeSlug])
     return (
 

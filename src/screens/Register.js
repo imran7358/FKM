@@ -56,7 +56,7 @@ const Register = ({ navigation }) => {
         validationSchema = { yup.object().shape({
            
             name:yup.string().required("Please enter name").matches(/^[A-Za-z ]*$/, "Please enter valid name").max(20,"Maximum 20 character are allowed"),
-            email: yup.string().required('Please enter Usename / Email id'),
+            email: yup.string().required('Please enter your Email id'),
             phone: yup.string().required("Please enter mobile number").matches(/^[0]?[789]\d{9}$/
             , "Please enter valid phone"),
             password:yup.string().required('Please Enter password').min(6,'Minimum 6 Chareter are required').max(8,'Maxmimum 8 Chareter are required')})}
@@ -73,7 +73,7 @@ const Register = ({ navigation }) => {
                     <View style={styles.inputView}>
                       <View style={styles.inputBoxContainer}>
                         <Image
-                          source={require('../assets/images/email.png')}
+                          source={require('../assets/images/user-ico.png')}
                           style={styles.icon}
                         />
                         <TextInput
@@ -110,7 +110,7 @@ const Register = ({ navigation }) => {
                       </View>
                       <View style={styles.inputBoxContainer}>
                         <Image
-                          source={require('../assets/images/email.png')}
+                          source={require('../assets/images/phone-reg.png')}
                           style={styles.icon}
                         />
                         <TextInput
@@ -148,7 +148,7 @@ const Register = ({ navigation }) => {
 
                       <View style={styles.inputBoxContainer}>
                       <Image
-                          source={require('../assets/images/user-ico.png')}
+                          source={require('../assets/images/refferal-reg.png')}
                           style={styles.icon}
                         />
                         <TextInput

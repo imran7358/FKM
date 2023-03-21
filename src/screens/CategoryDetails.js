@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Coupons from '../components/Coupons/CategoryCoupons';
+import Stores from '../components/Stores/CategoryStores';
 import Config from 'react-native-config';
 import CategoriesDeals from '../components/Deals/CategoryDeals';
 const END_URL = '/category/category-detail';
@@ -11,8 +11,8 @@ import Loader from '../components/Loader';
 
 const CategoryDetails = ({ navigation, route }) => {
 
-  const [deals, setShowDeals] = useState(true);
-  const [coupons, setShowCoupons] = useState(false);
+  const [deals, setShowDeals] = useState(false);
+  const [stores, setShowStores] = useState(true);
   const [page, setPage] = useState(1);
   const [readMore, setReadMore] = useState(true);
   const [loader, setLoader] = useState(false);
@@ -25,18 +25,18 @@ const CategoryDetails = ({ navigation, route }) => {
   });
   const [opt, setOpt] = useState('');
   const [catDeals, setCatDeals] = useState([]);
-  const [catCoupons, setCatCoupons] = useState([]);
+  const [catStores, setCatStores] = useState([]);
 
   const showDeals = () => {
     setShowDeals(true);
-    setShowCoupons(false);
+    setShowStores(false);
     setOpt('deals');
   };
 
-  const showCoupons = () => {
-    setShowCoupons(true);
+  const showStores = () => {
+    setShowStores(true);
     setShowDeals(false);
-    setOpt('coupons');
+    setOpt('stores');
   };
 
   useEffect(() => {
@@ -58,8 +58,10 @@ const CategoryDetails = ({ navigation, route }) => {
         if (data.response.deals && data.response.deals.length){
           setCatDeals([...catDeals, ...data.response.deals]);
         }
-      } else if (opt == "coupons") {
-        setCatCoupons([...catCoupons, ...data.response.coupons]);
+      } else if (opt == "stores") {
+        setCatStores([...catStores, ...data.response.stores]);
+        // console.log(catCoupons)
+        
       } else {
         if (!data.response.deals.length){
           setNoData('No records found !');
@@ -101,12 +103,13 @@ const CategoryDetails = ({ navigation, route }) => {
         </View>
         <View style={styles.catDeals}>
           <View style={styles.tabList}>
+          <TouchableOpacity onPress={showStores} style={styles.tabContainer}>
+              <View style={stores ? [styles.tab, styles.activeTab] : [styles.tab]}><Text style={stores ? styles.activText : styles.mayTab}>Stores</Text></View>
+            </TouchableOpacity>
             <TouchableOpacity onPress={showDeals} style={styles.tabContainer}>
-              <View style={deals ? [styles.tab, styles.activeTab] : [styles.tab]} ><Text style={deals ? styles.activText : styles.mayTab}>Deals</Text></View>
+              <View style={deals ? [styles.tab, styles.coupnActiveTab] : [styles.tab]} ><Text style={deals ? styles.activText : styles.mayTab}>Deals</Text></View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={showCoupons} style={styles.tabContainer}>
-              <View style={coupons ? [styles.tab, styles.coupnActiveTab] : [styles.tab]}><Text style={coupons ? styles.activText : styles.mayTab}>Coupons</Text></View>
-            </TouchableOpacity>
+            
           </View>
         </View>
         {
@@ -118,9 +121,9 @@ const CategoryDetails = ({ navigation, route }) => {
         }
 
         {
-          coupons ?
+          stores ?
 
-            <Coupons couponsList={catCoupons} navigation={navigation} route={route.params.catSlug}/>
+            <Stores navigation={navigation} route={route.params.catSlug}/>
 
             : null
         }
