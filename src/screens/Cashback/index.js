@@ -17,18 +17,7 @@ const AllCashback = ({navigation})=> {
         <SafeAreaView>
             <ScrollView>
                 <View style={styles.container}>
-                <View style={[styles.dealDay]}>
-            <View style={styles.headTop}>
-            <View style={styles.headingArea}>
-              <Image source={require('../../assets/images/hot-sale.png')} style={styles.hotSale} />
-              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '800' }}>Deals</Text></Text>
-            </View>
-            <TouchableOpacity onPress={()=> navigation.navigate("CashbackDeals")}><Text>View All</Text></TouchableOpacity>
-            </View>
-            <View style ={styles.cashbackDeals}>
-                <Deals navigation={navigation}/>
-            </View>
-          </View>
+                
           <View style={[styles.dealDay, styles.storeCon]} >
             <View style={styles.headTop}>
             <View style={styles.headingArea}>
@@ -39,6 +28,18 @@ const AllCashback = ({navigation})=> {
             </View>
             <View style ={styles.cashbackDeals}>
                <Stores navigation={navigation}/>
+            </View>
+          </View>
+          <View style={[styles.dealDay]}>
+            <View style={styles.headTop}>
+            <View style={styles.headingArea}>
+              <Image source={require('../../assets/images/hot-sale.png')} style={styles.hotSale} />
+              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '800' }}>Deals</Text></Text>
+            </View>
+            <TouchableOpacity onPress={()=> navigation.navigate("CashbackDeals")}><Text>View All</Text></TouchableOpacity>
+            </View>
+            <View style ={styles.cashbackDeals}>
+                <Deals navigation={navigation}/>
             </View>
           </View>
                 </View>
