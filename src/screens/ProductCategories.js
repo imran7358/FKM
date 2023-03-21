@@ -48,7 +48,7 @@ const ProductCategories = ({ navigation }) => {
                     </View>
                   </View>
                   <View style={styles.viewDetails}>
-                    <TouchableOpacity onPress={() => navigation.navigate({ name: 'CategoryDetails', params: { catSlug: item.cate_slug } })}>
+                    <TouchableOpacity onPress={() => navigation.navigate({ name: 'CategoryDetails', params: { catSlug: item.cate_slug}})}>
                       <Text style={styles.viewDetailsBtn}>View Deals</Text>
                     </TouchableOpacity>
                   </View>

@@ -61,11 +61,20 @@ const AllDeals = ({ navigation }) => {
                                         : null
                                     }
 
-                                    <View style={styles.productImageCon}>
+                                    {/* <View style={styles.productImageCon}>
                                         <View style={styles.productImage}>
                                             <Image source={{ uri: item.deal_image }} style={{ height: 70, width: 70 }} />
                                         </View>
-                                    </View>
+                                    </View> */}
+
+                                    <View style={[styles.imageContainer, styles.shadow]}>
+
+        <Image
+          style={styles.videoPreview}
+          source={{ uri: item.deal_image }}
+        />
+      </View>
+                                    <View style={styles.dealsInner}>
                                     <View style={styles.brandLogo}>
                                         <Image source={{ uri: item.store_img_url }} style={{ height: 16, width: 55 }} />
                                     </View>
@@ -85,6 +94,7 @@ const AllDeals = ({ navigation }) => {
                                             <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage} />
                                             <Text style={[styles.priceTxt, styles.cutprice]}>{item.price}</Text>
                                         </View>
+                                    </View>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -128,6 +138,12 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 12,
     },
+    videoPreview: {
+        width: 80,
+        height: 80,
+        borderRadius: 9,
+        resizeMode: 'cover',
+      },
     productContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -136,12 +152,16 @@ const styles = StyleSheet.create({
     },
     productBox: {
         width: '47%',
-        backgroundColor: '#F7F7F7',
-        padding: 15,
-        borderRadius: 9,
-        borderColor: '#EDEDED',
-        borderWidth: 1,
-        marginBottom: 15,
+        backgroundColor: '#f0f0f0',
+        // padding: 15,
+        borderRadius: 16,
+        // borderColor: '#EDEDED',
+        // borderWidth: 1,
+        marginBottom: 25,
+    },
+    dealsInner:{
+        paddingHorizontal: 15,
+        paddingBottom:15,
     },
     loadContainer: {
         marginTop: 50,
@@ -149,6 +169,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    imageContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 170,
+        height: 130,
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
+        position: 'relative',
+      },
     dealsContainer: {
         justifyContent: 'center',
         alignContent: 'center',

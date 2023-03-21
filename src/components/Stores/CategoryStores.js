@@ -27,7 +27,6 @@ const Stores = ({ navigation, route}) => {
 
             if (data.response.stores && data.response.stores.length){
                 setStores([...stores, ...data.response.stores]);
-
             }
 
             else{
@@ -48,8 +47,8 @@ const Stores = ({ navigation, route}) => {
     },[page,route])
 
     return (
-            <SafeAreaView style={styles.container}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1, }}>
+            <SafeAreaView>
+                <ScrollView>
                     <View style={styles.container}>
                         <View style={styles.storeInner}>
                             {
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 24,
         backgroundColor: '#FFFFFF',
-        flex: 2,
+        flex:1,
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',

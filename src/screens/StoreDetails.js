@@ -30,6 +30,7 @@ const StoreDetails = ({ props, route, navigation }) => {
         store_img: null,
         top_desc: '',
         isClaim: '',
+        toc:''
     });
     const [storeDeals, setStoreDeals] = useState([]);
     const [couponsList, setCouponsList] = useState([])
@@ -39,6 +40,7 @@ const StoreDetails = ({ props, route, navigation }) => {
     const [loader, setLoader] = useState(false);
     const [loadMore, setLoadMore] = useState(true);
     const [noData, setNoData] = useState('');
+    const [toc, setToc] = useState(false);
 
     const [show, setShow] = useState(false);
     const showDeals = () => {
@@ -67,6 +69,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                 const regex = /(<([^>]+)>)/ig;
                 const result = "Store name"
                 // /const result = data.response.store_details.top_desc.replace(regex, '');
+                const cbtoc = data.response.store_details.toc.replace(regex, '')
                 storeDetails({
                     is_cashback: data.response.store_details.is_cashback,
                     store_name: data.response.store_details.store_name,
@@ -78,6 +81,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                     top_desc: result,
                     isClaim: data.response.store_details.is_claim,
                     store_landing_url: data.response.store_details.store_landing_url,
+                    toc: cbtoc,
                 });
                 setRate(data.response.store_rates);
                 if (data.response.deals && data.response.deals.length) {
@@ -151,10 +155,20 @@ const StoreDetails = ({ props, route, navigation }) => {
 
                     {
                         store.is_cashback == '1' ? <View style={styles.cashbackRates}>
-                        <View style={styles.cbrateTxt}>
+                            <View style={styles.ratesContainer}>
+                            <View style={styles.cbrateTxt}>
                             <Text style={{ fontSize: 14, }}>Cashback</Text>
                             <Text style={{ fontSize: 14, fontWeight: 'bold', marginLeft: 5, }}>Rates</Text>
                         </View>
+                        <TouchableOpacity onPress={()=> setToc(!toc)}>
+                        <View style={styles.viewTc}><Text style={styles.cbTc}>Cashback T&C</Text></View>
+                        </TouchableOpacity>
+                            </View>
+                            {
+                                toc ? <View style = {styles.tmcContainer}>
+                                <Text style={styles.txtDescription}>{store.toc}</Text>
+                                </View> : null
+                            }
                         {
 
                             rate.length && rate.map((item, i) => {
@@ -235,8 +249,6 @@ const StoreDetails = ({ props, route, navigation }) => {
                             </View>
                         }
                     </View>
-
-                    
                 </View>
             </ScrollView>
 
@@ -273,11 +285,32 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flex: 1,
     },
+    cbTc:{
+        color:'#f27935',
+        fontWeight:'600',
+    },
+    tmcContainer:{
+        border:'1px solid #ccc',
+        borderWidth:1,
+        borderColor: '#f27935',
+        borderRadius: 6,
+        padding:10,
+        marginTop:10,
+    },
+
+    ratesContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     cashbackRates: {
         padding: 20,
         backgroundColor: '#fff',
         marginTop: 15,
         borderRadius: 6,
+    },
+    txtDescription:{
+        fontSize:12,
     },
     hide: {
         height: 100,
@@ -412,6 +445,7 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginTop:15,
     },
 
 
