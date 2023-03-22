@@ -61,7 +61,7 @@ const Home = ({ navigation }) => {
           <View style={styles.liveDeals}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/liveDeals.png')} style={styles.hotSale} />
-              <Text style={styles.topHeading}>Live <Text style={{ fontWeight: '800' }}>Dealsss</Text></Text>
+              <Text style={styles.topHeading}>Live <Text style={{ fontWeight: '800' }}>Deals</Text></Text>
             </View>
             <LiveDeals navigation={navigation} livedeals={livedeals} />
           </View>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     overflow: 'hidden',
-    height: 180,
+    height: 210,
   },
   liveDeals: {
     marginTop: 0,

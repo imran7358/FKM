@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f0f0',
         // padding: 15,
         borderRadius: 16,
-        // borderColor: '#EDEDED',
-        // borderWidth: 1,
+        borderColor: '#EDEDED',
+        borderWidth: 1.2,
         marginBottom: 25,
     },
     dealsInner:{
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 170,
+        width: 162,
         height: 130,
         backgroundColor: '#ffffff',
         borderRadius: 16,
@@ -267,8 +267,8 @@ const styles = StyleSheet.create({
     },
     cashback: {
         backgroundColor: '#f27935',
-        borderRadius:3,
-       paddingHorizontal: 7,
+        borderRadius:8,
+        paddingHorizontal: 7,
         position:'absolute',
         zIndex: 999,
         paddingVertical: 4,

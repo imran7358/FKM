@@ -9,6 +9,7 @@ const END_URL = '/store/storedetail';
 import Loader from '../components/Loader';
 import StoreCoupons from '../components/Coupons/StoreCoupons';
 import { useSelector } from 'react-redux';
+import CustomWebView from 'react-native-render-html';
 
 
 const StoreDetails = ({ props, route, navigation }) => {
@@ -69,7 +70,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                 const regex = /(<([^>]+)>)/ig;
                 const result = "Store name"
                 // /const result = data.response.store_details.top_desc.replace(regex, '');
-                const cbtoc = data.response.store_details.toc.replace(regex, '')
+                const cbtoc = data.response.store_details.toc
                 storeDetails({
                     is_cashback: data.response.store_details.is_cashback,
                     store_name: data.response.store_details.store_name,
@@ -166,7 +167,8 @@ const StoreDetails = ({ props, route, navigation }) => {
                             </View>
                             {
                                 toc ? <View style = {styles.tmcContainer}>
-                                <Text style={styles.txtDescription}>{store.toc}</Text>
+                                    <CustomWebView style={styles.txtDescription} source={{ html: store.toc }}/>
+                                {/* <Text style={styles.txtDescription}>{store.toc}</Text> */}
                                 </View> : null
                             }
                         {

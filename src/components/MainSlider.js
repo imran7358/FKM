@@ -10,6 +10,8 @@ const MianSlider = ({navigation,slideImage}) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         data={slideImage}
+        width={380}
+        height={210}
         imageKey={'app_slider_image'}
         onPress={item => {
           navigation.navigate({name:'Details',params:{dealSlug:slideImage[item].app_landing_url}})}

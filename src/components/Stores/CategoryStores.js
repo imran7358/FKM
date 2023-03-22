@@ -54,7 +54,7 @@ const Stores = ({ navigation, route}) => {
                             {
                                 stores.length ? stores.map((item, i) => {
                                     return <View style={styles.storeBox} key={i}>
-                                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.store_slug } })}>
+                                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.store_name } })}>
                                             <View style={styles.logoContinaer}>
                                                 <View>
                                                     <Image source={{ uri: item.store_img_url }} style={styles.logo} />

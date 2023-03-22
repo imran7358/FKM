@@ -5,6 +5,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useSelector } from 'react-redux';
 import Config from "react-native-config";
 import axios from 'axios';
+import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const ENDPOINT = '/coupons/coupon-detail';
 
 const CouponsDetails = ({navigation, route, props}) => {
@@ -93,16 +94,26 @@ const CouponsDetails = ({navigation, route, props}) => {
             <View style={styles.linkContainer}>
             {
                 userInfo ?
+                <View style={styles.appButtonCb}>
+                <TouchableOpacity>
                 <Text style={styles.ernCb} onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>Earn Cashback</Text>
+                </TouchableOpacity>
+                </View>
                 :
-                
+                <View style={styles.appButtonCb}>
+                <TouchableOpacity>
                 <Text style={styles.ernCb} onPress={()=> { navigation.navigate('Login')}}>Login & Earn Cashback</Text>
+                </TouchableOpacity>
+                </View>
             }
             
                 
                 <View></View>
+                <View style={styles.appButton}>
+                <TouchableOpacity>
                 <Text style={styles.sckipCb} onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>Skip  Cashback</Text>
-            
+                </TouchableOpacity>
+                </View>
                 </View>
            : 
            <View style={styles.linkContainer}>
@@ -195,11 +206,11 @@ const styles = StyleSheet.create({
     ernCb: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#409314',
+        color: '#fff',
         marginRight: 20,
     },
     sckipCb: {
-        color: '#666',
+        color: '#fff',
         fontSize: 14,
         fontWeight: '700',
     },
@@ -224,6 +235,27 @@ const styles = StyleSheet.create({
         borderStyle:'dashed',
         padding: 10,
         marginVertical: 10,
+    },
+    appButtonCb: {
+        paddingLeft:10,
+        backgroundColor: 'green',
+        color: 'white',
+        borderRadius: 6,
+        height:50,
+        width:100,
+        // justifyContent:'space-between'
+        alignItems: 'center',
+        alignContent: 'center',
+    },
+    appButton: {
+        paddingLeft:10,
+        backgroundColor: '#f27935',
+        borderRadius: 6,
+        height:50,
+        width:100,
+        // justifyContent:'space-between'
+        alignItems: 'center',
+        alignContent: 'center',
     },
     activateTxt: {
         color: '#f27935',

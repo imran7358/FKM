@@ -22,7 +22,7 @@ const AllCashback = ({navigation})=> {
             <View style={styles.headTop}>
             <View style={styles.headingArea}>
               <Image source={require('../../assets/images/hot-sale.png')} style={styles.hotSale} />
-              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '800' }}>Store</Text></Text>
+              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '800' }}>Stores</Text></Text>
             </View>
             <TouchableOpacity onPress={()=> navigation.navigate("AllCashbackStores")}><Text>View All</Text></TouchableOpacity>
             </View>
