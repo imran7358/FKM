@@ -81,14 +81,6 @@ const WidthdarawlMoney = ({ navigation }) => {
 
                 />
                 {
-                    value === 'paytm' ? <View>
-                        <Text style={styles.notification}>
-                            Kindly note, Minimum withdrawal amount for paytm is Rs.100 and you will be charged a convenience fee of 3% on all PayTM withdrawal request
-                        </Text>
-                    </View>
-                        : null
-                }
-                {
                     error ? <ErroLabel message={error}/> : null
                 }
             </View>
@@ -193,6 +185,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         backgroundColor: '#f7f7f7',
         padding: 20,
+        paddingBottom:10,
     },
     notes: {
         fontSize: 12,

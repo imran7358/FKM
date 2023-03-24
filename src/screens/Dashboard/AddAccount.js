@@ -235,7 +235,7 @@ const userToken = useSelector(state=> state.user.userToken);
                 validationSchema={yup.object().shape({
 
                   phone: yup
-                    .string().required('Please Enter phone no').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter a valide phone number'),
+                    .string().required('Please Enter phone no').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter a valid phone number'),
                   accountHolder: yup
                     .string().required('Please, provide your name!').matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms,{message:"Please use only alphabets"}),
                 })}

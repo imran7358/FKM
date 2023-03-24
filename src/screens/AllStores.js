@@ -36,7 +36,7 @@ const AllStores = ({ navigation }) => {
                                             </View>
                                             <View><Text style={styles.logoTxt}>{item.store_name}</Text></View>
                                             <View style={styles.btnContainer}>
-                                                <Text style={styles.cbBtn}>₹ {item.cashback_amount}</Text>
+                                                <Text style={styles.cbBtn}>{item.cashback_amount}</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

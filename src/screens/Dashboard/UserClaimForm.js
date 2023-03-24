@@ -52,7 +52,7 @@ const UserClaimForm = ({ navigation, route }) => {
             }).then(({ data }) => {
                 setClick(data.response.userclicks);
                 setField(data.response.claimform);
-                
+
 
             }).catch((error) => {
                 console.log("Clicks Error", error.message);
@@ -197,7 +197,7 @@ const UserClaimForm = ({ navigation, route }) => {
                                             />
                                             {
                                                 field?.length ? field.map((item, i) => {
-                                        
+
                                                     if (item.type === 'text') {
                                                         return <View style={styles.inputBoxContainer} key={item.id}>
                                                             {console.log("Txt fld", item.id)}
@@ -216,7 +216,7 @@ const UserClaimForm = ({ navigation, route }) => {
                                                         </View>
                                                     }
                                                     else if (item.type === 'file') {
-                    
+
                                                         return <View style={[styles.inputBoxContainer, styles.dateCon]} key={item.id}>
                                                             {console.log("file fld", item.id)}
                                                             <Text
@@ -241,10 +241,10 @@ const UserClaimForm = ({ navigation, route }) => {
 
 
                                                     else if (item.type === 'date') {
-                
+
                                                         return <>
                                                             <View key={item.id} style={[styles.inputBoxContainer, styles.dateCon]}>
-                                                            {console.log("date fld", item.id)}
+                                                                {console.log("date fld", item.id)}
                                                                 <Text>{date.toDateString()}</Text>
                                                                 <TouchableOpacity onPress={() => setOpen(true)}>
                                                                     <View style={styles.dateIcon}>
@@ -276,8 +276,8 @@ const UserClaimForm = ({ navigation, route }) => {
                                                 }) : null
                                             }
 
-                                            <DatePicker 
-                                                key ={34}
+                                            <DatePicker
+                                                key={34}
                                                 modal
                                                 open={open}
                                                 date={date}

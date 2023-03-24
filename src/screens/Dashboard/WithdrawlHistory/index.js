@@ -18,9 +18,11 @@ const WidthdrawalMoney = () => {
         <SafeAreaView style={styles.bgWhite}>
          <ScrollView style={styles.bgWhite}>
          <View style={styles.container}>
-          <View style={styles.topContent}>
-             <Text style={styles.topText}>{desc}</Text>
-          </View>
+         {
+            desc ?  <View style={styles.topContent}>
+            <Text style={styles.topText}>{desc}</Text>
+         </View> : null
+         }
     
             <View style={styles.historyTab}>
             <View style={styles.historyTab}>

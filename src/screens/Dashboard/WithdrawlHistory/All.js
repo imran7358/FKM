@@ -37,7 +37,7 @@ const AllCashback = ({ setTop }) => {
                 else {
                    setNoData(true);
                 }
-                setTop('empty content');
+                setTop('');
             }).catch((error) => {
                 console.log(error);
             }).finally(()=>{

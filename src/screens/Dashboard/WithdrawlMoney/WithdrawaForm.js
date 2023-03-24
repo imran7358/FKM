@@ -9,6 +9,7 @@ import WidthdarawlOtp from './WithdrawOtp';
 const END_URL = '/cashback/withdraw-money';
 import { Formik } from 'formik';
 import * as yup from "yup"
+import ErroLabel from '../../../components/ErrorCom';
 
 
 const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
@@ -44,7 +45,8 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
                 amount:'',
             }}
             validationSchema = {yup.object().shape({
-                amount:yup.string().required("Please enter the amount")
+    
+                amount:yup.number().required("Please enter the amount")
             })}
             onSubmit ={async(values,opt)=>{
                 const cpnSel = coupon.find(e => e.code == couponSelected)
@@ -65,10 +67,16 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
             },
         }).then(({ data }) => {
             setLoading(false);
-            Resp(data);
-            console.log("Submit Data", data)
+            console.log("Data info", data)
+            if(data.status == '1'){
+                Resp(data);
+            }
+            else {
+                setError(data.message)
+            }
+
         }).catch((error) => {
-            console.log('Error', error.message);
+           setError(error.message)
         });
             }}
             >
@@ -128,6 +136,11 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
 
     </View>
 </View>
+<View style={{marginBottom:15}}>
+{ 
+ error && <ErroLabel message={error}/>
+}
+</View>
 <TouchableOpacity onPress={handleSubmit}>
     <View style={styles.loginButton}>
         <Text style={styles.loginTxt}>Submit</Text>
@@ -185,6 +198,9 @@ const styles = StyleSheet.create({
     cpLabel:{
         marginTop: 10,
         fontSize: 12,
+        color: 'green',
+        lineHeight: 18,
+        marginBottom: 15,
     },
     txtActive: {
         color: '#f27935',
