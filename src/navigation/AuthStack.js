@@ -187,7 +187,7 @@ const BottomTabs = ({ navigation }) => {
                             BottomTabs: false,
                             tabBarIcon: ({ focused }) => (
                                 <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                                    <Image source={require('../assets/images/profileico.png')} style={{
+                                    <Image source={require('../assets/images/zccount.png')} style={{
                                         width: 26,
                                         height: 26,
                                         resizeMode: 'contain',
@@ -211,7 +211,7 @@ const BottomTabs = ({ navigation }) => {
                         tabBarStyle: {display: 'none'},
                         tabBarIcon: ({ focused }) => (
                             <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                                <Image source={require('../assets/images/profileico.png')} style={{
+                                <Image source={require('../assets/images/zccount.png')} style={{
                                     width: 26,
                                     height: 26,
                                     resizeMode: 'contain',

@@ -178,7 +178,7 @@ const CustomDrawer = ({navigation}) => {
                </TouchableOpacity>
                </View>
                <View style={styles.appVersion}>
-                <Text style={styles.apptxt}>App Version v1.5</Text>
+                <Text style={styles.apptxt}>App v2.1</Text>
                </View>
             </View>
         </View>

@@ -61,11 +61,12 @@ useEffect(()=>{
                                             <Image source={{ uri: item.image_url }} style={{ height: 70, width: 70 }} />
                                         </View>
                                     </View>
+                                    <View style={styles.dealsInner}>
                                     <View style={styles.brandLogo}>
                                         <Image source={{ uri: item.store_img }} style={{ height: 16, width: 55 }} />
                                     </View>
                                     <View style={styles.prodDescr}>
-                                        <Text style={styles.prdLine} numberOfLines={2}>
+                                        <Text style={styles.prdLine} numberOfLines={3}>
                                             {item.title}
                                         </Text>
 
@@ -74,7 +75,7 @@ useEffect(()=>{
                                    <View style={styles.cbButton}>
                                         <Text style={styles.cbTxt}>{item.cahsback}</Text>
                                     </View>
-
+                                    </View>
                                    </View>
                                 </TouchableOpacity>
                             </View>

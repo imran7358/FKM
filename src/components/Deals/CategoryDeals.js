@@ -53,16 +53,19 @@ const CategoriesDeals = ({ navigation, route }) => {
                                         </View>
                                         : null
                                 }
-                                <View style={styles.productImageCon}>
-                                    <View style={styles.productImage}>
-                                        <Image source={{ uri: item.deal_image }} style={styles.dealImage} />
-                                    </View>
+                                <View style={[styles.imageContainer, styles.shadow]}>
+
+                                <Image
+                                style={styles.videoPreview}
+                                source={{ uri: item.deal_image }}
+                                />
                                 </View>
+                                <View style={styles.dealsInner}>
                                 <View style={styles.brandLogo}>
                                     <Image source={{ uri: item.store_img_url }} style={styles.brandLogoImg} />
                                 </View>
                                 <View style={styles.prodDescr}>
-                                    <Text style={styles.prdLine} numberOfLines={2}>
+                                    <Text style={styles.prdLine} numberOfLines={3}>
                                         {item.deal_title}
                                     </Text>
                                 </View>
@@ -76,6 +79,7 @@ const CategoriesDeals = ({ navigation, route }) => {
                                         <Image source={require('../../assets/images/grey-rupee-icon.png')} style={styles.rpImage} />
                                         <Text style={[styles.priceTxt, styles.cutprice]}>{item.price}</Text>
                                     </View>
+                                </View>
                                 </View>
                             </TouchableOpacity>
                         </View>;
@@ -108,6 +112,7 @@ const CategoriesDeals = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     dealsContainer: {
         padding: 24,
+        paddingRight: 20,
     },
     productContainer: {
         flexDirection: 'row',
@@ -117,13 +122,22 @@ const styles = StyleSheet.create({
     },
     productBox: {
         width: '47%',
-        backgroundColor: '#F7F7F7',
-        padding: 20,
-        borderRadius: 9,
+        backgroundColor: '#f0f0f0',
+        // padding: 15,
+        borderRadius: 16,
         borderColor: '#EDEDED',
-        borderWidth: 1,
-        marginBottom: 15,
+        borderWidth: 1.2,
+        marginBottom: 25,
     },
+    imageContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 160,
+        height: 130,
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
+        position: 'relative',
+      },
     productImage: {
         width: 100,
         height: 100,
@@ -132,6 +146,16 @@ const styles = StyleSheet.create({
         borderRadius: 9,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    videoPreview: {
+        width: 80,
+        height: 80,
+        borderRadius: 9,
+        resizeMode: 'cover',
+      },
+      dealsInner:{
+        paddingHorizontal: 15,
+        paddingBottom:15,
     },
     productImageCon: {
         width: '100%',

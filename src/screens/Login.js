@@ -59,7 +59,7 @@ const Login = ({ navigation }) => {
                 }}
                 validationSchema={yup.object().shape({
                     email: yup
-                        .string().required('Please enter email/user id'),
+                        .string().required('Please enter email/username/phone'),
                     password: yup
                         .string().required('Please enter your password'),
                 })}

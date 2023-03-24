@@ -187,7 +187,6 @@ const Register = ({ navigation }) => {
                         </View>
                       </View> */}
                       <View style={styles.newLogin}>
-                        <Text style={styles.font16}>New to FreeKaaMaal ?</Text>
                         <Text style={[styles.font16, styles.RegisterLink]} onPress={() => navigation.navigate('Login')}>Login</Text>
                       </View>
                     </View>

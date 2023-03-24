@@ -362,7 +362,7 @@ const Profile = ({ navigation }) => {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.menuList}>
+                        {/* <View style={styles.menuList}>
                             <View style={styles.menuName}>
                                 <View style={styles.menuIcon}>
                                     <Image source={require('../../assets/images/mnotification.png')} style={styles.icon} />
@@ -376,7 +376,7 @@ const Profile = ({ navigation }) => {
                             <View>
 
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
             </ScrollView>

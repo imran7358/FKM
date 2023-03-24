@@ -78,7 +78,7 @@ useEffect(()=>{
                         </View>
                        </TouchableOpacity>
                         <View style={styles.searchInput}>
-                            <TextInput placeholder="Search your Deals & Coupons..." style={styles.searchBox} placeholderTextColor="#fff"
+                            <TextInput placeholder="Search your Cashback Store" style={styles.searchBox} placeholderTextColor="#fff"
                             onChangeText={(txt) => handleChange(txt)} 
                             autoComplete="off"
                             autoCapitalize="none"
@@ -89,7 +89,7 @@ useEffect(()=>{
                     </View>
 
                     <View style={styles.suggestionCon}>
-                      <Text style={styles.suggestHeading}>Top Suggestions</Text>
+                      {/* <Text style={styles.suggestHeading}>Top Suggestions</Text> */}
                       <View>
                       {
                       data.length && data.map((item,i)=> { return <TouchableOpacity key={i} onPress = {()=>{setSearch(false), navigation.navigate({name: 'StoreDetails', params: { storeSlug: item.name} })}}>

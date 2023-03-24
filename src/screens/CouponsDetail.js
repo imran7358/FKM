@@ -5,9 +5,14 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { useSelector } from 'react-redux';
 import Config from "react-native-config";
 import axios from 'axios';
-import { white } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const ENDPOINT = '/coupons/coupon-detail';
-
+import {
+    centerContainer,
+    fontSize,
+    inputBox,
+    fontColor,
+    commonMargin,
+} from '../assets/styles/common';
 const CouponsDetails = ({navigation, route, props}) => {
     const userToken = useSelector(state=> state.user.userToken);
     const userInfo = useSelector(state=> state.user.userInfo);
@@ -42,6 +47,7 @@ const CouponsDetails = ({navigation, route, props}) => {
                 },
             
         }).then(({data})=>{
+            console.log(data)
             setCouponDetails({
                 storeImage: data.response.coupon.store_image,
                 description:data.response.coupon.description,
@@ -58,6 +64,7 @@ const CouponsDetails = ({navigation, route, props}) => {
     };
 
     useEffect(()=>{
+        console.log(route.params.couponId)
         getDetails();
     },[])
 
@@ -94,34 +101,37 @@ const CouponsDetails = ({navigation, route, props}) => {
             <View style={styles.linkContainer}>
             {
                 userInfo ?
-                <View style={styles.appButtonCb}>
-                <TouchableOpacity>
-                <Text style={styles.ernCb} onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>Earn Cashback</Text>
-                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>
+                     <View style={styles.CbButton}>
+                <Text style={styles.ernCb}>Earn Cashback</Text>
                 </View>
+                </TouchableOpacity>
                 :
-                <View style={styles.appButtonCb}>
-                <TouchableOpacity>
-                <Text style={styles.ernCb} onPress={()=> { navigation.navigate('Login')}}>Login & Earn Cashback</Text>
-                </TouchableOpacity>
+                <TouchableOpacity onPress={()=> { navigation.navigate('Login')}}>
+                    <View style={styles.CbButton}>
+                <Text style={styles.ernCb} >Login & Earn Now </Text>
                 </View>
+                </TouchableOpacity>
             }
             
                 
                 <View></View>
-                <View style={styles.appButton}>
-                <TouchableOpacity>
-                <Text style={styles.sckipCb} onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>Skip  Cashback</Text>
-                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>
+                <View style={styles.CbButton1}>
+                <Text style={styles.sckipCb} >Skip  Cashback</Text>
                 </View>
+                </TouchableOpacity>
                 </View>
            : 
            <View style={styles.linkContainer}>
             
             
+            <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>
+                <View style={styles.CbButton1}>
                 
-                <Text style={styles.sckipCb} onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>Shop Now</Text>
-            
+            <Text style={styles.sckipCb} >Shop Now</Text>
+            </View>
+            </TouchableOpacity>
                 </View>
                 }      
            </View>
@@ -136,6 +146,34 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 24,
         marginTop: 30,
+    },
+    CbButton: {
+        justifyContent:'center',
+        alignItems:'center',
+        flex:1,
+        backgroundColor: 'green',
+        color:"#000",
+        padding:  10,
+        // textAlign:'center',
+        marginRight:15,
+        marginTop: 30,
+        display:"flex",
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
+    CbButton1: {
+        justifyContent:'center',
+        alignItems:'center',
+        flex:1,
+        backgroundColor: '#f27935',
+        color:"#000",
+        padding: 10,
+        marginTop: 30,
+        display:"flex",
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
     },
     cpDetailCon: {
         borderWidth: 1,
@@ -207,7 +245,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '700',
         color: '#fff',
-        marginRight: 20,
     },
     sckipCb: {
         color: '#fff',
@@ -235,27 +272,6 @@ const styles = StyleSheet.create({
         borderStyle:'dashed',
         padding: 10,
         marginVertical: 10,
-    },
-    appButtonCb: {
-        paddingLeft:10,
-        backgroundColor: 'green',
-        color: 'white',
-        borderRadius: 6,
-        height:50,
-        width:100,
-        // justifyContent:'space-between'
-        alignItems: 'center',
-        alignContent: 'center',
-    },
-    appButton: {
-        paddingLeft:10,
-        backgroundColor: '#f27935',
-        borderRadius: 6,
-        height:50,
-        width:100,
-        // justifyContent:'space-between'
-        alignItems: 'center',
-        alignContent: 'center',
     },
     activateTxt: {
         color: '#f27935',
