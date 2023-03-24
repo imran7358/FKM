@@ -16,7 +16,7 @@ const END_URL = "/home/home";
 import axios from 'axios';
 const Home = ({ navigation }) => {
   const [slider, setSlider] = useState([]);
-  const [sticky, setSticky] = useState([]);
+  const [sticky, setSticky] = useState(null);
   const [livedeals, setLiveDeals] = useState([]);
   const [faq, setFaq] = useState([]);
   const [page, setpage] = useState(2);
@@ -51,20 +51,24 @@ const Home = ({ navigation }) => {
           <View style={styles.mainSlider}>
             <MianSlider navigation={navigation} slideImage={slider} />
           </View>
-          <View style={[styles.dealDay]}>
+         {
+            sticky?.length ?  <View style={[styles.dealDay]}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/hot-sale.png')} style={styles.hotSale} />
               <Text style={styles.topHeading}>Deals <Text style={{ fontWeight: '800' }}>of the Day</Text></Text>
             </View>
             <DealsDay stickyImages={sticky} navigation={navigation} />
-          </View>
-          <View style={styles.liveDeals}>
+          </View> : null
+         }
+          {
+            livedeals?.length ? <View style={styles.liveDeals}>
             <View style={styles.headingArea}>
               <Image source={require('../assets/images/liveDeals.png')} style={styles.hotSale} />
               <Text style={styles.topHeading}>Live <Text style={{ fontWeight: '800' }}>Deals</Text></Text>
             </View>
             <LiveDeals navigation={navigation} livedeals={livedeals} />
-          </View>
+          </View> : null
+          }
           <View style={styles.hotDealWrapper}>
             <View style={styles.dealDay}>
               <View style={styles.HotDealsInner}>

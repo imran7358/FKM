@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 
 
 
+
  const ProductDetails = ({navigation, route}) => {
 
 
@@ -26,11 +27,13 @@ import { useSelector } from 'react-redux';
         landing_url : '',
         isCashback: '',
         storeImg : null,
-        cashbackAmount: ''
+        cashbackAmount: '',
+        toc:''
     });
     const [relatedProduct, setRelatedProduct] = useState([]);
-
+    const [rate, setRate] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [toc, setToc] = useState(false);
     const getDetails = () => {
         setLoading(true);
         axios.post(Config.API_URL + END_URL, {
@@ -43,9 +46,6 @@ import { useSelector } from 'react-redux';
                 Authorization: userToken,
             },
         }).then(({data})=>{
-            // const regex = /(<([^>]+)>)/ig;
-            // const result = data.response.deal.description.replace(regex, '');
-            
 
             setDetails({
                 title: data.response.deal.deal_title,
@@ -58,7 +58,9 @@ import { useSelector } from 'react-redux';
                 isCashback: data.response.deal.is_cashback,
                 storeImg: data.response.deal.store_image,
                 cashbackAmount: data.response.deal.cashback_amount,
+                toc:data.response.deal.toc
             });
+            setRate(data.response.deal.store_rates);
             console.log(details.description);
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
@@ -120,6 +122,48 @@ import { useSelector } from 'react-redux';
                             </View> : null
                         }
                 </View>
+
+
+                {
+                        details.isCashback == '1' ? <View style={styles.cashbackRates}>
+                            <View style={styles.ratesContainer}>
+                            <View style={styles.cbrateTxt}>
+                            <Text style={{ fontSize: 14, }}>Cashback</Text>
+                            <Text style={{ fontSize: 14, fontWeight: 'bold', marginLeft: 5, }}>Rates</Text>
+                        </View>
+                        <TouchableOpacity onPress={()=> setToc(!toc)}>
+                        <View style={styles.viewTc}><Text style={styles.cbTc}>Cashback T&C</Text></View>
+                        </TouchableOpacity>
+                            </View>
+                            {
+                                toc ? <View style = {styles.tmcContainer}>
+                                    <CustomWebView style={styles.txtDescription} source={{ html: details.toc }}/>
+                
+                                </View> : null
+                            }
+                        {
+
+                            rate?.length && rate?.map((item, i) => {
+                                return <View style={styles.cbCardContainer} key={i}>
+                                    <View style={styles.cbInner}>
+                                        <View style={styles.cbRupee}>
+                                            <View style={styles.cbInfoCon}>
+                                                <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                            </View>
+                                        </View>
+
+                                        <View style={styles.cbTxtCon}>
+                                            <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
+                                            <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
+                                            <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                            })
+                        }
+                    </View> : null
+                    }
                 {
 
                     userToken ? <View>
@@ -197,13 +241,22 @@ import { useSelector } from 'react-redux';
         marginRight:20,
     },
     leftPrice:{
-
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         alignContent: 'center',
         width: '100%'
 
+    },
+    cashbackRates: {
+        backgroundColor: '#fff',
+        marginTop: 15,
+        borderRadius: 6,
+    },
+    ratesContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     loadContainer: {
         marginTop: 50,
@@ -214,10 +267,17 @@ import { useSelector } from 'react-redux';
     container: {
         padding: 24,
     },
+    cbrateTxt: {
+        flexDirection: 'row',
+    },
     heading: {
-        fontSize: 16,
-        fontWeight: '900',
+        fontSize: 18,
+        fontWeight: '700',
         lineHeight: 30,
+    },
+    cbTc:{
+        color:'#f27935',
+        fontWeight:'600',
     },
     prodImage: {
         marginTop: 20,
@@ -228,7 +288,6 @@ import { useSelector } from 'react-redux';
         position: 'relative',
     },
     offPrice: {
-      
         fontSize: 16,
         fontWeight: '900',
         color: '#fff',
@@ -400,6 +459,44 @@ import { useSelector } from 'react-redux';
         fontWeight: 'bold',
         color: '#fff',
         padding: 14,
+    },
+    cbInner: {
+        flexDirection: 'row',
+    },
+    cbCardContainer: {
+        borderColor: '#f27935',
+        borderWidth: 1,
+        borderStyle: 'dashed',
+        marginTop: 15,
+        borderRadius: 6,
+    },
+    cbRupee: {
+        backgroundColor: '#f27935',
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6,
+        width: '31%',
+
+    },
+     cbTxtCon: {
+        padding: 20,
+        flexDirection: 'column',
+        width: '65%'
+    },
+    cbInfoCon: {
+        backgroundColor: '#f27935',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    tmcContainer:{
+        border:'1px solid #ccc',
+        borderWidth:1,
+        borderColor: '#f27935',
+        borderRadius: 6,
+        padding:10,
+        marginTop:10,
     },
  });
  export default ProductDetails;

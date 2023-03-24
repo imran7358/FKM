@@ -67,10 +67,7 @@ const StoreDetails = ({ props, route, navigation }) => {
 
         }).then(({ data }) => {
             if (opt == "") {
-                const regex = /(<([^>]+)>)/ig;
-                const result = "Store name"
-                // /const result = data.response.store_details.top_desc.replace(regex, '');
-                const cbtoc = data.response.store_details.toc
+        
                 storeDetails({
                     is_cashback: data.response.store_details.is_cashback,
                     store_name: data.response.store_details.store_name,
@@ -79,10 +76,10 @@ const StoreDetails = ({ props, route, navigation }) => {
                     confirmation: data.response.store_details.confirmation,
                     speed: data.response.store_details.speed,
                     is_missing: data.response.store_details.is_missing,
-                    top_desc: result,
+                    // top_desc: result,
                     isClaim: data.response.store_details.is_claim,
                     store_landing_url: data.response.store_details.store_landing_url,
-                    toc: cbtoc,
+                    toc: data.response.store_details.toc,
                 });
                 setRate(data.response.store_rates);
                 if (data.response.deals && data.response.deals.length) {
@@ -210,9 +207,6 @@ const StoreDetails = ({ props, route, navigation }) => {
                             </View>
                             : null
                     }
-
-
-
                 </View>
                 <View style={styles.dealsCpContainer}>
                     <View style={styles.catDeals}>
@@ -299,7 +293,6 @@ const styles = StyleSheet.create({
         padding:10,
         marginTop:10,
     },
-
     ratesContainer:{
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -407,8 +400,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f27935',
         flexDirection: 'row',
         alignItems: 'center',
-
-
     },
     cbInner: {
         flexDirection: 'row',
@@ -421,7 +412,6 @@ const styles = StyleSheet.create({
         borderRadius: 6,
     },
     cbrateTxt: {
-
         flexDirection: 'row',
     },
     container: {

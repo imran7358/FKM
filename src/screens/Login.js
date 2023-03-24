@@ -86,7 +86,7 @@ const Login = ({ navigation }) => {
                                     placeholderTextColor="#666"
                                     onChangeText={handleChange('email')}
                                     onBlur={() => setFieldTouched('email')}
-                                    placeholder="Email"
+                                    placeholder="Email/Phone"
                                 />
                                 {touched.email && errors.email &&
                                     <Text style={styles.error}>{errors.email}</Text>
