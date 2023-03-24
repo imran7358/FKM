@@ -98,7 +98,7 @@ const userToken = useSelector(state=> state.user.userToken);
               validationSchema={yup.object().shape({
                 name: yup
                   .string()
-                  .required('Please, provide your name!').matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms,{message:"Please use only alphabets"}),
+                  .required('Please, provide your name!').matches(/^[a-zA-Z]+$/,{message:"Please use only alphabets"}),
                 phone: yup
                   .string().required('Please enter mobile number').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter valid phone number'),
                 account: yup
@@ -237,7 +237,7 @@ const userToken = useSelector(state=> state.user.userToken);
                   phone: yup
                     .string().required('Please Enter phone no').matches(/^[6-9]\d{9}$/, { message: "Please enter valid number.", excludeEmptyString: false }).max(10, 'Please enter a valid phone number'),
                   accountHolder: yup
-                    .string().required('Please, provide your name!').matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms,{message:"Please use only alphabets"}),
+                    .string().required('Please, provide your name!').matches(/^[a-zA-Z]+$/,{message:"Please use only alphabets"}),
                 })}
               >
                 {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (

@@ -11,6 +11,9 @@ import WidthdarawlForm from './WithdrawaForm';
 import WidthdarawlOtp from './WithdrawOtp';
 import ErroLabel from '../../../components/ErrorCom';
 import SucessLbl from '../../../components/SuccessCom';
+import { Formik } from 'formik';
+import * as yup from "yup"
+
 
 const WithdrawRefferal = ({ navigation }) => {
     const [value, setValue] = useState('');
@@ -51,11 +54,9 @@ const WithdrawRefferal = ({ navigation }) => {
         if (value) {
             getAccount();
         }
-        console.log("Select Bank", value)
     }, [value])
 
     useEffect(() => {
-        console.log("Data Response", dataRes)
     }, [dataRes])
     return (
         <ScrollView style={styles.container}>
@@ -192,6 +193,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         backgroundColor: '#f7f7f7',
         padding: 20,
+        paddingBottom:0,
     },
     notes: {
         fontSize: 12,

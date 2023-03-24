@@ -6,7 +6,10 @@ import Config from 'react-native-config';
 import request from '../../../utils/request';
 import { useSelector } from 'react-redux';
 import WidthdarawlOtp from './WithdrawOtp';
+import { Formik } from 'formik';
+import * as yup from "yup"
 const END_URL = '/cashback/withdraw-refferal-money';
+import ErroLabel from '../../../components/ErrorCom';
 
 const WidthdarawlForm = ({ navigation, payType, account, label }) => {
     const [userToken, withdrawInfo] = useSelector(state => {
@@ -15,69 +18,115 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
     const [amount, setAmount] = useState(null);
     const [pipe, Resp] = useState(null);
     const [loading, setLoading] = useState(false);
-    const sendAPIreq = (opt) => {
-        setLoading(true);
-        request.post(navigation, Config.API_URL + END_URL, {
-            apiAuth: Config.API_AUTH,
-            device_type: '4',
-            option: opt,
-            account_ref_id: account[0].account_ref_id,
-            wallet_type: payType,
-            amount,
-        }, {
-            headers: {
-                'Authorization': userToken,
-            },
-        }).then(({ data }) => {
-            setLoading(false);
-            Resp(data);
-        }).catch((error) => {
-            console.log('Error', error.message);
-        });
-    }
+    const [error, setError] = useState(false)
+    // const sendAPIreq = (opt) => {
+    //     setLoading(true);
+    //     request.post(navigation, Config.API_URL + END_URL, {
+    //         apiAuth: Config.API_AUTH,
+    //         device_type: '4',
+    //         option: opt,
+    //         account_ref_id: account[0].account_ref_id,
+    //         wallet_type: payType,
+    //         amount,
+    //     }, {
+    //         headers: {
+    //             'Authorization': userToken,
+    //         },
+    //     }).then(({ data }) => {
+    //         setLoading(false);
+    //         Resp(data);
+    //     }).catch((error) => {
+    //         console.log('Error', error.message);
+    //     });
+    // }
 
     useEffect (()=>{
     }, [pipe])
 
     return pipe ? <WidthdarawlOtp response={pipe} payType={payType}  account={account} /> : (
         <ScrollView style={styles.container}>
-            <View style={styles.innerContainer}>
+            <Formik 
+            initialValues={{amount:'',}}
+            validationSchema = {yup.object().shape({
+                amount:yup.number().required("Please enter the amount")
+            })}
+            onSubmit = {async(data,otp)=>{
+                setLoading(true);
+                request.post(navigation, Config.API_URL + END_URL, {
+                    apiAuth: Config.API_AUTH,
+                    device_type: '4',
+                    option: 'cbrequest',
+                    account_ref_id: account[0].account_ref_id,
+                    wallet_type: payType,
+                    amount:data.amount,
+                }, {
+                    headers: {
+                        'Authorization': userToken,
+                    },
+                }).then(({ data }) => {
+                    setLoading(false);
+                    console.log("Data Info", data)
+                   if(data.status == '1' && data.error=='0'){
+                    Resp(data);
+                   }
+                   else {
+                    setError(data.msg)
+                   }
+                }).catch((error) => {
+                    setError(error.msg)
+                });
+            }
+            }
+            >
+                {({values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit})=>(
 
-                <Text style={styles.storeName}>Selectd Account</Text>
-                <View style={styles.inputView}>
-                    <View style={styles.inputBoxContainer}>
-                        <TextInput
-                            autoCapitalize="none"
-                            style={styles.inputText}
-                            placeholderTextColor="#666"
-                            value={account[0].name}
-                        />
-                    </View>
-                </View>
-                <View style={styles.inputView}>
-                    <View style={styles.inputBoxContainer}>
-                        <TextInput
-                            autoCapitalize="none"
-                            style={styles.inputText}
-                            placeholderTextColor="#666"
-                            placeholder="Amount"
-                            onChangeText={(e) => {
-                                setAmount(e)
-                            }}
-                            value={amount}
-                        />
-                        <Text style={styles.cpLabel}>{label}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity onPress={(e) => {
-                    sendAPIreq("cbrequest");
-                }}>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Submit</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>);
+<View style={styles.innerContainer}>
+<Text style={styles.storeName}>Selectd Account111</Text>
+<View style={styles.inputView}>
+    <View style={styles.inputBoxContainer}>
+        <TextInput
+            autoCapitalize="none"
+            style={styles.inputText}
+            placeholderTextColor="#666"
+            value={account[0].name}
+        />
+    </View>
+</View>
+<View style={styles.inputView}>
+    <View style={styles.inputBoxContainer}>
+        <TextInput
+            autoCapitalize="none"
+            style={styles.inputText}
+            placeholder="Amount"
+            placeholderTextColor="#666"
+            onChangeText={handleChange('amount')}
+            onBlur={() => setFieldTouched('amount')}
+            value={values.amount}
+        />
+         {touched.amount && errors.amount &&
+                                    <Text style={styles.error}>{errors.amount}</Text>
+                                }
+        <Text style={styles.cpLabel}>{label}</Text>
+    </View>
+</View>
+<View style={{marginBottom:15}}>
+{ 
+ error && <ErroLabel message={error}/>
+}
+</View>
+<TouchableOpacity onPress={handleSubmit}>
+    <View style={styles.loginButton}>
+        <Text style={styles.loginTxt}>Submit</Text>
+    </View>
+</TouchableOpacity>
+</View>
+                )}
+
+           
+            
+            </Formik>
+        </ScrollView>
+        );
 };
 
 const styles = StyleSheet.create({
@@ -121,6 +170,11 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         borderColor: '#f27935',
         borderBottomWidth: 1,
+    },
+    error: {
+        fontSize: 12,
+        color: '#FF0D10',
+        marginTop: 7,
     },
     cpLabel:{
         marginTop: 10,

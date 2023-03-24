@@ -36,7 +36,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                 'Authorization': userToken,
             },
         }).then(({ data }) => {
-            console.log("RESPIONESs--->>>", data);
+            
             // setLoading(false);
             // Resp(data);
         }).catch((error) => {

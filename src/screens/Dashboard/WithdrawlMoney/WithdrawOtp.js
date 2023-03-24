@@ -46,7 +46,6 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                             'Authorization': userToken,
                         },
                     }).then(({ data }) => {
-                        console.log("data", data)
                         if (data.status == 1 && data.error == 0) {
                             setSucess(data.msg)
                             setTimeout(() => {

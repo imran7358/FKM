@@ -11,13 +11,21 @@ const END_URL = '/user/updateprofile';
 const PROFILE_URL = '/user/userprofile';
 import DocumentPicker from 'react-native-document-picker';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { SIGNEDIN } from '../redux/actionTypes';
+import ErroLabel from '../components/ErrorCom';
+import SucessLbl from '../components/SuccessCom';
+
 
 
 
 const EditProfile = ({navigation}) => {
+    const dispatch = useDispatch()
     const [uploadFile, setuplaodFile] = useState({});
     const [filType, setFileType] = useState(false);
     const [uName, setUname] = useState('')
+    const [error, setError]= useState(false)
+    const [sucess, setSucess] = useState(false)
     const [user, setUser] = useState({
         name: '',
         email: '',
@@ -62,7 +70,14 @@ const EditProfile = ({navigation}) => {
             'Accept': 'application/json',
         },
     }).then(({data})=>{
-        console.log("Sucess")
+        console.log("updateInfo", data)
+        if(data.status == '1' && data.error =='0'){
+            dispatch({
+                type: SIGNEDIN,
+                userToken: data.token,
+                userInfo: data.data,
+            });
+        }
     }).catch((error)=>{
         console.log("Error", error)
     })

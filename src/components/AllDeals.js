@@ -256,8 +256,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingHorizontal:30,
         paddingVertical: 15,
-
-
     },
     loadTxt: {
         fontWeight: 'bold',

@@ -26,6 +26,7 @@ const CustomDrawer = ({navigation}) => {
     }
 
         useEffect(()=>{
+
         }, [user])
     return (
 
@@ -39,15 +40,22 @@ const CustomDrawer = ({navigation}) => {
                    </TouchableOpacity>
                 </View> : null}
               <View style={styles.profileInfo}>
-                <View style={styles.profileimage}>
+                {
+                    user.userInfo ? <View style={styles.profileimage}>
+                    <View style={styles.profileImg}>
+                     <Image source={{ uri: user.userInfo.user_img_url}}  style={styles.imgProfile}/>
+                    </View>
+                 </View> : <View style={styles.profileimage}>
                    <View style={styles.profileImg}>
                     <Image source={require('../assets/images/profile-icon.png')} style={styles.imgProfile}/>
                    </View>
                 </View>
+                }
+                
                 { user.userInfo ? <View style={styles.profileName}>
                     <Text>Hi,</Text>
                     <Text style={styles.pName}>
-                       {user.userInfo.data.username}
+                       {user.userInfo.username}
                         </Text>
                 </View> : <View style={styles.profileName}>
                     <Text>Hii,</Text>
@@ -269,7 +277,8 @@ const styles = StyleSheet.create({
     imgProfile: {
         width: 45,
         height: 45,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        borderRadius:45,
     }
 
 })

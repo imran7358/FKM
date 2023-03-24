@@ -7,12 +7,18 @@ import Config from 'react-native-config';
 import request from '../../../utils/request';
 import { useSelector, useDispatch } from 'react-redux';
 const END_URL = '/cashback/withdraw-refferal-money';
+import { Form, Formik } from 'formik';
+import * as yup from 'yup';
+import ErroLabel from '../../../components/ErrorCom';
+import SucessLbl from '../../../components/SuccessCom';
 
 const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account }) => {
     const [value, setValue] = useState('');
     const dispatch = useDispatch();
     const request_id = response.request_id;
     const [OTP, setOTP] = useState("");
+    const [error, setError] = useState(false);
+    const [sucess, setSuccess] = useState(false)
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
@@ -42,33 +48,84 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.innerContainer}>
-                <View>
-                    <Text style={styles.storeName}>OTP</Text>
-                    <Text>{response.msg}</Text>
-                </View>
-                <View style={styles.inputView}>
-                    <View style={styles.inputBoxContainer}>
-                        <TextInput
-                            autoCapitalize="none"
-                            style={styles.inputText}
-                            placeholderTextColor="#666"
-                            placeholder="OTP"
-                            onChangeText={(e) => {
-                                setOTP(e);
-                            }}
-                        />
-                    </View>
-                </View>
-                <TouchableOpacity onPress={() => {
-                    sendAPIreq("confirmotp")
-                }}>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Submit</Text>
-                    </View>
-                </TouchableOpacity>
+            <Formik initialValues={{
+                otp: '',
+            }}
 
-            </View>
+            validationSchema={yup.object().shape({
+                otp: yup.number().required('Please enter OTP'),
+            })}
+            onSubmit = {async(values, otp)=>{
+                request.post(navigation, Config.API_URL + END_URL, {
+                    apiAuth: Config.API_AUTH,
+                    device_type: '4',
+                    option: 'confirmotp',
+                    request_id: response.request_id,
+                    wallet_name: payType,
+                    userotp: values.otp,
+                    reference_id: response.reference_id,
+                }, {
+                    headers: {
+                        'Authorization': userToken,
+                    },
+                }).then(({ data }) => {
+                
+                    if (data.status == 1 && data.error == 0) {
+                        setSuccess(data.msg)
+                        setTimeout(() => {
+                            navigation.navigate("WidthdrawalMoney")
+                        }, 3000);
+                    }
+                    else {
+                        setError(data.msg)
+                    }
+        
+                }).catch((error) => {
+                    setError(error.msg)
+                });
+
+            }}
+            >
+
+{({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
+
+<View style={styles.innerContainer}>
+<View>
+    <Text style={styles.storeName}>OTP</Text>
+    <Text style={{marginBottom:10}}>{response.msg}</Text>
+</View>
+<View style={styles.inputView}>
+    <View style={styles.inputBoxContainer}>
+        <TextInput
+            autoCapitalize="none"
+            style={styles.inputText}
+            placeholder="OTP"
+                    onChangeText={handleChange('otp')}
+                    onBlur={() => setFieldTouched('otp')}
+                    value={values.otp}
+        />
+    </View>
+    {touched.otp && errors.otp &&
+                                <Text style={styles.error}>{errors.otp}</Text>
+                            }
+
+                            {
+                                error ? <ErroLabel message={error} /> : null
+                            }
+</View>
+<TouchableOpacity onPress={handleSubmit}>
+    <View style={styles.loginButton}>
+        <Text style={styles.loginTxt}>Submit</Text>
+    </View>
+</TouchableOpacity>
+
+</View>
+
+
+)}
+
+            </Formik>
+            
         </ScrollView>
     );
 };
@@ -76,6 +133,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
 const styles = StyleSheet.create({
     container: {
         padding: 20,
+        paddingHorizontal:0,
         flex: 1,
         backgroundColor: '#fff',
     },
@@ -161,7 +219,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         lineHeight: 18,
         marginBottom: 15,
-
+    },
+    error: {
+        fontSize: 12,
+        color: '#FF0D10',
+        marginTop: 7,
     },
     innerContainer: {
         backgroundColor: '#f7f7f7',

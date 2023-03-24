@@ -13,6 +13,9 @@ const Profile = ({ navigation }) => {
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
+    const userInfo = useSelector(state => {
+        return state.user.userInfo;
+    });
     const [promo, setPromo] = useState('');
     const [summry, setSummary] = useState({
         confirmAmount: '',
@@ -97,7 +100,8 @@ const Profile = ({ navigation }) => {
 
 
                         <View style={styles.profilePic}>
-                            <Image source={require('../../assets/images/profile.png')} />
+                            
+                            <Image source={{ uri: userInfo.user_img_url }} style={{height:45, width:45,borderRadius:45}}/>
                         </View>
                         <View style={styles.profileInfoName}>
                             <Text style={styles.pName} numberOfLines={1}>{userinfo.title}</Text>

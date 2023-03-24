@@ -10,13 +10,14 @@ const MyStore = ({navigation}) => {
     const [data, setData] = useState([]);
     const [tab, setTab] = useState([]);
     const [active, setActive] = useState(true);
-    const [catId, setCatId] = useState(0);
+    const [catId, setCatId] = useState('all');
     const getStore = () =>{
         axios.post(Config.API_URL + END_URL, {
-            'page': '2',
+            'page': '1',
             'apiAuth': Config.API_AUTH,
             'sponsored_count':'1',
             'device_type': 4,
+            'option': catId,
         }).then(({data})=>{
             setData(data.response.cbstores);
         }).catch((error)=>{
@@ -31,6 +32,7 @@ const MyStore = ({navigation}) => {
             'sponsored_count': '0',
             page: '',
         }).then(({data})=>{
+
             setTab(data.response.store_tabbing);
         }).catch((error)=>{
             console.log("Error", error);
@@ -39,7 +41,11 @@ const MyStore = ({navigation}) => {
     useEffect(()=>{
         getStore();
         getTab();
-    }, []);
+    }, [data]);
+
+    useEffect(()=>{
+        console.log('Cat id', catId)
+    },[catId])
     return (
         <>
          <ScrollView horizontal>
@@ -55,12 +61,10 @@ const MyStore = ({navigation}) => {
         }
         </View>
         </ScrollView>
-
-
         <View style={[styles.storCon]}>
         <View style={styles.catStore}>
             {
-            catId == 0 ? 
+    
                  data.map((item, i) => {
                     return <TouchableOpacity style={styles.storeImgCon} key={i} onPress = {()=> navigation.navigate({name:'StoreDetails',params:{storeSlug:item.store_slug}})}>
                         <View style={styles.storICon} >
@@ -68,18 +72,7 @@ const MyStore = ({navigation}) => {
                         </View>
                         <Text style={styles.cbText}>₹{Number(item.cashback_amount).toFixed(0)} <Text style={styles.cbMessage}>Cashback</Text></Text>
                     </TouchableOpacity>;
-                }) :
-                data.filter((item,i)=>{
-                    return item.cate_id == catId
                 })
-                .map((item, i) => {
-                    return <TouchableOpacity style={styles.storeImgCon} key={i} onPress = {()=> navigation.navigate({name:'StoreDetails',params:{storeSlug:item.store_slug}})}>
-                        <View style={styles.storICon} >
-                            <Image source={{ uri: item.store_image }} style={{ width: 80, height: 40, resizeMode: 'contain' }} />
-                        </View>
-                        <Text style={styles.cbText}>₹{Number(item.cashback_amount).toFixed(0)} <Text style={styles.cbMessage}>Cashback</Text></Text>
-                    </TouchableOpacity>;
-                }) 
                }
                </View>
                </View>

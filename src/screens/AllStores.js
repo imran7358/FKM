@@ -9,18 +9,37 @@ const ENDPOINT = '/store/allstores';
 
 const AllStores = ({ navigation }) => {
     const [store, setStore] = useState([]);
-    useEffect(() => {
-        getStore();
-    }, [])
-
+    const [page, setPage] = useState(1)
+    const [noData, setNoData] = useState(false)
+    
     const getStore = () => {
-        axios.post(Config.API_URL + ENDPOINT, { apiAuth: Config.API_AUTH }
+        axios.post(Config.API_URL + ENDPOINT, { 
+            apiAuth: Config.API_AUTH,
+            device_type:"4",
+            page:page
+        }
         ).then(({ data }) => {
-            setStore((data.response.allstores));
+            if (data.response.allstores && data.response.allstores.length)
+            {
+                setStore([...store, ...data.response.allstores]);
+            }
+            else {
+                    if(!data.response.allstores.length){
+                        setNoData('No data found !!')
+                    }
+            }
         }).catch((error) => {
             console.log(error);
         });
     }
+    useEffect(() => {
+       
+            getStore();
+        
+      
+       
+    }, [page])
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={{ flexGrow: 1, }}>
@@ -28,16 +47,25 @@ const AllStores = ({ navigation }) => {
                     <View style={styles.storeInner}>
                         {
                             store.length ? store.map((item, i) => {
+                                console.log("Store name", item)
                                 return <View style={styles.storeBox} key={i}>
                                     <TouchableOpacity onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.store_slug } })}>
                                         <View style={styles.logoContinaer}>
                                             <View>
-                                                <Image source={{ uri: item.store_image }} style={styles.logo} />
+                                                <Image source={{ uri: item.store_img_url}} style={styles.logo} />
                                             </View>
                                             <View><Text style={styles.logoTxt}>{item.store_name}</Text></View>
-                                            <View style={styles.btnContainer}>
-                                                <Text style={styles.cbBtn}>{item.cashback_amount}</Text>
+                                            {
+                                                item.is_cashback == "1" ? <View style={styles.btnContainer}>
+                                                <Text style={styles.cbBtn}>{item.cashback_amount} Cashback</Text>
+                                            </View> :<View style={styles.btnContainer}>
+                                                <View style={{padding:12, justifyContent:'center', display:'flex', alignContent:'center'}}>
+                                                    <Text style={styles.cbBtn1}>No</Text>
+                                                    <Text style={styles.cbBtn1}>Cashback</Text>
+                                                     </View>
                                             </View>
+                                            }
+                                            
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -45,6 +73,13 @@ const AllStores = ({ navigation }) => {
                         }
                     </View>
                 </View>
+                <View style={styles.loaderContainer}>
+                            <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                                <View>
+                                    <Text style={styles.loadTxt}>Load More</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
             </ScrollView>
         </SafeAreaView>
     )
@@ -64,6 +99,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal:30,
+        paddingVertical: 15,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
     },
     storeBox: {
         borderWidth: 1,
@@ -95,6 +149,16 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         color: '#fff',
         fontSize: 12,
+        alignContent:'center',
+        textAlign:'center',
+    },
+    cbBtn1: {
+        borderRadius: 6,
+        fontWeight: '800',
+        color: '#fff',
+        fontSize: 12,
+        alignContent:'center',
+        textAlign:'center',
     },
     btnContainer: {
         width: 112,

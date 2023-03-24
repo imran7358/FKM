@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 
 const Profile = ({navigation}) => {

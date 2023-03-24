@@ -45,7 +45,7 @@ const Login = ({ navigation }) => {
                             dispatch({
                                 type: SIGNEDIN,
                                 userToken: data.token,
-                                userInfo: data,
+                                userInfo: data.data,
                             });
                             navigation.navigate("Home")
                         }
