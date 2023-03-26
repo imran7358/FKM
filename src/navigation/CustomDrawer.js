@@ -175,7 +175,8 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                </View>
                </TouchableOpacity>
-               <View style={styles.menuListCon}>
+               {
+                user.userInfo ?<View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <LogOut style={styles.iconSize} width={18}/>
                 </View>
@@ -184,7 +185,8 @@ const CustomDrawer = ({navigation}) => {
                     <Text style={styles.menuTxt}>Logout</Text>
                 </View>
                </TouchableOpacity>
-               </View>
+               </View> : null
+               }
                <View style={styles.appVersion}>
                 <Text style={styles.apptxt}>App v2.1</Text>
                </View>

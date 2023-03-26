@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight,Linking, TouchableOpacity} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight,Linking, TouchableOpacity, useWindowDimensions} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = '/deals/dealdetail';
@@ -7,6 +7,7 @@ import axios from 'axios';
 import RealtedDeals from '../components/Deals/RelatedDeals';
 import { Loader } from 'react-native-feather';
 import CustomWebView from 'react-native-render-html';
+import RenderHTML from 'react-native-render-html';
 import { useSelector } from 'react-redux';
 
 
@@ -14,6 +15,8 @@ import { useSelector } from 'react-redux';
 
  const ProductDetails = ({navigation, route}) => {
 
+    const { width } = useWindowDimensions();
+    
 
     const userToken = useSelector(state=> state.user.userToken);
     const userInfo = useSelector(state=> state.user.userInfo);
@@ -197,7 +200,7 @@ import { useSelector } from 'react-redux';
                 }
                 <View style={styles.prodDetails}>
                 <Text style={styles.abtDeals}>About the Deals</Text>
-                <CustomWebView source={{ html: details.description }}/>
+                <CustomWebView source={{ html: details.description }} style={styles.webView} contentWidth={width - 80}/>
                  </View>
                 <RealtedDeals relatedProduct = {relatedProduct} navigation={navigation}/>
             </View>
@@ -236,6 +239,11 @@ import { useSelector } from 'react-redux';
     bgWhite: {
         backgroundColor: '#fff',
         flex: 1,
+    },
+    webView:{
+
+        flex: 1,
+
     },
     mainPrice:{
         marginRight:20,
