@@ -115,7 +115,7 @@ import { useSelector } from 'react-redux';
                     </View>
                    
                     </View>
-                    {
+                    {/* {
                             details.isCashback == '1' ? <View style={styles.cashbckPrice}>
                             <View style={styles.innerPrice}>
                                     <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
@@ -123,7 +123,7 @@ import { useSelector } from 'react-redux';
                                     <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
                                 </View>
                             </View> : null
-                        }
+                        } */}
                 </View>
 
 

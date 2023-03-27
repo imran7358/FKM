@@ -76,7 +76,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                     confirmation: data.response.store_details.confirmation,
                     speed: data.response.store_details.speed,
                     is_missing: data.response.store_details.is_missing,
-                    // top_desc: result,
+                    top_desc: data.response.store_details.top_desc,
                     isClaim: data.response.store_details.is_claim,
                     store_landing_url: data.response.store_details.store_landing_url,
                     toc: data.response.store_details.toc,
@@ -117,12 +117,17 @@ const StoreDetails = ({ props, route, navigation }) => {
                                 <Image source={{ uri: store.store_img }} style={styles.logo} />
                             </View>
                         </View>
-                        <View style={styles.cashbackStore}>
-                            <Image source={require('../assets/images/rupee-icon.png')} style={{ width: 11, height: 11, resizeMode: 'contain' }} />
+                        {
+                            store.is_cashback == '1' ?
+                            <View style={styles.cashbackStore}>
+                            {/* <Image source={require('../assets/images/rupee-icon.png')} style={{ width: 11, height: 11, resizeMode: 'contain' }} /> */}
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5, }}><Text style={{ fontSize: 14, fontWeight: 'bold' }}>{store.cashback_amount} </Text></View>
                             <Image source={require('../assets/images/info.png')} />
-                        </View>
-                        {/* <View>
+                        </View>:
+                        ""
+                        }
+                        
+                        <View>
                             <Text style={styles.storePara}>{readMore ? store.top_desc.substring(0, 200) : store.top_desc}</Text>
 
                         </View>
@@ -132,7 +137,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                                     readMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
                                 }
                             </View>
-                        </TouchableHighlight> */}
+                        </TouchableHighlight>
                         {
                             store.is_cashback == '1' ? <View style={styles.cashbackInfo}>
                             <View style={styles.confirmTime}>
@@ -147,7 +152,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                                 <Text style={styles.infoTxt}>Missing Order</Text>
                                 <Text style={styles.infoPara}>{store.is_missing}</Text>
                             </View>
-                        </View> : null
+                        </View> : ""
                         }
                     </View>
 

@@ -14,6 +14,7 @@ import FAQ from '../components/Faq';
 import Config from 'react-native-config';
 const END_URL = "/home/home";
 import axios from 'axios';
+import YoutubeIframe from 'react-native-youtube-iframe';
 const Home = ({ navigation }) => {
   const [slider, setSlider] = useState([]);
   const [sticky, setSticky] = useState(null);
@@ -100,6 +101,13 @@ const Home = ({ navigation }) => {
         <View style={[styles.mainContainer, styles.paddingZero, styles.margin20, styles.marginBottom50]}>
           <FAQ/>
         </View>
+        <View>
+        <YoutubeIframe style={styles.videoContainer}
+        videoId='hkStK-PBO_k'
+        height={450}
+        width = {380}
+        />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -179,6 +187,7 @@ const styles = StyleSheet.create({
   videoContainer: {
     backgroundColor: '#F7F7F7',
     height: 150,
+    marginLeft:10,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
