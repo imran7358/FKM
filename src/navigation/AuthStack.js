@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 const Stack = createStackNavigator();
+import { Grid,ShoppingBag,Home as HomeIcon,Users,User, Percent, PhoneCall, HelpCircle, LogOut, Tag} from "react-native-feather";
 import Home from '../screens/Home';
 import AllStores from '../screens/AllStores';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -96,9 +97,10 @@ const BottomTabs = ({ navigation }) => {
                 headerShown: false,
                 tabBarIcon: ({ focused }) => (
                     <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                        <Image source={require('../assets/images/home.png')} style={{
+                        <HomeIcon style={{
                             width: 26,
                             height: 26,
+                            color:'black',
                             resizeMode: 'contain',
                             tintColor: focused ? '#333' : 'black',
                         }} />
@@ -111,10 +113,11 @@ const BottomTabs = ({ navigation }) => {
                 title: 'All Store',
                 tabBarIcon: ({ focused }) => (
                     <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                        <Image source={require('../assets/images/store.png')} style={{
+                        <ShoppingBag style={{
                             width: 26,
                             height: 26,
                             resizeMode: 'contain',
+                            color:'black',
                             tintColor: focused ? '#333' : 'black',
                         }} />
                     </View>
@@ -138,10 +141,11 @@ const BottomTabs = ({ navigation }) => {
                     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                     tabBarIcon: ({ focused }) => (
                         <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                            <Image source={require('../assets/images/earn.png')} style={{
+                            <Users  style={{
                                 width: 26,
                                 height: 26,
                                 resizeMode: 'contain',
+                                color:'black',
                                 tintColor: focused ? '#333' : 'black',
                             }} />
                         </View>
@@ -160,10 +164,11 @@ const BottomTabs = ({ navigation }) => {
                     tabBarStyle: {display: 'none'},
                     tabBarIcon: ({ focused }) => (
                         <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                            <Image source={require('../assets/images/earn.png')} style={{
+                            <Users style={{
                                 width: 26,
                                 height: 26,
                                 resizeMode: 'contain',
+                                color:'black',
                                 tintColor: focused ? '#333' : 'black',
                             }} />
                         </View>
@@ -187,9 +192,10 @@ const BottomTabs = ({ navigation }) => {
                             BottomTabs: false,
                             tabBarIcon: ({ focused }) => (
                                 <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                                    <Image source={require('../assets/images/zccount.png')} style={{
+                                    <User style={{
                                         width: 26,
                                         height: 26,
+                                        color:'black',
                                         resizeMode: 'contain',
                                         tintColor: focused ? '#333' : 'black',
                                     }} />
@@ -211,9 +217,10 @@ const BottomTabs = ({ navigation }) => {
                         tabBarStyle: {display: 'none'},
                         tabBarIcon: ({ focused }) => (
                             <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
-                                <Image source={require('../assets/images/zccount.png')} style={{
+                                <User style={{
                                     width: 26,
                                     height: 26,
+                                    color:'black',
                                     resizeMode: 'contain',
                                     tintColor: focused ? '#333' : 'black',
                                 }} />
