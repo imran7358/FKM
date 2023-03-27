@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight,Linking, TouchableOpacity, useWindowDimensions} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight, Linking, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = '/deals/dealdetail';
@@ -13,13 +13,15 @@ import { useSelector } from 'react-redux';
 
 
 
- const ProductDetails = ({navigation, route}) => {
+
+const ProductDetails = ({ navigation, route }) => {
 
     const { width } = useWindowDimensions();
-    
 
-    const userToken = useSelector(state=> state.user.userToken);
-    const userInfo = useSelector(state=> state.user.userInfo);
+
+    const userToken = useSelector(state => state.user.userToken);
+    const userInfo = useSelector(state => state.user.userInfo);
+    const [showMore, setShowMore] = useState(true)
     const [details, setDetails] = useState({
         title: '',
         dealImg: null,
@@ -27,11 +29,11 @@ import { useSelector } from 'react-redux';
         price: '',
         offerPrice: '',
         isClaim: '',
-        landing_url : '',
+        landing_url: '',
         isCashback: '',
-        storeImg : null,
+        storeImg: null,
         cashbackAmount: '',
-        toc:''
+        toc: ''
     });
     const [relatedProduct, setRelatedProduct] = useState([]);
     const [rate, setRate] = useState(null);
@@ -40,19 +42,19 @@ import { useSelector } from 'react-redux';
     const getDetails = () => {
         setLoading(true);
         axios.post(Config.API_URL + END_URL, {
-            'page':'1',
+            'page': '1',
             'apiAuth': Config.API_AUTH,
             'deal_slug': route.params.dealSlug,
-            'device_type':'4',
-        },{
+            'device_type': '4',
+        }, {
             headers: {
                 Authorization: userToken,
             },
-        }).then(({data})=>{
+        }).then(({ data }) => {
 
             setDetails({
                 title: data.response.deal.deal_title,
-                dealImg:data.response.deal.deal_img_url,
+                dealImg: data.response.deal.deal_img_url,
                 price: data.response.deal.price,
                 offerPrice: data.response.deal.offer_price,
                 description: data.response.deal.description,
@@ -61,194 +63,236 @@ import { useSelector } from 'react-redux';
                 isCashback: data.response.deal.is_cashback,
                 storeImg: data.response.deal.store_image,
                 cashbackAmount: data.response.deal.cashback_amount,
-                toc:data.response.deal.toc
+                toc: data.response.deal.toc
             });
             setRate(data.response.deal.store_rates);
             console.log(details.description);
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error);
-        }).finally(()=>{
+        }).finally(() => {
             setLoading(false);
         });
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         getDetails();
-    },[]);
+    }, []);
+
+    useEffect(() => {
+
+    }, [showMore])
 
     return (
         <SafeAreaView style={styles.bgWhite}>
             <ScrollView style={styles.bgWhite}>
-            {
-                loading ?
-                <View style={styles.loadContainer}>
-                    <Loader/>
-                </View>
-                : <View style={styles.container}>
-                <Text style={styles.heading}>{details.title}</Text>
-                <View style={styles.prodImage}>
-                    {/* <View style={styles.offerCon}>
+                {
+                    loading ?
+                        <View style={styles.loadContainer}>
+                            <Loader />
+                        </View>
+                        : <View style={styles.container}>
+                            <Text style={styles.heading}>{details.title}</Text>
+                            <View style={styles.prodImage}>
+                                {/* <View style={styles.offerCon}>
                     <Text style={styles.offPrice}>50% OFF</Text>
                     </View> */}
-                    <View style={styles.imgCon}>
-                       <Image source={{ uri: details.dealImg}} style={{height:200, width:200, resizeMode: 'contain'}}/>
-                    </View>
-                    <View style={styles.pricLogoCon}>
-                    <View style={styles.leftPrice}>
-                    <View style={styles.priceContainer}>
-                            <View style={[styles.innerPrice, styles.mainPrice]}>
-                                <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage}/>
-                                <Text style={styles.priceTxt}>{details.offerPrice}</Text>
-                            </View>
-                            <View style={styles.innerPrice}>
-                                <Text style={styles.cutLine}></Text>
-                            <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage}/>
-                                <Text style={[styles.priceTxt, styles.cutprice]}>{details.price}</Text>
-                            </View>
-                        </View>
-                        
-                         <View style={styles.logoImages}>
-                            <Image source={{ uri: details.storeImg }} style={styles.prodLogo}/>
-                        </View>
-                    </View>
-                   
-                    </View>
-                    {/* {
-                            details.isCashback == '1' ? <View style={styles.cashbckPrice}>
-                            <View style={styles.innerPrice}>
-                                    <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
-                                    <Text>Cashback</Text>
-                                    <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle}/>
+                                <View style={styles.imgCon}>
+                                    <Image source={{ uri: details.dealImg }} style={{ height: 200, width: 200, resizeMode: 'contain' }} />
                                 </View>
-                            </View> : null
-                        } */}
-                </View>
-
-
-                {
-                        details.isCashback == '1' ? <View style={styles.cashbackRates}>
-                            <View style={styles.ratesContainer}>
-                            <View style={styles.cbrateTxt}>
-                            <Text style={{ fontSize: 14, }}>Cashback</Text>
-                            <Text style={{ fontSize: 14, fontWeight: 'bold', marginLeft: 5, }}>Rates</Text>
-                        </View>
-                        <TouchableOpacity onPress={()=> setToc(!toc)}>
-                        <View style={styles.viewTc}><Text style={styles.cbTc}>Cashback T&C</Text></View>
-                        </TouchableOpacity>
-                            </View>
-                            {
-                                toc ? <View style = {styles.tmcContainer}>
-                                    <CustomWebView style={styles.txtDescription} source={{ html: details.toc }}/>
-                
-                                </View> : null
-                            }
-                        {
-
-                            rate?.length && rate?.map((item, i) => {
-                                return <View style={styles.cbCardContainer} key={i}>
-                                    <View style={styles.cbInner}>
-                                        <View style={styles.cbRupee}>
-                                            <View style={styles.cbInfoCon}>
-                                                <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                <View style={styles.pricLogoCon}>
+                                    <View style={styles.leftPrice}>
+                                        <View style={styles.priceContainer}>
+                                            <View style={[styles.innerPrice, styles.mainPrice]}>
+                                                <Image source={require('../assets/images/rupee-icon.png')} style={styles.rpImage} />
+                                                <Text style={styles.priceTxt}>{details.offerPrice}</Text>
+                                            </View>
+                                            <View style={styles.innerPrice}>
+                                                <Text style={styles.cutLine}></Text>
+                                                <Image source={require('../assets/images/grey-rupee-icon.png')} style={styles.rpImage} />
+                                                <Text style={[styles.priceTxt, styles.cutprice]}>{details.price}</Text>
                                             </View>
                                         </View>
 
-                                        <View style={styles.cbTxtCon}>
-                                            <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
-                                            <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
-                                            <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
-                                            </View>
+                                        <View style={styles.logoImages}>
+                                            <Image source={{ uri: details.storeImg }} style={styles.prodLogo} />
                                         </View>
                                     </View>
-                                </View>
-                            })
-                        }
-                    </View> : null
-                    }
-                {
 
-                    userToken ? <View>
-                        {
-                    details.isClaim == '1' ?
-                    <View style={styles.claimForm}>
-                   <View>
-                    <Text style={styles.claimHead}>cashback claim form</Text>
-                    <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
-                   </View>
-                  <TouchableHighlight onPress={()=> navigation.navigate('ClaimForm')}>
-                  <View style={styles.FormBtn}>
-                    <Text style={styles.submitBtn}>Submit</Text>
-                   </View>
-                  </TouchableHighlight>
-                </View>
-                : null
+                                </View>
+                                {
+                                    details.isCashback == '1' ? <View style={styles.cashbckPrice}>
+                                        <View style={styles.innerPrice}>
+                                            <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
+                                            <Text>Cashback</Text>
+                                            <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle} />
+                                        </View>
+                                    </View> : null
+                                }
+                            </View>
+
+
+                            {
+                                details.isCashback == '1' ? <View style={styles.cashbackRates}>
+                                    <View style={styles.ratesContainer}>
+                                        <View style={styles.cbrateTxt}>
+                                            <Text style={{ fontSize: 14, }}>Cashback</Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 'bold', marginLeft: 5, }}>Rates</Text>
+                                        </View>
+                                        <TouchableOpacity onPress={() => setToc(!toc)}>
+                                            <View style={styles.viewTc}><Text style={styles.cbTc}>Cashback T&C</Text></View>
+                                        </TouchableOpacity>
+                                    </View>
+                                    {
+                                        toc ? <View style={styles.tmcContainer}>
+                                            <CustomWebView style={styles.txtDescription} source={{ html: details.toc }} />
+
+                                        </View> : null
+                                    }
+
+                                    {
+                                        showMore ? <View>
+                                            {
+
+                                                rate?.length && rate?.map((item, i) => {
+                                                    return i < 3 && <View style={styles.cbCardContainer} key={i}>
+                                                        <View style={styles.cbInner}>
+                                                            <View style={styles.cbRupee}>
+                                                                <View style={styles.cbInfoCon}>
+                                                                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                                                </View>
+                                                            </View>
+
+                                                            <View style={styles.cbTxtCon}>
+                                                                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height: 20, }}>{item.cashback_tag}</Text>
+                                                                <View style={{ width: '100%', flexWrap: 'wrap', flex: 1 }}>
+                                                                    <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '100%' }}>{item.tag_desc}</Text>
+                                                                </View>
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                })
+                                            }
+                                        </View> : <View>
+
+                                            {
+
+                                                rate?.length && rate?.map((item, i) => {
+                                                    return <View style={styles.cbCardContainer} key={i}>
+                                                        <View style={styles.cbInner}>
+                                                            <View style={styles.cbRupee}>
+                                                                <View style={styles.cbInfoCon}>
+                                                                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                                                </View>
+                                                            </View>
+
+                                                            <View style={styles.cbTxtCon}>
+                                                                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height: 20, }}>{item.cashback_tag}</Text>
+                                                                <View style={{ width: '100%', flexWrap: 'wrap', flex: 1 }}>
+                                                                    <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '100%' }}>{item.tag_desc}</Text>
+                                                                </View>
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                })
+                                            }
+                                        </View>
+                                    }
+
+                                   <View style={{justifyContent:'center', display:'flex', alignContent:'center', alignItems:'center', marginTop:20}}>
+                                   <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => setShowMore(!showMore)}>
+                                        <View style={styles.readMore}>
+                                            {
+                                                showMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
+                                            }
+                                        </View>
+                                    </TouchableHighlight>
+                                   </View>
+                                </View> : null
+                            }
+                            {
+
+                                userToken ? <View>
+                                    {
+                                        details.isClaim == '1' ?
+                                            <View style={styles.claimForm}>
+                                                <View>
+                                                    <Text style={styles.claimHead}>cashback claim form</Text>
+                                                    <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
+                                                </View>
+                                                <TouchableHighlight onPress={() => navigation.navigate('ClaimForm')}>
+                                                    <View style={styles.FormBtn}>
+                                                        <Text style={styles.submitBtn}>Submit</Text>
+                                                    </View>
+                                                </TouchableHighlight>
+                                            </View>
+                                            : null
+                                    }
+                                </View> :
+                                    <View style={styles.claimForm}>
+                                        <View>
+                                            <Text style={styles.claimHead}>cashback claim form</Text>
+                                            <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
+                                        </View>
+                                        <TouchableHighlight onPress={() => navigation.navigate('Login')}>
+                                            <View style={styles.FormBtn}>
+                                                <Text style={styles.submitBtn}>Submit</Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+                            }
+                            <View style={styles.prodDetails}>
+                                <Text style={styles.abtDeals}>About the Deals</Text>
+                                <CustomWebView source={{ html: details.description }} style={styles.webView} contentWidth={width - 80} />
+                            </View>
+                            <RealtedDeals relatedProduct={relatedProduct} navigation={navigation} />
+                        </View>
                 }
-                        </View> :
-                    <View style={styles.claimForm}>
-                   <View>
-                    <Text style={styles.claimHead}>cashback claim form</Text>
-                    <Text style={styles.claimPara}>fill up this form within 24 hrs</Text>
-                   </View>
-                  <TouchableHighlight onPress={()=> navigation.navigate('Login')}>
-                  <View style={styles.FormBtn}>
-                    <Text style={styles.submitBtn}>Submit</Text>
-                   </View>
-                  </TouchableHighlight>
-                </View>
-                }
-                <View style={styles.prodDetails}>
-                <Text style={styles.abtDeals}>About the Deals</Text>
-                <CustomWebView source={{ html: details.description }} style={styles.webView} contentWidth={width - 80}/>
-                 </View>
-                <RealtedDeals relatedProduct = {relatedProduct} navigation={navigation}/>
-            </View>
-            }
             </ScrollView>
             {
-                details.isCashback == '1' ? <View>{userInfo ? <View style ={styles.container}>
-                <View style={styles.appButton}>
-                <TouchableOpacity onPress={async()=> { await Linking.openURL(details.landing_url)}}>
-                <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
-                </TouchableOpacity>
-            </View>
-                </View> : <View style ={styles.container}>
-                        <View style={styles.appButton}>
-                        <TouchableOpacity onPress={()=> { navigation.navigate('Login')}}>
-                        <Text style={styles.btnTxt}>Login & Earn Cashback</Text>
+                details.isCashback == '1' ? <View>{userInfo ? <View style={styles.container}>
+                    <View style={styles.appButton}>
+                        <TouchableOpacity onPress={async () => { await Linking.openURL(details.landing_url) }}>
+                            <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
                         </TouchableOpacity>
                     </View>
-                        </View> }</View> : <View style ={styles.container}>
-                        <View style={styles.appButton}>
-                        <TouchableOpacity onPress={async()=> { await Linking.openURL(details.landing_url)}}>
-                        <Text style={styles.btnTxt}>Shop Now</Text>
+                </View> : <View style={styles.container}>
+                    <View style={styles.appButton}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('Login') }}>
+                            <Text style={styles.btnTxt}>Login & Earn Cashback</Text>
                         </TouchableOpacity>
                     </View>
-                        </View>
+                </View>}</View> : <View style={styles.container}>
+                    <View style={styles.appButton}>
+                        <TouchableOpacity onPress={async () => { await Linking.openURL(details.landing_url) }}>
+                            <Text style={styles.btnTxt}>Shop Now</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             }
 
 
 
         </SafeAreaView>
     );
- };
+};
 
- const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 
     bgWhite: {
         backgroundColor: '#fff',
         flex: 1,
     },
-    webView:{
+    webView: {
 
         flex: 1,
 
     },
-    mainPrice:{
-        marginRight:20,
+    mainPrice: {
+        marginRight: 20,
     },
-    leftPrice:{
+    leftPrice: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -261,7 +305,7 @@ import { useSelector } from 'react-redux';
         marginTop: 15,
         borderRadius: 6,
     },
-    ratesContainer:{
+    ratesContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -271,7 +315,7 @@ import { useSelector } from 'react-redux';
         marginBottom: 50,
         justifyContent: 'center',
         alignItems: 'center',
-      },
+    },
     container: {
         padding: 24,
     },
@@ -283,9 +327,9 @@ import { useSelector } from 'react-redux';
         fontWeight: '700',
         lineHeight: 30,
     },
-    cbTc:{
-        color:'#f27935',
-        fontWeight:'600',
+    cbTc: {
+        color: '#f27935',
+        fontWeight: '600',
     },
     prodImage: {
         marginTop: 20,
@@ -340,7 +384,7 @@ import { useSelector } from 'react-redux';
     cutLine: {
         position: 'absolute',
         width: '100%',
-        height:2,
+        height: 2,
         backgroundColor: '#f27935',
     },
     pricLogoCon: {
@@ -357,8 +401,8 @@ import { useSelector } from 'react-redux';
         padding: 8,
         marginTop: 15,
         backgroundColor: '#FFEFE5',
-        justifyContent:'center',
-        alignContent:'center',
+        justifyContent: 'center',
+        alignContent: 'center',
         flexDirection: 'row'
     },
     cbTxt: {
@@ -488,7 +532,7 @@ import { useSelector } from 'react-redux';
         width: '31%',
 
     },
-     cbTxtCon: {
+    cbTxtCon: {
         padding: 20,
         flexDirection: 'column',
         width: '65%'
@@ -498,13 +542,30 @@ import { useSelector } from 'react-redux';
         flexDirection: 'row',
         alignItems: 'center',
     },
-    tmcContainer:{
-        border:'1px solid #ccc',
-        borderWidth:1,
+    tmcContainer: {
+        border: '1px solid #ccc',
+        borderWidth: 1,
         borderColor: '#f27935',
         borderRadius: 6,
-        padding:10,
-        marginTop:10,
+        padding: 10,
+        marginTop: 10,
     },
- });
- export default ProductDetails;
+    readMore: {
+        backgroundColor: '#f27935',
+        height: 38,
+        width: 38,
+        borderRadius: 45,
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    readArrow: {
+        width: 20,
+        height: 20,
+    },
+    arrowTransform: {
+        transform: [{ rotate: '180deg' }],
+    },
+});
+export default ProductDetails;

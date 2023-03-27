@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useCallback} from 'react';
+import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity, RefreshControl} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../components/Header';
 import DealsDay from '../components/dealDay';
@@ -22,6 +22,14 @@ const Home = ({ navigation }) => {
   const [faq, setFaq] = useState([]);
   const [page, setpage] = useState(2);
   const [tab, setTab] = useState([])
+  const [refresh, setReferesh] = useState(false)
+
+  const onRefresh = useCallback(() => {
+    setReferesh(true);
+    setTimeout(() => {
+        setReferesh(false);
+    }, 2000);
+  }, []);
 
   const getSlider = () => {
     axios.post(Config.API_URL + END_URL, {
@@ -47,7 +55,9 @@ const Home = ({ navigation }) => {
       <View>
         <Header navigation={navigation} />
       </View>
-      <ScrollView style={styles.bgWhite}>
+      <ScrollView style={styles.bgWhite} refreshControl={
+        <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+      }>
         <View style={styles.mainWrapper}>
           <View style={styles.mainSlider}>
             <MianSlider navigation={navigation} slideImage={slider} />

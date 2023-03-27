@@ -19,6 +19,7 @@ const StoreDetails = ({ props, route, navigation }) => {
     const [coupons, setShowCoupons] = useState(false);
     const [rate, setRate] = useState(['']);
     const [readMore, setReadMore] = useState(true);
+    const [showMore, setShowMore] = useState(true)
     const [store, storeDetails] = useState({
         is_cashback: '',
         cashback_amount: '',
@@ -106,6 +107,9 @@ const StoreDetails = ({ props, route, navigation }) => {
     useEffect(() => {
         console.log(route.params.storeSlug)
     }, [storeDeals,route.params.storeSlug])
+
+    useEffect(() => {
+    }, [showMore])
     return (
 
         <SafeAreaView style={styles.bgWhite}>
@@ -173,27 +177,67 @@ const StoreDetails = ({ props, route, navigation }) => {
                                 {/* <Text style={styles.txtDescription}>{store.toc}</Text> */}
                                 </View> : null
                             }
-                        {
+                            {
+                                showMore ? <View>
 
-                            rate.length && rate.map((item, i) => {
-                                return <View style={styles.cbCardContainer} key={i}>
-                                    <View style={styles.cbInner}>
-                                        <View style={styles.cbRupee}>
-                                            <View style={styles.cbInfoCon}>
-                                                <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
-                                            </View>
-                                        </View>
+{
+rate.length && rate.map((item, i) => {
+    return i < 3 && <View style={styles.cbCardContainer} key={i}>
+        <View style={styles.cbInner}>
+            <View style={styles.cbRupee}>
+                <View style={styles.cbInfoCon}>
+                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                </View>
+            </View>
 
-                                        <View style={styles.cbTxt}>
-                                            <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
-                                            <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
-                                            <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
-                                            </View>
-                                        </View>
-                                    </View>
+            <View style={styles.cbTxt}>
+                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
+                <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
+                <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
+                </View>
+            </View>
+        </View>
+    </View>
+})
+}
+
+                                </View> : 
+                                <View>
+
+{
+rate.length && rate.map((item, i) => {
+    return <View style={styles.cbCardContainer} key={i}>
+        <View style={styles.cbInner}>
+            <View style={styles.cbRupee}>
+                <View style={styles.cbInfoCon}>
+                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                </View>
+            </View>
+
+            <View style={styles.cbTxt}>
+                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
+                <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
+                <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
+                </View>
+            </View>
+        </View>
+    </View>
+})
+}
                                 </View>
-                            })
-                        }
+                            }
+
+<View style={{justifyContent:'center', display:'flex', alignContent:'center', alignItems:'center', marginTop:20}}>
+                                   <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => setShowMore(!showMore)}>
+                                        <View style={styles.readMore}>
+                                            {
+                                                showMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
+                                            }
+                                        </View>
+                                    </TouchableHighlight>
+
+                                   </View>
+                        
                     </View> : null
                     }
 

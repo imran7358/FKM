@@ -44,15 +44,16 @@ import AllDeals from '../screens/Cashback/AllCashbackDeals';
 import AllCashbackStores from '../screens/Cashback/AllCashbackStore';
 
 // WithdrawMoney
-import { View, Image, StyleSheet} from 'react-native';
+import { View, Image, StyleSheet, RefreshControl} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 //WithDrawRefferal
 import WithdrawRefferal from '../screens/Dashboard/WithdrawRefferal';
 import ChangePassword from '../screens/Dashboard/ChangePassword';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback} from 'react';
 import {ShoppingCart} from "react-native-feather";
+
 
 //WithDrawRefferal
 
@@ -60,7 +61,10 @@ const Tab = createBottomTabNavigator();
 
 
 const BottomTabs = ({ navigation }) => {
-    const userToken = useSelector(state => state.user.userToken)
+    const isFocused = useIsFocused();
+    const startReload = ()=> RNRestart.Restart();
+
+    const userToken = useSelector(state => state.user.userToken);
     const horizontalAnimation = {
         cardStyleInterpolator: ({ current, layouts }) => {
             return {
@@ -77,9 +81,15 @@ const BottomTabs = ({ navigation }) => {
             };
         },
     };
-
+    const [refresh, setReferesh] = useState(false)
+    const onRefresh =() => {
+        console.log("Tets")
+        setReferesh(true);
+        setTimeout(() => {
+            setReferesh(false);
+        }, 2000);
+    }
     useEffect(()=>{
-
     },[userToken])
 
     return (
@@ -94,7 +104,9 @@ const BottomTabs = ({ navigation }) => {
             },
         }}>
             <Tab.Screen name="Root" component={Home} options={{
+                unmountOnBlur: true,
                 headerShown: false,
+                tabBarScrollEnabled: true,
                 tabBarIcon: ({ focused }) => (
                     <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
                         <HomeIcon style={{
@@ -107,7 +119,13 @@ const BottomTabs = ({ navigation }) => {
                     </View>
 
                 ),
-            }} />
+            }} 
+            listeners={{
+                tabPress: e => {
+                    startReload()
+                },
+            }}
+            />
             <Tab.Screen name="Store" component={AllStores} options={{
                 BottomTabs: false,
                 title: 'All Store',
