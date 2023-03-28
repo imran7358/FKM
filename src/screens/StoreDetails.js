@@ -182,7 +182,7 @@ const StoreDetails = ({ props, route, navigation }) => {
 
 {
 rate.length && rate.map((item, i) => {
-    return i < 3 && <View style={styles.cbCardContainer} key={i}>
+    return i < 2 && <View style={styles.cbCardContainer} key={i}>
         <View style={styles.cbInner}>
             <View style={styles.cbRupee}>
                 <View style={styles.cbInfoCon}>

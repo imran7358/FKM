@@ -42,7 +42,8 @@ import Search from '../screens/Search'
 import AllCashback from '../screens/Cashback';
 import AllDeals from '../screens/Cashback/AllCashbackDeals';
 import AllCashbackStores from '../screens/Cashback/AllCashbackStore';
-
+import { useIsFocused } from '@react-navigation/native';
+import RNRestart from 'react-native-restart';
 // WithdrawMoney
 import { View, Image, StyleSheet, RefreshControl} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';

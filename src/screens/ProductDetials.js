@@ -121,7 +121,7 @@ const ProductDetails = ({ navigation, route }) => {
                                     </View>
 
                                 </View>
-                                {
+                                {/* {
                                     details.isCashback == '1' ? <View style={styles.cashbckPrice}>
                                         <View style={styles.innerPrice}>
                                             <Text style={styles.cbTxt}>{details.cashbackAmount}</Text>
@@ -129,7 +129,7 @@ const ProductDetails = ({ navigation, route }) => {
                                             <Image source={require('../assets/images/questionCircle.png')} style={styles.quesCircle} />
                                         </View>
                                     </View> : null
-                                }
+                                } */}
                             </View>
 
 
@@ -156,7 +156,7 @@ const ProductDetails = ({ navigation, route }) => {
                                             {
 
                                                 rate?.length && rate?.map((item, i) => {
-                                                    return i < 3 && <View style={styles.cbCardContainer} key={i}>
+                                                    return i < 2 && <View style={styles.cbCardContainer} key={i}>
                                                         <View style={styles.cbInner}>
                                                             <View style={styles.cbRupee}>
                                                                 <View style={styles.cbInfoCon}>

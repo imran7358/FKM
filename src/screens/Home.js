@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback} from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Image, TouchableOpacity, RefreshControl} from 'react-native';
+import { View, Text,Alert, SafeAreaView, StyleSheet, Image, TouchableOpacity, RefreshControl} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../components/Header';
 import DealsDay from '../components/dealDay';
@@ -11,6 +11,7 @@ import LoadMore from '../components/LoadMore';
 import MyStore from '../components/StoreList';
 import VideoPlayer from '../components/Video';
 import FAQ from '../components/Faq';
+import { useIsFocused } from '@react-navigation/native';
 import Config from 'react-native-config';
 const END_URL = "/home/home";
 import axios from 'axios';
@@ -20,13 +21,15 @@ const Home = ({ navigation }) => {
   const [sticky, setSticky] = useState(null);
   const [livedeals, setLiveDeals] = useState([]);
   const [faq, setFaq] = useState([]);
-  const [page, setpage] = useState(2);
+  const [page, setpage] = useState(1);
   const [tab, setTab] = useState([])
   const [refresh, setReferesh] = useState(false)
-
+  const isFocused = useIsFocused()
   const onRefresh = useCallback(() => {
     setReferesh(true);
     setTimeout(() => {
+      // getSlider();
+      Alert.alert('okay');
         setReferesh(false);
     }, 2000);
   }, []);
@@ -49,7 +52,7 @@ const Home = ({ navigation }) => {
   };
   useEffect(() => {
     getSlider();
-  }, []);
+  }, [isFocused]);
   return (
     <SafeAreaView style={{backgroundColor:'#f27935'}}>
       <View>
