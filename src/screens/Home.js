@@ -28,15 +28,15 @@ const Home = ({ navigation }) => {
   const onRefresh = useCallback(() => {
     setReferesh(true);
     setTimeout(() => {
-      // getSlider();
-      Alert.alert('okay');
+      getSlider(); 
+      // Alert.alert('okay');
         setReferesh(false);
     }, 2000);
   }, []);
 
   const getSlider = () => {
     axios.post(Config.API_URL + END_URL, {
-      'sponsored_count': '1',
+      'sponsored_count': '0',
       'apiAuth': Config.API_AUTH,
       'device_type': 4,
       page,
@@ -52,6 +52,10 @@ const Home = ({ navigation }) => {
   };
   useEffect(() => {
     getSlider();
+  }, []);
+  
+  useEffect(() => {
+    isFocused ?  getSlider() : null
   }, [isFocused]);
   return (
     <SafeAreaView style={{backgroundColor:'#f27935'}}>

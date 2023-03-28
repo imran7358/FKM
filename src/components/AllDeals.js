@@ -14,18 +14,21 @@ const AllDeals = ({ navigation }) => {
     const [loader, setLoader] = useState(false);
     const [loadMore, setLoadMore] = useState(true);
     const [noData, setNoData] = useState('');
+    const [sponsored_count, setSponsoredcount] = useState('0');
 
     const getAllDeals = () => {
         setLoader(true);
         axios.post(Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': '',
-            'sponsored_count': '1',
+            'sponsored_count': sponsored_count,
             page,
         }).then(({ data }) => {
                
             if (data.response.hotdeals && data.response.hotdeals.length) {
                 setDeals([...deals, ...data.response.hotdeals]);
+                setSponsoredcount(data.response.sponsored_count)
+                // console.log(sponsored_count)
             }
             else {
 
