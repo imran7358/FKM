@@ -42,6 +42,8 @@ import Search from '../screens/Search'
 import AllCashback from '../screens/Cashback';
 import AllDeals from '../screens/Cashback/AllCashbackDeals';
 import AllCashbackStores from '../screens/Cashback/AllCashbackStore';
+import About from '../screens/About';
+import FAQ from '../screens/FAQ';
 import { useIsFocused } from '@react-navigation/native';
 import RNRestart from 'react-native-restart';
 // WithdrawMoney
@@ -321,6 +323,28 @@ const AuthStack = ({ navigation }) => {
             
 
 <Stack.Screen name="Cashback" component={AllCashback} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+
+<Stack.Screen name="AboutUs" component={About} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+            <Stack.Screen name="FAQ" component={FAQ} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
