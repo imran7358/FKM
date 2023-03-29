@@ -17,16 +17,29 @@ const Header = ({ navigation }) => {
   const user = useSelector((state) => {
     return state.user;
   });
-
+  function handleSearchlength(value)
+  {
+    if (value.length<3){
+      setNoData(false);
+      setData({});
+    }
+    else{
+      handleChange(value)
+      // setNoData(true)
+    }
+  }
   const handleChange = debounce((value) =>{
-
+    
     setLoading(true);
     axios.post(Config.API_URL + END_URL,{
         apiAuth : Config.API_AUTH,
         'keyword' : value,
     }).then(({data})=>{
       setNoData(false);
-      if (data.response.suggestion && data.response.suggestion.length){
+      if (value.length<1){
+        setNoData(false);
+      }
+      else if (data.response.suggestion && data.response.suggestion.length){
         setData(data.response.suggestion);
       }
       else {
@@ -79,7 +92,7 @@ useEffect(()=>{
                        </TouchableOpacity>
                         <View style={styles.searchInput}>
                             <TextInput placeholder="Search your Cashback Store" style={styles.searchBox} placeholderTextColor="#fff"
-                            onChangeText={(txt) => handleChange(txt)} 
+                            onChangeText={(txt) => handleSearchlength(txt)} 
                             autoComplete="off"
                             autoCapitalize="none"
                             onSubmitEditing={(txt)=> handleSubmit(txt.nativeEvent.text)}
