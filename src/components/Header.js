@@ -38,7 +38,7 @@ const Header = ({ navigation }) => {
     }).finally(()=>{
       setLoading(false);
     });
-}, 2000);
+}, 1000);
 
 const handleSubmit = (value) => {
     setSearch(false);
@@ -95,13 +95,27 @@ useEffect(()=>{
                       data.length && data.map((item,i)=> { return <TouchableOpacity key={i} onPress = {()=>{setSearch(false), navigation.navigate({name: 'StoreDetails', params: { storeSlug: item.name} })}}>
                         <View style={styles.searchList}>
                         <Search width={18} height={18} style={styles.filterIcon}/>
+                        {
+                          item.rate_type=='1' ?
+                          <>
                           <Text style={styles.productName}>{item.name}</Text>
+                          <Text style={styles.cashbackamt}> {item.amount}% cashback</Text>
+                          </>
+                          :
+                          <>
+                          <Text style={styles.productName}>{item.name
+                          }</Text>
+                          <Text style={styles.cashbackamt}> Rs.{item.amount} cashback</Text>
+                          </>
+                        }
+                          
+
                           </View>
                       </TouchableOpacity>
                       })
                     }
                     {
-                      noData ? <View style={styles.NoData}><Text>No data found</Text></View> : null
+                      noData ? <View style={styles.NoData}><Text>Oops !! No Store Found</Text></View> : null
                     }
                     </View>
                     </View>
@@ -164,6 +178,11 @@ const styles = StyleSheet.create({
   },
   productName : {
     fontSize:16,
+  },
+  cashbackamt : {
+    fontSize:16,
+    color:'green',
+    fontWeight:'bold',
   },
   suggestHeading:{
     fontWeight: 'bold',

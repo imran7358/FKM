@@ -9,7 +9,7 @@ const FAQ = ({ navigation }) => {
         source={{
           uri: 'https://m.freekaamaal.com/faq?api=1',
         }}
-        style={{marginTop: 20}}
+      
       />
     );
 };

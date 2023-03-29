@@ -140,7 +140,7 @@ const CustomDrawer = ({navigation}) => {
                 <PhoneCall style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text style={styles.menuTxt}>FAQ'</Text>
+                    <Text style={styles.menuTxt}>FAQ's</Text>
                 </View>
                </View>
                </TouchableOpacity>

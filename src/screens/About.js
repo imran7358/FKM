@@ -9,7 +9,7 @@ const About = ({ navigation }) => {
         source={{
           uri: 'https://m.freekaamaal.com/about-us?api=1',
         }}
-        style={{marginTop: 20}}
+        
       />
     );
 };

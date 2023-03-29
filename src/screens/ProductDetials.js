@@ -17,7 +17,24 @@ import { useSelector } from 'react-redux';
 const ProductDetails = ({ navigation, route }) => {
 
     const { width } = useWindowDimensions();
-
+    const dealdesc = { 
+                     p: {
+                        fontFamily: 'Lato',
+                        color :'#455769',
+                        fontSize:14,
+                        fontWeight:'400',
+                        lineHeight:19,
+                        marginBottom:6
+                        },
+                        li : {
+                        fontFamily: 'Lato',
+                        color :'#455769',
+                        fontSize:14,
+                        fontWeight:'400',
+                        lineHeight:19,
+                        marginBottom:6
+                        }
+                    }
 
     const userToken = useSelector(state => state.user.userToken);
     const userInfo = useSelector(state => state.user.userInfo);
@@ -66,7 +83,7 @@ const ProductDetails = ({ navigation, route }) => {
                 toc: data.response.deal.toc
             });
             setRate(data.response.deal.store_rates);
-            console.log(details.description);
+            // console.log(details.description);
             setRelatedProduct(data.response.related_deals);
             setLoading(false);
         }).catch((error) => {
@@ -134,7 +151,8 @@ const ProductDetails = ({ navigation, route }) => {
 
 
                             {
-                                details.isCashback == '1' ? <View style={styles.cashbackRates}>
+                                details.isCashback == '1' ? 
+                                <View style={styles.cashbackRates}>
                                     <View style={styles.ratesContainer}>
                                         <View style={styles.cbrateTxt}>
                                             <Text style={{ fontSize: 14, }}>Cashback</Text>
@@ -200,14 +218,21 @@ const ProductDetails = ({ navigation, route }) => {
                                         </View>
                                     }
 
+                                   
                                    <View style={{justifyContent:'center', display:'flex', alignContent:'center', alignItems:'center', marginTop:20}}>
-                                   <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => setShowMore(!showMore)}>
+                                   {
+                                    rate?.length>2 ?
+                                    <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => setShowMore(!showMore)}>
                                         <View style={styles.readMore}>
                                             {
                                                 showMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
                                             }
                                         </View>
                                     </TouchableHighlight>
+                                    :
+                                    null
+                                   }
+                                   
                                    </View>
                                 </View> : null
                             }
@@ -244,7 +269,7 @@ const ProductDetails = ({ navigation, route }) => {
                             }
                             <View style={styles.prodDetails}>
                                 <Text style={styles.abtDeals}>About the Deals</Text>
-                                <CustomWebView source={{ html: details.description }} style={styles.webView} contentWidth={width - 80} />
+                                <CustomWebView source={{ html: details.description }} tagsStyles={ dealdesc } contentWidth={width - 80} />
                             </View>
                             <RealtedDeals relatedProduct={relatedProduct} navigation={navigation} />
                         </View>
