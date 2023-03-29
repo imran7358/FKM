@@ -17,7 +17,7 @@ const Header = ({ navigation }) => {
   const user = useSelector((state) => {
     return state.user;
   });
-  function handleSearchlength(value)
+  const handleSearchlength = (value) =>
   {
     if (value.length<3){
       setNoData(false);
@@ -51,7 +51,7 @@ const Header = ({ navigation }) => {
     }).finally(()=>{
       setLoading(false);
     });
-}, 1000);
+}, 300);
 
 const handleSubmit = (value) => {
     setSearch(false);
