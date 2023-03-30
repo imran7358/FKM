@@ -12,6 +12,8 @@ import CategoryDetails from '../screens/CategoryDetails';
 import StoreDetails from '../screens/StoreDetails';
 import ForgotPassword from '../screens/ForgotPassword';
 import EnterOTP from '../screens/EnterOTP';
+import PhoneVerification from '../screens/PhoneVerificationOTP';
+import EmailVerification from '../screens/EmailVerificationOtp';
 import ResetPassword from '../screens/ResetPassword';
 import TopCoupons from '../screens/Coupons';
 import CouponsDetails from '../screens/CouponsDetail';
@@ -404,6 +406,33 @@ const AuthStack = ({ navigation }) => {
                     </TouchableOpacity>
                 )
             }} />
+            
+            <Stack.Screen name="PhoneVerification" component={PhoneVerification} options={{
+                title: 'Phone Verification',
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+            
+            
+            <Stack.Screen name="EmailVerification" component={EmailVerification} options={{
+                title: 'EmailVerification',
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+            
+            
             <Stack.Screen name="Categories" component={ProductCategories} initialParams={{ catSlug: "" }} options={{
                 title: 'Categories',
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

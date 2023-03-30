@@ -53,12 +53,12 @@ const EditProfile = ({navigation}) => {
             })
             }
             else {
-               Alert.alert("HEIC format not Allowed")
+            //    Alert.alert("HEIC format not Allowed")
             }
 
         } catch (err) {
             if(DocumentPicker.isCancel(err)){
-                Alert.alert('Not Uploaded');
+                // Alert.alert('Not Uploaded');
             }
         }
     }, [])

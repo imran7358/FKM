@@ -219,7 +219,7 @@ const userToken = useSelector(state=> state.user.userToken);
                         Authorization: userToken,
                       },
                     }).then(({ data }) => {
-                     
+                     console.log(data.status)
                       if (data.status == 1 && data.error == 0) {
                         setSuccess(data.message);
                       }

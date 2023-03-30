@@ -1,13 +1,18 @@
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View,Alert, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import Config from 'react-native-config';
+import { AlertTriangle, Mail, Phone} from "react-native-feather";
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 const END_URL = '/cashback/home';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const PROMO_CODE = '/cashback/userpromocode';
+const EmailVerification = '/user/emailverification';
+const PhoneVerification = '/user/phoneverification';
 import { useSelector } from 'react-redux';
-import {inputBox} from '../../assets/styles/common';
+import {fontSize, inputBox} from '../../assets/styles/common';
+import { color } from 'react-native-reanimated';
 
 const Profile = ({ navigation }) => {
     const userToken = useSelector(state => {
@@ -31,7 +36,12 @@ const Profile = ({ navigation }) => {
         phone: '',
 
     });
-
+    const [userdata, setUserData] = useState({
+        email_verified: '',
+        phone_verified:'',
+        user_phone : '',
+        user_email : '',
+    });
     const [sucess, setSucess] = useState(false);
     const [error, setError] = useState(false);
     const getDetails = async () => {
@@ -54,6 +64,13 @@ const Profile = ({ navigation }) => {
                 setUserInfo({
                     title: data.token.title,
                 })
+                setUserData({
+                    email_verified : data.response.userdata.email_verified,
+                    phone_verified : data.response.userdata.phone_confirm,
+                    user_email : data.response.userdata.email,
+                    user_phone : data.response.userdata.phone,
+                })
+                console.log(userdata)
 
             }).catch((error) => {
                 console.log(error);
@@ -73,8 +90,9 @@ const Profile = ({ navigation }) => {
             headers: {
                 Authorization: userToken,
             },
-        }).then((data)=>{
-            if(data.status === '1' && data.error === "0" ) {
+        }).then(({data})=>{
+            // console.log('promoce status',data.status)
+            if(data.status ==='1' && data.error === "0" ) {
                 setSucess(true)
             }
             else {
@@ -82,6 +100,55 @@ const Profile = ({ navigation }) => {
             }
         }).catch((error)=>{
             setError(true)
+        })
+    }
+
+    const VerifyEmail = () => {
+        axios.post(Config.API_URL + EmailVerification, {
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE
+        },
+        {
+            headers: {
+                Authorization: userToken,
+            },
+        }).then(({data})=>{
+            //  console.log("verify email", data)
+            if(data.status == '1' && data.error == "0" ) 
+            {
+                AsyncStorage.setItem('email', userdata.user_email);
+                navigation.navigate('EmailVerification');
+            }
+            else {
+                // setError(true)
+                Alert.alert('Action could not not be taken at this moment')
+            }
+        }).catch((error)=>{
+            Alert.alert('Action could not not be taken at this moment')
+        })
+    }
+
+    const VerifyPhone = () => {
+        axios.post(Config.API_URL + PhoneVerification, {
+            apiAuth: Config.API_AUTH,
+            device_type: Config.DEVICE_TYPE,
+           
+        },
+        {
+            headers: {
+                Authorization: userToken,
+            },
+        }).then(({data})=>{
+            if(data.status == '1' && data.error == "0" ) {
+                AsyncStorage.setItem('phone', userdata.user_phone);
+                navigation.navigate('PhoneVerification');
+            }
+            else {
+                // setError(true)
+                Alert.alert('Action could not not be taken at this moment')
+            }
+        }).catch((error)=>{
+            Alert.alert('Action could not not be taken at this moment')
         })
     }
     return (
@@ -108,7 +175,40 @@ const Profile = ({ navigation }) => {
                             <Text style={styles.profileTax}>Check Out Your Cashback Summary</Text>
                         </View>
                     </View>
-
+ {/* verification part */}
+                   <View style={styles.verifycontainer}>
+                   <TouchableOpacity onPress={VerifyEmail}>
+                    {   
+                    userdata.email_verified == '0' ?
+                    <>
+                    <View style={styles.verifycard}>
+                    <Mail style={styles.iconSize} width={15}/>
+                    <Text style={styles.verifyBar}>Your email is not verified,</Text><Text style ={styles.click}> Click here to verify</Text>
+                    </View>
+                    
+                    </>
+                    :
+                    null
+                    }
+                    </TouchableOpacity>
+                   </View>
+                   
+                   <View style={styles.verifycontainer}>
+                   <TouchableOpacity onPress={VerifyPhone}>
+                    {   
+                    userdata.email_verified == '0' ?
+                    <>
+                    <View style={styles.verifycard}>
+                    <Phone style={styles.iconSize} width={15}/>
+                    <Text style={styles.verifyBar}>Your Phone is not verified,</Text><Text style ={styles.click}> Click here to verify</Text>
+                    </View>
+                    
+                    </>
+                    :
+                    null
+                    }
+                    </TouchableOpacity>
+                   </View>
                     <View style={styles.cashBackInfo}>
                         <View style={styles.cashBackBox}>
                             <View style={[styles.cbTxt, styles.margin15]}>
@@ -574,6 +674,34 @@ const styles = StyleSheet.create({
         height: 17,
         resizeMode: 'contain',
     },
+    verifyBar: {
+        color:'black',
+        fontSize:13
+    },
+    verifycontainer :{
+        backgroundColor:'#f48d5494',
+        padding:10,
+        marginTop:15,
+        borderColor: '#F8F8F8',
+        borderRadius: 4,
+        
+},
+iconSize: {
+    color: 'red',
+    marginRight: 10,
+
+},
+verifycard : {
+    flex:1,
+    alignItems:'center',
+    justifyContent:'flex-start',
+    flexDirection:'row',
+},
+click:{
+    color:'blue',
+    fontSize:12,
+    fontWeight:'bold'
+}
 });
 
 export default Profile;
