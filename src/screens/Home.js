@@ -17,6 +17,7 @@ const END_URL = "/home/home";
 import axios from 'axios';
 import YoutubeIframe from 'react-native-youtube-iframe';
 const Home = ({ navigation }) => {
+  console.log(Config.API_URL)
   const [slider, setSlider] = useState([]);
   const [sticky, setSticky] = useState(null);
   const [livedeals, setLiveDeals] = useState([]);

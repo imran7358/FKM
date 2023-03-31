@@ -10,10 +10,12 @@ import * as yup from 'yup';
 import ErroLabel from "../components/ErrorCom";
 import SucessLbl from '../components/SuccessCom';
 import KeybaordAvoidingWrapper from "../components/keyboardAvoidingWrapper";
-
+import DeviceInfo from 'react-native-device-info';
 const ENDPOINT = "/user/register";
 const Register = ({ navigation }) => {
-    const [error, setError]=useState('')
+  // const app_device_id = DeviceInfo.getDeviceToken();
+  // console.log("device id",app_device_id)
+    const [error, setError]= useState('')
     const [success, setSuccess] = useState('')
 
   return (
@@ -37,8 +39,10 @@ const Register = ({ navigation }) => {
                        phone: values.phone,
                        referral_code:values.referral,
                        app_device_id: '4',
+                      //  app_device_id : app_device_id
                       });
                       if (data.token) {
+                        // console.log(app_device_id)
                         setSuccess(data.message)
                         await AsyncStorage.setItem('registerToken', data.token);
                         await AsyncStorage.setItem('phone', values.phone);

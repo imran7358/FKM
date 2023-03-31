@@ -9,6 +9,7 @@ const END_URL = '/category/all-category';
 import request from '../utils/request';
 
 const ProductCategories = ({ navigation }) => {
+  console.log(Config.API_URL)
   const [categories, allCategrioes] = useState([]);
   useEffect(() => {
     getCategories();
