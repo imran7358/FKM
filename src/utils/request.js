@@ -1,11 +1,12 @@
 import axios from "axios";
 import { LOGGEDOUT } from "../redux/actionTypes";
+import { View,Alert, Text, TouchableOpacity, StyleSheet, Image,Linking} from 'react-native';
 import {store} from "../redux/store"
 
 const request = {
     get: async (navigation, url, params, options) => {
        
-        const res = await axios.get(
+        const res = await axios.post(
             url,
             { ...params },
             {...options}
@@ -15,7 +16,6 @@ const request = {
             store.dispatch({
                 type: LOGGEDOUT
             })
-            navigation.navigate("Login")
         } else {
             return res;
         }
@@ -29,7 +29,11 @@ const request = {
         );
         if (res.data && res.data['code'] == 401) {
             // Redirect to login screen
-            navigation.navigate("Home")
+            store.dispatch({
+                type: LOGGEDOUT
+            })
+            Alert.alert('Session Expired')
+            navigation.pop()
         } else {
             return res;
         }

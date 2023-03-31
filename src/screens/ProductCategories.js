@@ -6,7 +6,7 @@ import axios from 'axios';
 import Loader from '../components/Loader';
 import Config from 'react-native-config';
 const END_URL = '/category/all-category';
-
+import request from '../utils/request';
 
 const ProductCategories = ({ navigation }) => {
   const [categories, allCategrioes] = useState([]);
@@ -15,7 +15,7 @@ const ProductCategories = ({ navigation }) => {
   }, [])
 
   const getCategories = () => {
-    axios.post(Config.API_URL + END_URL, {
+    request.post(navigation,Config.API_URL + END_URL, {
       apiAuth: Config.API_AUTH,
       deviceType: '4',
     }).then(({ data }) => {

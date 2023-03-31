@@ -125,11 +125,11 @@ const BottomTabs = ({ navigation }) => {
 
                 ),
             }} 
-            listeners={{
-                tabPress: e => {
-                    startReload()
-                },
-            }}
+            // listeners={{
+            //     tabPress: e => {
+            //         startReload()
+            //     },
+            // }}
             />
             <Tab.Screen name="Store" component={AllStores} options={{
                 BottomTabs: false,

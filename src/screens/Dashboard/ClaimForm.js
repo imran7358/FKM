@@ -8,7 +8,7 @@ import { centerContainer,fontSize,inputBox } from '../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector } from 'react-redux';
 import Loader from '../../components/Loader';
-
+import request from '../../utils/request';
 const ClaimForm = ({navigation}) => {
     const [value, setValue] = useState([]);
     const [noData, setNoData] = useState('');
@@ -21,7 +21,7 @@ const ClaimForm = ({navigation}) => {
 
     useEffect(() => {
         setLoader(true);
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
         },
             {

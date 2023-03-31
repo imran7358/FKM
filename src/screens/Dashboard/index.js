@@ -13,7 +13,7 @@ const PhoneVerification = '/user/phoneverification';
 import { useSelector } from 'react-redux';
 import {fontSize, inputBox} from '../../assets/styles/common';
 import { color } from 'react-native-reanimated';
-
+import request from '../../utils/request';
 const Profile = ({ navigation }) => {
     const userToken = useSelector(state => {
         return state.user.userToken;
@@ -45,7 +45,7 @@ const Profile = ({ navigation }) => {
     const [sucess, setSucess] = useState(false);
     const [error, setError] = useState(false);
     const getDetails = async () => {
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
         },
@@ -81,7 +81,7 @@ const Profile = ({ navigation }) => {
         getDetails();
     }, []);
     const RedeemCode = () => {
-        axios.post(Config.API_URL + PROMO_CODE, {
+        request.post(navigation,Config.API_URL + PROMO_CODE, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             promocode: promo,
@@ -104,7 +104,7 @@ const Profile = ({ navigation }) => {
     }
 
     const VerifyEmail = () => {
-        axios.post(Config.API_URL + EmailVerification, {
+        request.post(navigation,Config.API_URL + EmailVerification, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE
         },
@@ -129,7 +129,7 @@ const Profile = ({ navigation }) => {
     }
 
     const VerifyPhone = () => {
-        axios.post(Config.API_URL + PhoneVerification, {
+        request.post(navigation,Config.API_URL + PhoneVerification, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
            

@@ -6,6 +6,7 @@ const END_URL = '/cashback/withdrawal-history';
 import axios from 'axios';
 import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';
+import request from '../../../utils/request';
 
 const Declined = ({ setTop }) => {
     const userToken = useSelector(state => {
@@ -17,7 +18,7 @@ const Declined = ({ setTop }) => {
     const [loader, setLoader] = useState(false);
     const getData = async () => {
         setLoader(true);
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'decline',

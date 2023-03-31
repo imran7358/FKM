@@ -51,7 +51,7 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
             onSubmit ={async(values,opt)=>{
                 const cpnSel = coupon.find(e => e.code == couponSelected)
         setLoading(true);
-        request.post(navigation, Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: '4',
             option: 'cbrequest',

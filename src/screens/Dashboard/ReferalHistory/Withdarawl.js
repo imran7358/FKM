@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 const END_URL = '/cashback/cashback-history';
 import Loader from '../../../components/Loader';
-
+import request from '../../../utils/request';
 const Withdrawal = ({setTop}) => {
     const [allcb, setAllCb] = useState([]);
     const [desc, setAllDesc] = useState([]);
@@ -18,7 +18,7 @@ const Withdrawal = ({setTop}) => {
     const getPendingkHistory = async () => {
         setLoader(false);
         const userToken = await AsyncStorage.getItem("userToken");
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'pending',

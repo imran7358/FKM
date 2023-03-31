@@ -13,8 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DatePicker from 'react-native-date-picker';
 import DocumentPicker from 'react-native-document-picker';
 import KeybaordAvoidingWrapper from '../../../components/keyboardAvoidingWrapper';
-
-
+import request from '../../../utils/request';
 const MissingReport = ({ navigation, route }) => {
     const [value, setValue] = useState([]);
     const [loadMore, setLoadMore] = useState(true);
@@ -27,7 +26,7 @@ const MissingReport = ({ navigation, route }) => {
 
     const getDetails = async () => {
         const userToken = await AsyncStorage.getItem('userToken');
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
             'store_id': route.params.storeId,

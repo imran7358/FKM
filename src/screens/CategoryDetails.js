@@ -8,7 +8,7 @@ import Config from 'react-native-config';
 import CategoriesDeals from '../components/Deals/CategoryDeals';
 const END_URL = '/category/category-detail';
 import Loader from '../components/Loader';
-
+import request from '../utils/request';
 const CategoryDetails = ({ navigation, route }) => {
 
   const [deals, setShowDeals] = useState(false);
@@ -41,12 +41,13 @@ const CategoryDetails = ({ navigation, route }) => {
 
   useEffect(() => {
     setLoader(true);
-    axios.post(Config.API_URL + END_URL, {
+    request.post(navigation,Config.API_URL + END_URL, {
       page,
       "apiAuth": Config.API_AUTH,
       "cate_slug": route.params.catSlug,
       "option": opt,
     }).then(({ data }) => {
+      // console.log(data.code)
       if (opt == "") {
         const regex = /(<([^>]+)>)/ig;
         const result = data.response.category.description.replace(regex, '');

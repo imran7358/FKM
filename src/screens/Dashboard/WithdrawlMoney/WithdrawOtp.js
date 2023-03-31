@@ -31,7 +31,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                     otp: yup.string().required('Please enter OTP'),
                 })}
                 onSubmit={async (values) => {
-                    request.post(navigation, Config.API_URL + END_URL, {
+                    request.post(navigation,Config.API_URL + END_URL, {
                         apiAuth: Config.API_AUTH,
                         device_type: '4',
                         option: 'confirmotp',

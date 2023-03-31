@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import moment from 'moment';
 import ImgToBase64 from 'react-native-image-base64';
 import Loader from '../../components/Loader';
+import request from '../../utils/request';
 
 const UserClaimForm = ({ navigation, route }) => {
     const userToken = useSelector(state => {
@@ -35,7 +36,7 @@ const UserClaimForm = ({ navigation, route }) => {
     }, [fileResponse, allowed])
 
     const getDetails = async () => {
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
             'store_id': route.params.storeId,

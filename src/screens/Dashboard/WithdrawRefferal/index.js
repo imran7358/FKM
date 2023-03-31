@@ -30,7 +30,7 @@ const WithdrawRefferal = ({ navigation }) => {
         { label: 'Paytm', value: 'paytm' },
     ];
     const getAccount = async () => {
-        request.post(navigation, Config.API_URL + END_URL, {
+        (navigation, Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': '4',
             'wallet_type': value,

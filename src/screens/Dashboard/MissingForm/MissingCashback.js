@@ -14,7 +14,7 @@ import moment from 'moment';
 import { Formik, useFormik } from 'formik';
 import * as yup from 'yup';
 import KeybaordAvoidingWrapper from '../../../components/keyboardAvoidingWrapper';
-
+import request from '../../../utils/request';
 
 
 
@@ -46,7 +46,7 @@ const MissingCashback = ({ navigation, route }) => {
     const [filType, setFileType] = useState(false);
 
     const getDetails = async () => {
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
             'store_id': route.params.storeId,

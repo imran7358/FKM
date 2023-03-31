@@ -68,7 +68,8 @@ const StoreDetails = ({ props, route, navigation }) => {
 
         }).then(({ data }) => {
             if (opt == "") {
-        
+                const regex = /(<([^>]+)>)/ig;
+        const result = data.response.store_details.top_desc.replace(regex, '');
                 storeDetails({
                     is_cashback: data.response.store_details.is_cashback,
                     store_name: data.response.store_details.store_name,
@@ -77,7 +78,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                     confirmation: data.response.store_details.confirmation,
                     speed: data.response.store_details.speed,
                     is_missing: data.response.store_details.is_missing,
-                    top_desc: data.response.store_details.top_desc,
+                    top_desc: result,
                     isClaim: data.response.store_details.is_claim,
                     store_landing_url: data.response.store_details.store_landing_url,
                     toc: data.response.store_details.toc,

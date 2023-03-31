@@ -12,6 +12,7 @@ import axios from 'axios';
 import ErroLabel from '../../components/ErrorCom';
 import SucessLbl from '../../components/SuccessCom';
 import { useSelector } from 'react-redux';
+import request from '../../utils/request';
 
 const AddAccount = () => {
 const userToken = useSelector(state=> state.user.userToken);
@@ -66,7 +67,7 @@ const userToken = useSelector(state=> state.user.userToken);
                 accountType: 'bank',
               }}
               onSubmit={async (values) => {
-                axios.post(Config.API_URL + END_URL, {
+                request.post(navigation,Config.API_URL + END_URL, {
                   apiAuth: Config.API_AUTH,
                   device_type: 4,
                   account_name: values.name,

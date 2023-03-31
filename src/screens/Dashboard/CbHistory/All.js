@@ -6,7 +6,7 @@ const END_URL = '/cashback/cashback-history';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import Loader from '../../../components/Loader';
-
+import request from '../../../utils/request'
 
 const AllCashback = ({ setTop }) => {
     const userToken = useSelector(state => {
@@ -19,7 +19,7 @@ const AllCashback = ({ setTop }) => {
     const [loader, setLoader] = useState(false);
     const getCashbackHistory = async () => {
         setLoader(true);
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'all',

@@ -6,7 +6,7 @@ import Config from 'react-native-config';
 const END_URL = '/cashback/cashback-history';
 import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';
-
+import request from '../../../utils/request'
 
 const Declined = ({ setTop }) => {
 
@@ -23,7 +23,7 @@ const Declined = ({ setTop }) => {
 
     const getDecline = async () => {
         setLoader(true);
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'decline',

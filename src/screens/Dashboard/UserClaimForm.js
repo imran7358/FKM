@@ -15,6 +15,7 @@ import Loader from '../../components/Loader';
 import ErroLabel from '../../components/ErrorCom';
 import SucessLbl from '../../components/SuccessCom';
 import KeybaordAvoidingWrapper from '../../components/keyboardAvoidingWrapper';
+import request from '../../utils/request';
 
 
 
@@ -40,7 +41,7 @@ const UserClaimForm = ({ navigation, route }) => {
     }, [fileResponse, allowed, route.params.storeId])
 
     const getDetails = async () => {
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
             'store_id': route.params.storeId,

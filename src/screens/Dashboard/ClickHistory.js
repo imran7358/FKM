@@ -6,7 +6,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 const END_URL = '/cashback/click-history';
 import Loader from '../../components/Loader';
-
+import request from '../../utils/request';
 
 const ClickHistory = ({ navigation }) => {
     const userToken = useSelector(state => {
@@ -22,7 +22,7 @@ const ClickHistory = ({ navigation }) => {
 
     const getClickHistory = async () => {
         setLoader(true);
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             page,

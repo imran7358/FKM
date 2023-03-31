@@ -6,7 +6,7 @@ const END_URL = '/cashback/referral-summary';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';
-
+import request from '../../../utils/request';
 
 const AllCashback = ({ setTop }) => {
     const userToken = useSelector(state => {
@@ -19,7 +19,7 @@ const AllCashback = ({ setTop }) => {
     const getCashbackHistory = async () => {
 
         setLoader(true);
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'all',
@@ -30,6 +30,7 @@ const AllCashback = ({ setTop }) => {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
+                console.log(data.code)
                 if (data.response.all && data.response.all.length) {
                     setAllCb([...allcb, ...data.response.all]);
                 } else {

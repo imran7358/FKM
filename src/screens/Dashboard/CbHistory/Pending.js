@@ -6,7 +6,7 @@ import axios from 'axios';
 const END_URL = '/cashback/cashback-history';
 import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';
-
+import request from '../../../utils/request'
 const PendingCashback = ({setTop}) => {
     const [allcb, setAllCb] = useState([]);
     const [desc, setAllDesc] = useState([]);
@@ -19,7 +19,7 @@ const PendingCashback = ({setTop}) => {
 
     const getPendingkHistory = async () => {
         setLoader(false);
-        axios.post(Config.API_URL + END_URL, {
+        request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
             option: 'pending',
