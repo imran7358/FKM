@@ -1,5 +1,5 @@
 import Config from "react-native-config";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {View,Text,StyleSheet,Image,TextInput,SafeAreaView,ScrollView,Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {centerContainer,fontSize,inputBox,fontColor,commonMargin,} from '../assets/styles/common';
@@ -12,11 +12,19 @@ import SucessLbl from '../components/SuccessCom';
 import KeybaordAvoidingWrapper from "../components/keyboardAvoidingWrapper";
 import DeviceInfo from 'react-native-device-info';
 const ENDPOINT = "/user/register";
-const Register = ({ navigation }) => {
-  // const app_device_id = DeviceInfo.getDeviceToken();
-  // console.log("device id",app_device_id)
+
+    const Register = ({ navigation }) => {
     const [error, setError]= useState('')
     const [success, setSuccess] = useState('')
+    const [app_device_id, setAppDeviceId] = useState('')
+    const getUniqueid = async()=>{
+      const app_device_id = await DeviceInfo.getUniqueId();
+      setAppDeviceId(app_device_id)
+   }
+
+    useEffect(()=>{
+      getUniqueid()
+    },[])
 
   return (
     <KeybaordAvoidingWrapper>
@@ -39,10 +47,10 @@ const Register = ({ navigation }) => {
                        phone: values.phone,
                        referral_code:values.referral,
                        app_device_id: '4',
-                      //  app_device_id : app_device_id
+                       app_device_id : app_device_id
                       });
                       if (data.token) {
-                        // console.log(app_device_id)
+                        // console.log('device_id',app_device_id)
                         setSuccess(data.message)
                         await AsyncStorage.setItem('registerToken', data.token);
                         await AsyncStorage.setItem('phone', values.phone);
@@ -201,6 +209,7 @@ const Register = ({ navigation }) => {
       </KeybaordAvoidingWrapper>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
