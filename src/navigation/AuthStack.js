@@ -14,6 +14,7 @@ import ForgotPassword from '../screens/ForgotPassword';
 import EnterOTP from '../screens/EnterOTP';
 import PhoneVerification from '../screens/PhoneVerificationOTP';
 import EmailVerification from '../screens/EmailVerificationOtp';
+import AccountVerification from '../screens/AccountVerificationOTP';
 import ResetPassword from '../screens/ResetPassword';
 import TopCoupons from '../screens/Coupons';
 import CouponsDetails from '../screens/CouponsDetail';
@@ -409,6 +410,18 @@ const AuthStack = ({ navigation }) => {
             
             <Stack.Screen name="PhoneVerification" component={PhoneVerification} options={{
                 title: 'Phone Verification',
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+<Stack.Screen name="AccountVerification" component={AccountVerification} options={{
+                title: 'Account Verification',
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>

@@ -13,8 +13,9 @@ import ErroLabel from '../../components/ErrorCom';
 import SucessLbl from '../../components/SuccessCom';
 import { useSelector } from 'react-redux';
 import request from '../../utils/request';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AddAccount = () => {
+const AddAccount = ({navigation}) => {
 const userToken = useSelector(state=> state.user.userToken);
   const [value, setValue] = useState('Bank');
   const [success, setSuccess] = useState(false);
@@ -84,7 +85,10 @@ const userToken = useSelector(state=> state.user.userToken);
                   }).then(({ data }) => {
                     console.log("Add acount", data)
                     if (data.status == 1 && data.error == 0) {
-                      setSuccess(data.message);
+                      // setSuccess(data.message);
+                      console.log(data.response)
+                      AsyncStorage.setItem('email', data.response.email);
+                      navigation.navigate('AccountVerification');
                     }
                     else {
                         setError(data.message)
@@ -220,9 +224,12 @@ const userToken = useSelector(state=> state.user.userToken);
                         Authorization: userToken,
                       },
                     }).then(({ data }) => {
-                     console.log(data.status)
+                    //  console.log(data.status)
                       if (data.status == 1 && data.error == 0) {
-                        setSuccess(data.message);
+                        // setSuccess(data.message);
+                        AsyncStorage.setItem('email', data.response.email);
+                        navigation.navigate('AccountVerification');
+                        // AccountVerification
                       }
                       else{
                         setError(data.message)

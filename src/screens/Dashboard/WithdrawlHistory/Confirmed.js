@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import request from '../../../utils/request';
 
-const Confirmed = ({setTop}) => {
+const Confirmed = ({setTop,navigation}) => {
     const userToken = useSelector(state => {
         return state.user.userToken;
     });

@@ -8,7 +8,7 @@ import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';
 import request from '../../../utils/request';
 
-const PendingCashback = ({ setTop }) => {
+const PendingCashback = ({ setTop,navigation }) => {
     const userToken = useSelector(state => {
         return state.user.userToken;
     });

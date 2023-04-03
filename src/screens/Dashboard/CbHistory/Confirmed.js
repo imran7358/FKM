@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import request from '../../../utils/request';
 
 
-const Confirmed = ({setTop}) => {
+const Confirmed = ({setTop,navigation}) => {
 
     const [confirmed, setConfirmed] = useState([]);
     const [desc, setDesc] = useState('');

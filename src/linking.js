@@ -17,7 +17,7 @@
 //     config,
 // };
 const linking = {
-    prefixes: [ 'fkmapp://'],
+    prefixes: ['https://m.freekaamaal.com/', 'm.freekaamaal://'],
     config: {
       screens: {
         AllStores: 'store',

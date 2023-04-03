@@ -7,7 +7,7 @@ const END_URL = '/cashback/cashback-history';
 import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';
 import request from '../../../utils/request'
-const PendingCashback = ({setTop}) => {
+const PendingCashback = ({setTop,navigation}) => {
     const [allcb, setAllCb] = useState([]);
     const [desc, setAllDesc] = useState([]);
     const [loader, setLoader] = useState(false);

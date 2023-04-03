@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>freekaamaal</string>
+			<string>org.reactjs.native.example.freekaamaal</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fkmapp</string>
+				<string>m.freekaamaal</string>
 			</array>
 		</dict>
 	</array>
@@ -41,6 +41,13 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>New Exception Domain</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -59,7 +66,7 @@
 		<string>Poppins-SemiBold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
