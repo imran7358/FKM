@@ -7,7 +7,7 @@ const END_URL = '/cashback/referral-summary';
 import Loader from '../../../components/Loader';
 import { useSelector } from 'react-redux';
 import request from '../../../utils/request';
-const Declined = ({ setTop }) => {
+const Declined = ({ setTop,navigation }) => {
 
     const [decline, setDecline] = useState([]);
     const [desc, setDesc] = useState('');

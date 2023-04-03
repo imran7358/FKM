@@ -7,7 +7,7 @@ import axios from 'axios';
 const END_URL = '/cashback/cashback-history';
 import Loader from '../../../components/Loader';
 import request from '../../../utils/request';
-const Withdrawal = ({setTop}) => {
+const Withdrawal = ({setTop,navigation}) => {
     const [allcb, setAllCb] = useState([]);
     const [desc, setAllDesc] = useState([]);
     const [loadMore, setLoadeMore] = useState(true);

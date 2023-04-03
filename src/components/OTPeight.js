@@ -17,7 +17,7 @@ const OTPin = (props) => {
             {arr.map((e,i)=><TextInput   style={[styles.inputText, styles.lableFont]}
             key={i}
             maxLength={1}
-            placeholder="A" 
+            placeholder="-" 
             ref={(ref) => {refs.current[i] = ref}} 
             value={p[i]}
             onChangeText={(t)=>{
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
       borderColor: inputBox.borderColor,
       borderRadius: inputBox.borderRadius,
       color: '#333333',
-    //   width: 55,
+      width: 35,
       height: 55,
       justifyContent: 'center',
       alignItems: 'center',

@@ -83,7 +83,7 @@ const EnterOTP = ({navigation}) => {
         <Text style={[styles.headingSize]}>Verify OTP</Text>
       </View>
       <View style={styles.forgotParagraph}>
-        <Text style={styles.innerPara}>An 6 digit code has been send to</Text>
+        <Text style={styles.innerPara}>An 8 digit code has been send to</Text>
         <Text style={styles.registeredNumber}> {email}</Text>
       </View>
       <View>
