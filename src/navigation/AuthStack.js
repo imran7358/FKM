@@ -458,7 +458,7 @@ const AuthStack = ({ navigation }) => {
                 )
             }} />
             <Stack.Screen name="CategoryDetails" component={CategoryDetails} options={{
-                title: 'Categories Details',
+                title: '',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>
@@ -491,7 +491,7 @@ const AuthStack = ({ navigation }) => {
             }} />
 
             <Stack.Screen name="StoreDetails" component={StoreDetails} initialParams={{ storeSlug: "" }} options={{
-                title: 'Store Details',
+                title: '',
 
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
@@ -528,7 +528,7 @@ const AuthStack = ({ navigation }) => {
 
             }} />
             <Stack.Screen name="coupnsDetails" component={CouponsDetails} options={{
-                title: 'Coupons Details',
+                title: '',
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
@@ -540,7 +540,7 @@ const AuthStack = ({ navigation }) => {
             }} />
             <Stack.Screen name="Activated" component={CouponsActivated} />
             <Stack.Screen name="Details" component={ProductDetails} initialParams={{ dealSlug: "" }} options={{
-                title: 'Deal Details',
+                title: '',
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>

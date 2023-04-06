@@ -36,12 +36,14 @@ const ForgotPassword = ({ navigation }) => {
                         if(data.status === '1' && data.error === '0'){
                             await AsyncStorage.setItem("fToken", data.token)
                             setSucess(data.message)
+                            setError('')
                             setTimeout(() => {
                                 navigation.navigate("ResetPassword")
                             }, 3000);
                         }
                         else {
                             setError(data.message);
+                            setSucess('')
                             setTimeout(() => {
                             setError(data.message);
                             }, 3000);

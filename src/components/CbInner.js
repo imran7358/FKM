@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {View, Text, StyleSheet, Image} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const CashbackInner = ({title,description}) => {
+const CashbackInner = ({title,earncashback}) => {
         const [show, setShow] = useState(false);
     return (
         <View style={styles.myFaq}>

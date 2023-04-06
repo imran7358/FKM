@@ -231,10 +231,7 @@ const Profile = ({ navigation }) => {
                                 <Text style={styles.cbRupees}>₹{Number(summry.available_amount).toFixed(2)}</Text>
                                 <Text style={styles.cbBottomPara}>Available Cashback</Text>
                             </View>
-                            <View style={styles.cbTxt}>
-                                <Text style={styles.cbRupees}>₹6734</Text>
-                                <Text style={styles.cbBottomPara}>Promo Balance</Text>
-                            </View>
+                            
                         </View>
                     </View>
                     <View style={styles.promoCont}>

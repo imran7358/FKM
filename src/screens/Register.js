@@ -69,7 +69,7 @@ const ENDPOINT = "/user/register";
            
             name:yup.string().required("Please enter name").matches(/^[A-Za-z ]*$/, "Please enter valid name").max(20,"Maximum 20 character are allowed"),
             email: yup.string().required('Please enter your Email id'),
-            phone: yup.string().required("Please enter mobile number").matches(/^[0]?[789]\d{9}$/
+            phone: yup.string().required("Please enter mobile number").matches(/^[0]?[6789]\d{9}$/
             , "Please enter valid phone"),
             password:yup.string().required('Please Enter password').min(6,'Minimum 6 Chareter are required').max(8,'Maxmimum 8 Chareter are required')})}
             >

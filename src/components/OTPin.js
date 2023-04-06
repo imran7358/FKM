@@ -17,6 +17,7 @@ const OTPin = (props) => {
             {arr.map((e,i)=><TextInput   style={[styles.inputText, styles.lableFont]}
             key={i}
             maxLength={1}
+            keyboardType='numeric'
             placeholder="A" 
             ref={(ref) => {refs.current[i] = ref}} 
             value={p[i]}

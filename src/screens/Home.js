@@ -12,10 +12,12 @@ import MyStore from '../components/StoreList';
 import VideoPlayer from '../components/Video';
 import FAQ from '../components/Faq';
 import { useIsFocused } from '@react-navigation/native';
+import { Freshchat,FreshchatUser, FreshchatConfig } from 'react-native-freshchat-sdk';
 import Config from 'react-native-config';
 const END_URL = "/home/home";
 import axios from 'axios';
 import YoutubeIframe from 'react-native-youtube-iframe';
+import { useSelector } from 'react-redux';
 const Home = ({ navigation }) => {
   console.log(Config.API_URL)
   const [slider, setSlider] = useState([]);
@@ -25,12 +27,51 @@ const Home = ({ navigation }) => {
   const [page, setpage] = useState(1);
   const [tab, setTab] = useState([])
   const [refresh, setReferesh] = useState(false)
+  const [freshchatName, setFreshchatName] = useState('')
+  const [freshchatEmail, setFreshchatEmail] = useState('')
+  const [freshchatPhone, setFreshchatPhone] = useState('')
+  const [freshchatUserId, setFreshchatUserId] = useState('')
   const isFocused = useIsFocused()
+  const userToken = useSelector(state => state.user.userToken);
+  const userInfo = useSelector(state => state.user.userInfo);
+  const APP_ID = "bc9091b2-ecdf-4fc5-9eb5-525a67429bd9"
+  const APP_KEY = "4ad29059-606d-486a-9e77-1c84b0191064"
+  var freshchatConfig = new FreshchatConfig(APP_ID, APP_KEY);
+  freshchatConfig.domain = "msdk.freshchat.com";
+  freshchatConfig.teamMemberInfoVisible = true;
+  freshchatConfig.cameraCaptureEnabled = true;
+  freshchatConfig.gallerySelectionEnabled = true;
+  freshchatConfig.responseExpectationEnabled = true;
+  freshchatConfig.showNotificationBanner = true; //iOS only
+  freshchatConfig.notificationSoundEnabled = true; //iOS only
+  freshchatConfig.themeName = "CustomTheme.plist"; //iOS only
+  freshchatConfig.stringsBundle = "FCCustomLocalizable"; //iOS only
+  Freshchat.init(freshchatConfig);
+  var freshchatUser = new FreshchatUser();
+  freshchatUser.firstName = freshchatName;
+  freshchatUser.email = freshchatEmail;
+  freshchatUser.phone = freshchatPhone;
+  freshchatUser.identifyUser = freshchatUserId;
+  Freshchat.setUser(freshchatUser, (error) => {
+      console.log(error);
+  });
   const onRefresh = useCallback(() => {
     setReferesh(true);
     setTimeout(() => {
       getSlider(); 
       // Alert.alert('okay');
+      if(userInfo!=''){
+      console.log('afterload',freshchatUser)
+      Freshchat.showFAQs();
+      Freshchat.showConversations();
+    //   Freshchat.getUser((user) => {
+    //     console.log(user);
+    // })
+    // console.log(Freshchat.getUser);
+      }
+      else{
+        Alert.alert('not loggedin')
+      }
         setReferesh(false);
     }, 2000);
   }, []);
@@ -41,7 +82,18 @@ const Home = ({ navigation }) => {
       'apiAuth': Config.API_AUTH,
       'device_type': 4,
       page,
+    }, {
+      headers: {
+        Authorization: userToken,
+    },
     }).then(({ data }) => {
+      if(data.userdata.login=='1')
+      {
+      setFreshchatEmail(data.userdata.email)
+      setFreshchatPhone(data.userdata.phone)
+      setFreshchatName(data.userdata.title)
+      setFreshchatUserId(data.userdata.uid)
+      }
       setSlider(data.response.slider);
       setSticky(data.response.sticky);
       setLiveDeals(data.response.live_deals);
@@ -53,13 +105,15 @@ const Home = ({ navigation }) => {
   };
   useEffect(() => {
     getSlider();
+    console.log('onload',freshchatUser)
+    console.log('complete url',Config.API_URL + END_URL)
   }, []);
   
   useEffect(() => {
     isFocused ?  getSlider() : null
   }, [isFocused]);
   return (
-    <SafeAreaView style={{backgroundColor:'#f27935'}}>
+    <SafeAreaView style={{backgroundColor:'#f27935',height:1000}}>
       <View>
         <Header navigation={navigation} />
       </View>
@@ -119,8 +173,8 @@ const Home = ({ navigation }) => {
         <View style={[styles.mainContainer, styles.paddingZero, styles.margin20, styles.marginBottom50]}>
           <FAQ/>
         </View>
-        <View>
-        <YoutubeIframe style={styles.videoContainer}
+        <View style={styles.videoContainer}>
+        <YoutubeIframe 
         videoId='hkStK-PBO_k'
         height={450}
         width = {380}
@@ -203,11 +257,8 @@ const styles = StyleSheet.create({
   },
 
   videoContainer: {
-    backgroundColor: '#F7F7F7',
-    height: 150,
-    marginLeft:10,
-    borderRadius: 16,
     justifyContent: 'center',
+    flex:1,
     alignItems: 'center',
   },
   paddingZero: {

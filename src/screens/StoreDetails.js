@@ -67,6 +67,7 @@ const StoreDetails = ({ props, route, navigation }) => {
             'option': opt,
 
         }).then(({ data }) => {
+            console.log(opt)
             if (opt == "") {
                 const regex = /(<([^>]+)>)/ig;
         const result = data.response.store_details.top_desc.replace(regex, '');
@@ -126,7 +127,7 @@ const StoreDetails = ({ props, route, navigation }) => {
                             store.is_cashback == '1' ?
                             <View style={styles.cashbackStore}>
                             {/* <Image source={require('../assets/images/rupee-icon.png')} style={{ width: 11, height: 11, resizeMode: 'contain' }} /> */}
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5, }}><Text style={{ fontSize: 14, fontWeight: 'bold' }}>{store.cashback_amount} </Text></View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 5, marginRight: 5, }}><Text style={{ fontSize: 14, fontWeight: 'bold' }}>{store.cashback_amount} cashback </Text></View>
                             <Image source={require('../assets/images/info.png')} />
                         </View>:
                         ""
@@ -229,13 +230,20 @@ rate.length && rate.map((item, i) => {
                             }
 
 <View style={{justifyContent:'center', display:'flex', alignContent:'center', alignItems:'center', marginTop:20}}>
+
+                                    {
+                                    rate?.length>2 ?
                                    <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={() => setShowMore(!showMore)}>
+                                   
                                         <View style={styles.readMore}>
                                             {
                                                 showMore ? <Image source={require('../assets/images/downArrow.png')} style={styles.readArrow} /> : <Image source={require('../assets/images/downArrow.png')} style={[styles.readArrow, styles.arrowTransform]} />
                                             }
                                         </View>
                                     </TouchableHighlight>
+                                    :
+                                    null
+                                   }
 
                                    </View>
                         

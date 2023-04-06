@@ -70,7 +70,7 @@ const MyStore = ({navigation}) => {
                         <View style={styles.storICon} >
                             <Image source={{ uri: item.store_image }} style={{ width: 80, height: 40, resizeMode: 'contain' }} />
                         </View>
-                        <Text style={styles.cbText}>₹{Number(item.cashback_amount).toFixed(0)} <Text style={styles.cbMessage}>Cashback</Text></Text>
+                        <Text style={styles.cbText}>{item.cashback_amount} <Text style={styles.cbMessage}>Cashback</Text></Text>
                     </TouchableOpacity>;
                 })
                }
@@ -124,10 +124,10 @@ const styles = StyleSheet.create({
         marginHorizontal:7,
     },
     cbText: {
-        fontWeight: '900',
+        fontWeight: '800',
         color: '#E22020',
         marginTop: 10,
-        fontSize:11,
+        fontSize:10,
     },
     cbMessage: {
         fontWeight: '400',

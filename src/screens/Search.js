@@ -18,6 +18,7 @@ const SearchPage = ({ route, navigation }) => {
 
 
     useEffect(() => {
+       
         axios.post(Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             'keyword': route.params.searchKeyword,

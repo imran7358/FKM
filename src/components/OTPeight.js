@@ -18,6 +18,7 @@ const OTPin = (props) => {
             key={i}
             maxLength={1}
             placeholder="-" 
+            keyboardType='numeric'
             ref={(ref) => {refs.current[i] = ref}} 
             value={p[i]}
             onChangeText={(t)=>{

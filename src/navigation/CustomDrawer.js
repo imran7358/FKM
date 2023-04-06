@@ -4,21 +4,27 @@ import { Grid,ShoppingBag, Percent, PhoneCall, HelpCircle, LogOut, Tag} from "re
 import { useDispatch } from 'react-redux';
 import { LOGGEDOUT } from '../redux/actionTypes';
 import { useSelector } from 'react-redux';
-
+import { Freshchat,FreshchatConfig} from 'react-native-freshchat-sdk';
 const CustomDrawer = ({navigation}) => {
-
+    
     const user = useSelector((state) => {
         return state.user;
       });
 
     const dispatch = useDispatch();
     const logOut = async() =>{
+        Freshchat.resetUser();
         try {
             dispatch({
                 type: LOGGEDOUT,
                 userToken: '',
+                userInfo:'',
             });
+            Freshchat.resetUser();
             navigation.navigate('Home');
+            Freshchat.getUser((user) => {
+                console.log(user);
+            })
         }
         catch (exception) {
             console.log(exception);

@@ -40,12 +40,12 @@ const ProductCategories = ({ navigation }) => {
                   <Text style={styles.catHeading}>{item.name}</Text>
                   <View style={styles.dealNum}>
                     <View style={styles.dealsInfo}>
-                      <Text style={[styles.dealsSize, styles.couponColor]}>Deals</Text>
-                      <Text style={[styles.dealNumber, styles.dealsSize, styles.marginLeft10]}>{item.deals_count}</Text>
+                      {/* <Text style={[styles.dealsSize, styles.couponColor]}>Deals</Text> */}
+                      {/* <Text style={[styles.dealNumber, styles.dealsSize, styles.marginLeft10]}>{item.deals_count}</Text> */}
                     </View>
                     <View style={styles.dealsInfo}>
-                      <Text style={[styles.dealsSize, styles.couponColor]}>Coupons</Text>
-                      <Text style={[styles.dealNumber, styles.dealsSize, styles.marginLeft10]}>{item.coupons_count}</Text>
+                      {/* <Text style={[styles.dealsSize, styles.couponColor]}>Coupons</Text> */}
+                      {/* <Text style={[styles.dealNumber, styles.dealsSize, styles.marginLeft10]}>{item.coupons_count}</Text> */}
                     </View>
                   </View>
                   <View style={styles.viewDetails}>
