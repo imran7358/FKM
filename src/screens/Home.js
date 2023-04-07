@@ -18,6 +18,7 @@ const END_URL = "/home/home";
 import axios from 'axios';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { useSelector } from 'react-redux';
+import { MessageCircle } from 'react-native-feather';
 const Home = ({ navigation }) => {
   console.log(Config.API_URL)
   const [slider, setSlider] = useState([]);
@@ -113,7 +114,7 @@ const Home = ({ navigation }) => {
     isFocused ?  getSlider() : null
   }, [isFocused]);
   return (
-    <SafeAreaView style={{backgroundColor:'#f27935',height:1000}}>
+    <SafeAreaView style={{backgroundColor:'#f27935'}}>
       <View>
         <Header navigation={navigation} />
       </View>
@@ -170,17 +171,23 @@ const Home = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={[styles.mainContainer, styles.paddingZero, styles.margin20, styles.marginBottom50]}>
+        <View style={[styles.mainContainer, styles.paddingZero, styles.margin20]}>
           <FAQ/>
         </View>
         <View style={styles.videoContainer}>
         <YoutubeIframe 
         videoId='hkStK-PBO_k'
-        height={450}
-        width = {380}
+        height={250}
+        width = '100%'
         />
         </View>
       </ScrollView>
+      
+      <TouchableOpacity>
+      <View style={[styles.floatButton, styles.buttonShadow]}>
+       <MessageCircle color="#fff" width={35} height={35} />
+      </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -194,7 +201,27 @@ const styles = StyleSheet.create({
   mainContainer: {
     padding: 24,
   },
+  floatButton:{
 
+    position:'absolute',
+    right:20,
+    zIndex:9999,
+    bottom:60,
+    width:65,
+    height:65,
+    alignContent:'center',
+    display:'flex',
+    justifyContent:'center',
+    borderRadius:50,
+    backgroundColor:'#f27935',
+    alignItems:'center'
+  },
+  buttonShadow:{
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
   bgWhite: {
     backgroundColor: '#fff',
   },
@@ -260,6 +287,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex:1,
     alignItems: 'center',
+    padding:20,
   },
   paddingZero: {
     paddingTop: 0,
