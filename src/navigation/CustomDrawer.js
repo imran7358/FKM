@@ -151,7 +151,7 @@ const CustomDrawer = ({navigation}) => {
                </View>
                </TouchableOpacity>
 
-               <TouchableOpacity onPress={async()=> { await Linking.openURL('https://m.freekaamaal.com/faq')}}>
+               {/* <TouchableOpacity onPress={async()=> { await Linking.openURL('https://m.freekaamaal.com/faq')}}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
                 <HelpCircle style={styles.iconSize} width={18}/>
@@ -160,7 +160,7 @@ const CustomDrawer = ({navigation}) => {
                     <Text style={styles.menuTxt}>Help & Support</Text>
                 </View>
                </View>
-               </TouchableOpacity>
+               </TouchableOpacity> */}
                {
                 user.userInfo ?<View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>

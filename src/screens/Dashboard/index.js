@@ -176,10 +176,11 @@ const Profile = ({ navigation }) => {
                         </View>
                     </View>
  {/* verification part */}
+                   {   
+                    userdata.phone_verified == '0' ?
                    <View style={styles.verifycontainer}>
-                   <TouchableOpacity onPress={VerifyEmail}>
-                    {   
-                    userdata.email_verified == '0' ?
+                   <TouchableOpacity onPress={VerifyPhone}>
+                    
                     <>
                     <View style={styles.verifycard}>
                     <Mail style={styles.iconSize} width={15}/>
@@ -187,16 +188,17 @@ const Profile = ({ navigation }) => {
                     </View>
                     
                     </>
-                    :
-                    null
-                    }
+                    
                     </TouchableOpacity>
                    </View>
-                   
-                   <View style={styles.verifycontainer}>
-                   <TouchableOpacity onPress={VerifyPhone}>
-                    {   
+                   :
+                   null
+                   }
+                   {   
                     userdata.email_verified == '0' ?
+                   <View style={styles.verifycontainer}>
+                   <TouchableOpacity onPress={VerifyEmail}>
+                    
                     <>
                     <View style={styles.verifycard}>
                     <Phone style={styles.iconSize} width={15}/>
@@ -204,11 +206,12 @@ const Profile = ({ navigation }) => {
                     </View>
                     
                     </>
-                    :
-                    null
-                    }
+                    
                     </TouchableOpacity>
                    </View>
+                   :
+                   null
+                   }
                     <View style={styles.cashBackInfo}>
                         <View style={styles.cashBackBox}>
                             <View style={[styles.cbTxt, styles.margin15]}>

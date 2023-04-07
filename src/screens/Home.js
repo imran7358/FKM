@@ -60,22 +60,22 @@ const Home = ({ navigation }) => {
     setReferesh(true);
     setTimeout(() => {
       getSlider(); 
-      // Alert.alert('okay');
-      if(userInfo!=''){
-      console.log('afterload',freshchatUser)
-      Freshchat.showFAQs();
-      Freshchat.showConversations();
-    //   Freshchat.getUser((user) => {
-    //     console.log(user);
-    // })
-    // console.log(Freshchat.getUser);
-      }
-      else{
-        Alert.alert('not loggedin')
-      }
+      
         setReferesh(false);
     }, 2000);
   }, []);
+
+  const freshchatHandle = () => {
+    if(userInfo!='')
+    {
+      Freshchat.showFAQs();
+      Freshchat.showConversations();
+    }
+      else{
+        Alert.alert('not loggedin')
+      }
+        
+  };
 
   const getSlider = () => {
     axios.post(Config.API_URL + END_URL, {
@@ -183,11 +183,15 @@ const Home = ({ navigation }) => {
         </View>
       </ScrollView>
       
-      <TouchableOpacity>
+      {
+        userInfo && userInfo ?
+      <TouchableOpacity onPress={freshchatHandle}>
       <View style={[styles.floatButton, styles.buttonShadow]}>
        <MessageCircle color="#fff" width={35} height={35} />
       </View>
       </TouchableOpacity>
+       : ""
+      }
     </SafeAreaView>
   );
 };

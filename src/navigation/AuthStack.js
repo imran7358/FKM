@@ -583,7 +583,7 @@ const AuthStack = ({ navigation }) => {
                 )
             }} />
             <Stack.Screen name="WidthdrawalMoney" component={WidthdarawlMoney} options={{
-                title: 'Withdarawl Money',
+                title: 'Withdraswal Money',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>

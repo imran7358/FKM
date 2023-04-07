@@ -185,8 +185,8 @@ const UserClaimForm = ({ navigation, route }) => {
                                                 iconStyle={styles.iconStyle}
                                                 data={click}
                                                 maxHeight={300}
-                                                labelField="clickid"
-                                                valueField="clickid"
+                                                labelField="created_time"
+                                                valueField="created_time"
                                                 placeholder="Select item"
                                                 placeholderTextColor="grey"
                                                 searchPlaceholder="Search..."
