@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_72" orientation="portrait" appearance="light"/>
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
@@ -13,27 +13,31 @@
         <scene sceneID="GeF-un-abF">
             <objects>
                 <viewController id="SAd-90-ppR" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Xz4-YL-Y4i">
-                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <view key="view" contentMode="scaleToFill" id="grF-Nh-ZWY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splash screen page" highlightedImage="splash screen page" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ucN-mS-lcr">
-                                <rect key="frame" x="-5" y="0.0" width="441" height="932"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default" weight="ultraLight"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="ayo-cX-1Yc">
+                                <rect key="frame" x="0.0" y="50" width="375" height="728"/>
                             </imageView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="zpG-dW-bfP"/>
+                        <viewLayoutGuide key="safeArea" id="HMc-dm-Ugx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="HMc-dm-Ugx" firstAttribute="bottom" secondItem="ayo-cX-1Yc" secondAttribute="bottom" id="GWb-S8-b8v"/>
+                            <constraint firstItem="HMc-dm-Ugx" firstAttribute="trailing" secondItem="ayo-cX-1Yc" secondAttribute="trailing" id="Rmd-3f-Y8j"/>
+                            <constraint firstItem="ayo-cX-1Yc" firstAttribute="leading" secondItem="HMc-dm-Ugx" secondAttribute="leading" id="amI-gL-UkF"/>
+                            <constraint firstItem="ayo-cX-1Yc" firstAttribute="top" secondItem="HMc-dm-Ugx" secondAttribute="top" id="edv-IM-eZU"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HNf-De-icB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="168.83720930232559" y="-158.36909871244637"/>
+            <point key="canvasLocation" x="168.80000000000001" y="-158.86699507389164"/>
         </scene>
     </scenes>
     <resources>
-        <image name="splash screen page" width="246" height="533.33331298828125"/>
+        <image name="logo" width="375" height="812"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

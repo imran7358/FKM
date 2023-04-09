@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* freekaamaalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* freekaamaalTests.m */; };
-		0C4922BA29C1EEEF0092ACF3 /* splash.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0C4922B929C1EEEF0092ACF3 /* splash.gif */; };
 		0C80B921A6F3F58F76C31292 /* libPods-freekaamaal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-freekaamaal.a */; };
 		0CC47844A2A943018DAC563A /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AA25C9E7A644A709AEBE6EB /* Poppins-SemiBold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
@@ -36,7 +35,6 @@
 		00E356EE1AD99517003FC87E /* freekaamaalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = freekaamaalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* freekaamaalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = freekaamaalTests.m; sourceTree = "<group>"; };
-		0C4922B929C1EEEF0092ACF3 /* splash.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = splash.gif; path = ../../../Downloads/splash.gif; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* freekaamaal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = freekaamaal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = freekaamaal/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = freekaamaal/AppDelegate.mm; sourceTree = "<group>"; };
@@ -99,7 +97,6 @@
 		0C4922B829C1EEC10092ACF3 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				0C4922B929C1EEEF0092ACF3 /* splash.gif */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -280,7 +277,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				0C4922BA29C1EEEF0092ACF3 /* splash.gif in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				5D4E058141D24382B6E7DA80 /* Poppins-Bold.ttf in Resources */,
 				D512EFE21BC740E18EC4220F /* Poppins-Light.ttf in Resources */,

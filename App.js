@@ -20,11 +20,19 @@ import AppNav from './src/navigation/AppNav';
 import { Provider } from 'react-redux';
 import { store, persistedStore } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import SplashScreen from 'react-native-splash-screen';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
 
 const App = () => {
+
+    useEffect(()=>{
+        // setTimeout(() => {
+        //     SplashScreen.hide();
+        // }, 6000);
+
+    },[])
 
 
     return (
