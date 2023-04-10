@@ -12,7 +12,8 @@ import * as yup from "yup"
 import ErroLabel from '../../../components/ErrorCom';
 
 
-const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
+const WidthdarawlForm = ({navigation,payType, coupon, account, label }) => {
+
     const [userToken, withdrawInfo] = useSelector(state => {
         return [state.user.userToken, state.withdraw.withdrawInfo];
     });
@@ -39,7 +40,7 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
         );
     };
 
-    return pipe ? <WidthdarawlOtp response={pipe} payType={payType} couponSelected={{code: pipe.coupon_code, couponid: pipe.couponid}} account={account} /> : (
+    return pipe ? <WidthdarawlOtp navigation={navigation} response={pipe} payType={payType} couponSelected={{code: pipe.coupon_code, couponid: pipe.couponid}} account={account} /> : (
         <ScrollView style={styles.container}>
             <Formik initialValues={{
                 amount:'',
@@ -67,12 +68,15 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
             },
         }).then(({ data }) => {
             setLoading(false);
-            console.log("Data info", data)
-            if(data.status == '1'){
+            console.log("Withform", data)
+            if(data.status == 1 && data.error == 0){
+                // navigation.navigate('Login')
                 Resp(data);
+                
+               
             }
             else {
-                setError(data.message)
+                setError(data.msg)
             }
 
         }).catch((error) => {
@@ -83,7 +87,7 @@ const WidthdarawlForm = ({ navigation, payType, coupon, account, label }) => {
                 {({values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit})=>(
 
 <View style={styles.innerContainer}>
-<Text style={styles.storeName}>Selectd Account</Text>
+<Text style={styles.storeName}>Selectd Account111</Text>
 <View style={styles.inputView}>
     <View style={styles.inputBoxContainer}>
         <TextInput

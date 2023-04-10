@@ -11,8 +11,10 @@ import { Form, Formik } from 'formik';
 import * as yup from 'yup';
 import ErroLabel from '../../../components/ErrorCom';
 import SucessLbl from '../../../components/SuccessCom';
+import { success } from 'react-codegen/utils';
 
 const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account }) => {
+    console.log("bosdika nav",navigation)
     const [value, setValue] = useState('');
     const dispatch = useDispatch();
     const request_id = response.request_id;
@@ -72,8 +74,9 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                 
                     if (data.status == 1 && data.error == 0) {
                         setSuccess(data.msg)
+                        setError('')
                         setTimeout(() => {
-                            navigation.navigate("WidthdrawalMoney")
+                            navigation.navigate("Profile")
                         }, 3000);
                     }
                     else {
@@ -107,6 +110,10 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
     </View>
     {touched.otp && errors.otp &&
                                 <Text style={styles.error}>{errors.otp}</Text>
+                            }
+
+                            {
+                                sucess ? <SucessLbl message={sucess} /> : null
                             }
 
                             {

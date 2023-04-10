@@ -84,7 +84,7 @@ const WidthdarawlMoney = ({ navigation }) => {
                     error ? <ErroLabel message={error}/> : null
                 }
             </View>
-            {value && dataRes ? <WidthdarawlForm payType={value} label={dataRes.label} account={dataRes.account} coupon={[
+            {value && dataRes ? <WidthdarawlForm navigation = {navigation} payType={value} label={dataRes.label} account={dataRes.account} coupon={[
                 { "code": dataRes.coupon.code, "couponid": dataRes.coupon.couponid, "request_amount": 0, "usage_text": "Use No coupon" },
                 ...dataRes.coupon
             ]} /> : null}

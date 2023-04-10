@@ -13,6 +13,7 @@ import ErroLabel from '../../../components/ErrorCom';
 import SucessLbl from '../../../components/SuccessCom';
 
 const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account }) => {
+    // console.log(navigation)
     const [value, setValue] = useState('');
     const dispatch = useDispatch();
     const request_id = response.request_id;
@@ -46,10 +47,12 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                             'Authorization': userToken,
                         },
                     }).then(({ data }) => {
+                        console.log(data)
                         if (data.status == 1 && data.error == 0) {
                             setSucess(data.msg)
+                            setError('')
                             setTimeout(() => {
-                                navigation.navigate("WidthdrawalMoney")
+                                navigation.navigate("Profile")
                             }, 3000);
                         }
                         else {
@@ -85,6 +88,9 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
 
                             {
                                 error ? <ErroLabel message={error} /> : null
+                            }
+                             {
+                                sucess ? <SucessLbl message={sucess} /> : null
                             }
                         </View>
 

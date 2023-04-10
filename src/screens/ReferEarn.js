@@ -71,7 +71,7 @@ const ReferEarn = () => {
                     <View style={styles.processImg}>
                         <Image source={require('../assets/images/processImg.png')} style={styles.prImg} />
                     </View>
-                    <Text style={[styles.headingTxt, styles.margin30]}>Frequently Asked Questions ?</Text>
+                    {/* <Text style={[styles.headingTxt, styles.margin30]}>Frequently Asked Questions ?</Text> */}
                 </View>
             </ScrollView>
         </SafeAreaView>

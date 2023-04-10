@@ -212,7 +212,7 @@ const userToken = useSelector(state=> state.user.userToken);
                   accountType: 'paytm',
                 }}
                 onSubmit={async (values) => {
-                  axios.post(Config.API_URL + END_URL, {
+                  request.post(navigation,Config.API_URL + END_URL, {
                     apiAuth: Config.API_AUTH,
                     device_type: 4,
                     paytmname: values.accountHolder,
@@ -224,7 +224,7 @@ const userToken = useSelector(state=> state.user.userToken);
                         Authorization: userToken,
                       },
                     }).then(({ data }) => {
-                    //  console.log(data.status)
+                     console.log(data)
                       if (data.status == 1 && data.error == 0) {
                         // setSuccess(data.message);
                         AsyncStorage.setItem('email', data.response.email);

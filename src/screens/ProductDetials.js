@@ -95,6 +95,7 @@ const ProductDetails = ({ navigation, route }) => {
 
     useEffect(() => {
         getDetails();
+        console.log(userToken)
     }, []);
 
     useEffect(() => {

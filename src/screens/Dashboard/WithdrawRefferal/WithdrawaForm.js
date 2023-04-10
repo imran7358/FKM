@@ -43,7 +43,7 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
     useEffect (()=>{
     }, [pipe])
 
-    return pipe ? <WidthdarawlOtp response={pipe} payType={payType}  account={account} /> : (
+    return pipe ? <WidthdarawlOtp navigation={navigation} response={pipe} payType={payType}  account={account} /> : (
         <ScrollView style={styles.container}>
             <Formik 
             initialValues={{amount:'',}}
@@ -81,7 +81,7 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
                 {({values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit})=>(
 
 <View style={styles.innerContainer}>
-<Text style={styles.storeName}>Selectd Account111</Text>
+<Text style={styles.storeName}>Selectd Account</Text>
 <View style={styles.inputView}>
     <View style={styles.inputBoxContainer}>
         <TextInput

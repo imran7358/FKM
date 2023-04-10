@@ -50,7 +50,7 @@ import FAQ from '../screens/FAQ';
 import { useIsFocused } from '@react-navigation/native';
 import RNRestart from 'react-native-restart';
 // WithdrawMoney
-import { View, Image, StyleSheet, RefreshControl} from 'react-native';
+import { View, Image, StyleSheet,ImageBackground, RefreshControl} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 //WithDrawRefferal
@@ -126,11 +126,11 @@ const BottomTabs = ({ navigation }) => {
 
                 ),
             }} 
-            listeners={{
-                tabPress: e => {
-                    startReload()
-                },
-            }}
+            // listeners={{
+            //     tabPress: e => {
+            //         startReload()
+            //     },
+            // }}
             />
             <Tab.Screen name="Store" component={AllStores} options={{
                 BottomTabs: false,
@@ -266,6 +266,16 @@ const BottomTabs = ({ navigation }) => {
         </Tab.Navigator>
     );
 };
+
+function Splashscreen({navigation})
+{
+setTimeout(()=> {
+    navigation.replace('Home')
+},3500);
+return(
+    <ImageBackground source={require('../assets/images/LOW-INTRO.gif')} style={{flex:1}} />
+)
+}
 const AuthStack = ({ navigation }) => {
     return (
 
@@ -277,7 +287,10 @@ const AuthStack = ({ navigation }) => {
             headerTitleStyle: {
                 fontWeight: '900',
             },
-        }} initialRouteName={Home}>
+        }} initialRouteName={Splashscreen}>
+            <Stack.Screen name="Splashscreen" component={Splashscreen} options={{
+      headerShown: false, // change this to `false`
+    }}/>
             <Stack.Screen name="Home" component={BottomTabs} options={{ headerShown: false, title: '' }} />
             <Stack.Screen name="Login" component={Login} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -583,7 +596,7 @@ const AuthStack = ({ navigation }) => {
                 )
             }} />
             <Stack.Screen name="WidthdrawalMoney" component={WidthdarawlMoney} options={{
-                title: 'Withdraswal Money',
+                title: 'Withdrawal Money',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>

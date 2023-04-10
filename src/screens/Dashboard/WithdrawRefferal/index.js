@@ -30,7 +30,7 @@ const WithdrawRefferal = ({ navigation }) => {
         { label: 'Paytm', value: 'paytm' },
     ];
     const getAccount = async () => {
-        (navigation, Config.API_URL + END_URL, {
+        request.post(navigation, Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': '4',
             'wallet_type': value,
@@ -95,7 +95,7 @@ const WithdrawRefferal = ({ navigation }) => {
                     error ? <ErroLabel message={error} /> : null
                 }
             </View>
-            {value && dataRes ? <WidthdarawlForm payType={value} label={dataRes.label} account={dataRes.account}/> : null}
+            {value && dataRes ? <WidthdarawlForm navigation={navigation} payType={value} label={dataRes.label} account={dataRes.account}/> : null}
         </ScrollView>
     );
 };
