@@ -547,8 +547,13 @@
 					"-ObjC",
 					"-lc++",
 				);
+<<<<<<< Updated upstream
 				PRODUCT_BUNDLE_IDENTIFIER = org.freekaamaalios.com;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = freekaamaalIOS;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example-rfc1034identifier-";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = freekaamaal;
+>>>>>>> Stashed changes
 				PRODUCT_NAME = freekaamaal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

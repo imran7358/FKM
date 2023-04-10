@@ -30,6 +30,7 @@
                             <constraint firstItem="ayo-cX-1Yc" firstAttribute="top" secondItem="HMc-dm-Ugx" secondAttribute="top" id="edv-IM-eZU"/>
                         </constraints>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HNf-De-icB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
