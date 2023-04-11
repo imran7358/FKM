@@ -87,7 +87,7 @@ const WidthdarawlForm = ({navigation,payType, coupon, account, label }) => {
                 {({values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit})=>(
 
 <View style={styles.innerContainer}>
-<Text style={styles.storeName}>Selectd Account111</Text>
+<Text style={styles.storeName}>Selectd Account</Text>
 <View style={styles.inputView}>
     <View style={styles.inputBoxContainer}>
         <TextInput

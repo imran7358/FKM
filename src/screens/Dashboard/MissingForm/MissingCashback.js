@@ -15,7 +15,8 @@ import { Formik, useFormik } from 'formik';
 import * as yup from 'yup';
 import KeybaordAvoidingWrapper from '../../../components/keyboardAvoidingWrapper';
 import request from '../../../utils/request';
-
+import ErroLabel from '../../../components/ErrorCom';
+import SucessLbl from '../../../components/SuccessCom';
 
 
 const MissingCashback = ({ navigation, route }) => {
@@ -44,6 +45,9 @@ const MissingCashback = ({ navigation, route }) => {
     const [uploadFile, setuplaodFile] = useState({});
     const [fileError, setFileError] = useState(false);
     const [filType, setFileType] = useState(false);
+    const [error, setError] = useState(false);
+    const [sucess, setSucess] = useState(false);
+    const [message, setMessage] = useState('');
 
     const getDetails = async () => {
         request.post(navigation,Config.API_URL + END_URL, {
@@ -63,6 +67,9 @@ const MissingCashback = ({ navigation, route }) => {
     };
 
     const sendFormReq = async (formD) => {
+        // Alert.alert('okay',userToken)
+        // console.log('token',userToken)
+        // console.log(formD)
         axios.post(Config.API_URL + POST_URL, formD,
             {
                 headers: {
@@ -71,8 +78,23 @@ const MissingCashback = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
+               console.log(data)
+               if(data.status=='1' && data.error=='0')
+               {
+                // Alert.alert("done")
+                setSucess(true);
+                setMessage(data.message)
+                setError(false);
+               }
+               else
+               {
+                // Alert.alert("backend errror")
+                setMessage(data.message)
+                setError(true);
+                setSucess(false);
+               }
             }).catch((error) => {
-                console.log(error.response);
+                console.log("error aaya", error.response);
             });
     }
     const handleDocumentSelection = async () => {
@@ -129,7 +151,7 @@ const MissingCashback = ({ navigation, route }) => {
     }, [date])
 
     useEffect(() => {
-        fileResponse[0]?.uri ? setFileError(false) : setFileError(true);
+        fileResponse[0]?.uri ? setFileError(false) : setFileError(false);
     }, [fileResponse, route.params.storeId], uploadFile);
 
 
@@ -180,6 +202,7 @@ const MissingCashback = ({ navigation, route }) => {
                                     fdata.append("product", values.product),
                                         fileError ? '' : fdata.append("invoice", fileResponse[0]),
                                         fdata.append("invoice2", uploadFile[0]),
+                                        console.log(fdata)
                                         sendFormReq(fdata);
                                 }}
                                 validationSchema={yup.object().shape({
@@ -216,7 +239,7 @@ const MissingCashback = ({ navigation, route }) => {
                                                 maxHeight={300}
                                                 labelField="created_time"
                                                 valueField="clickid"
-                                                placeholder="Select item"
+                                                placeholder="Select click"
                                                 placeholderTextColor="grey"
                                                 searchPlaceholder="Search..."
                                                 value={value}
@@ -304,6 +327,15 @@ const MissingCashback = ({ navigation, route }) => {
                                                 </TouchableOpacity>
                                             </View>
 
+                                {
+                                sucess ? 
+                                <SucessLbl message={message} /> : null
+                                }
+
+                               {
+                                error ? <ErroLabel message={message} /> : null
+                               }
+
                                             {
                                                 fileError ? <View>
 
@@ -329,7 +361,7 @@ const MissingCashback = ({ navigation, route }) => {
                                                 }}
                                                 mode="date"
                                             />
-
+                                               
                                             <TouchableOpacity onPress={handleSubmit}>
                                                 <View style={styles.loginButton}>
                                                     <Text style={styles.loginTxt}>Submit</Text>

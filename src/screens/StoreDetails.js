@@ -15,6 +15,7 @@ import CustomWebView from 'react-native-render-html';
 const StoreDetails = ({ props, route, navigation }) => {
 
     const userInfo = useSelector(state => state.user.userInfo);
+    const userToken = useSelector(state => state.user.userToken);
     const [deals, setShowDeals] = useState(true);
     const [coupons, setShowCoupons] = useState(false);
     const [rate, setRate] = useState(['']);
@@ -66,6 +67,10 @@ const StoreDetails = ({ props, route, navigation }) => {
             page,
             'option': opt,
 
+        }, {
+            headers: {
+                Authorization: userToken,
+            },
         }).then(({ data }) => {
             console.log(opt)
             if (opt == "") {
@@ -107,6 +112,7 @@ const StoreDetails = ({ props, route, navigation }) => {
 
     }, [page, opt, route.params.storeSlug]);
     useEffect(() => {
+        console.log(userToken)
         console.log(route.params.storeSlug)
     }, [storeDeals,route.params.storeSlug])
 

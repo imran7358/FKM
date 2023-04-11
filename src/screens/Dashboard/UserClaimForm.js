@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, Platform, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, Platform, SafeAreaView, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity, } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 import axios, { all } from 'axios';
@@ -61,6 +61,7 @@ const UserClaimForm = ({ navigation, route }) => {
     };
 
     const sendFormReq = async (formD) => {
+        console.log("formdata",formD)
         axios.post(Config.API_URL + POST_URL, formD,
             {
                 headers: {
@@ -69,8 +70,10 @@ const UserClaimForm = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
-                setFormField([{}]);
-                setFileResponse([{}]);
+                Alert.alert('okay')
+                console.log('final data',data)
+                // setFormField([{}]);
+                // setFileResponse([{}]);
 
             }).catch((error) => {
                 console.log(error.response);
@@ -115,7 +118,7 @@ const UserClaimForm = ({ navigation, route }) => {
         let fdata = new FormData();
 
         fdata.append('store', click[0].store);
-        fdata.append('device_type', 'ios');
+        fdata.append('device_type', '4');
         fdata.append('apiAuth', Config.API_AUTH);
         fdata.append('store_id', route.params.storeId);
         fdata.append('clickid', value);
@@ -134,9 +137,11 @@ const UserClaimForm = ({ navigation, route }) => {
                     }
                     break;
                 case "file":
-
+                   console.log('fileName',fileResponse.field_name)
+                
                     if (fileResponse.length && fileResponse[item.field_name][0].uri) {
                         fdata.append(item.field_name, fileResponse[item.field_name][0]);
+                        
                     }
                     break;
                 default:
@@ -168,7 +173,7 @@ const UserClaimForm = ({ navigation, route }) => {
                                 <View style={styles.container}>
                                     <View style={styles.innerContainer}>
                                         <View style={styles.margi}>
-                                            <Text style={styles.cbform}>Cashback Claimform11</Text>
+                                            <Text style={styles.cbform}>Cashback Claimform</Text>
                                         </View>
                                         <View>
                                             <Text style={styles.notes}>Kindly fill up this form only after you have completed the purchase at our partner site. We will verify your details and the cashback amount will be added to your account within 2 -3 Business days (except Saturday & Sunday )
@@ -202,6 +207,7 @@ const UserClaimForm = ({ navigation, route }) => {
                                                     if (item.type === 'text') {
                                                         return <View style={styles.inputBoxContainer} key={item.id}>
                                                             {console.log("Txt fld", item.id)}
+                                                            <Text style={styles.labelName}>{item.title}</Text>
                                                             <TextInput
                                                                 style={[styles.inputText, styles.lableFont]}
                                                                 placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
@@ -218,7 +224,9 @@ const UserClaimForm = ({ navigation, route }) => {
                                                     }
                                                     else if (item.type === 'file') {
 
-                                                        return <View style={[styles.inputBoxContainer, styles.dateCon]} key={item.id}>
+                                                        return (<>
+                                                        <Text style={styles.labelName}>{item.title}</Text>
+                                                        <View style={[styles.inputBoxContainer, styles.dateCon]} key={item.id}>
                                                             {console.log("file fld", item.id)}
                                                             <Text
                                                                 style={styles.uri}
@@ -237,6 +245,8 @@ const UserClaimForm = ({ navigation, route }) => {
                                                             </TouchableOpacity>
 
                                                         </View>
+                                                        </>
+                                                        )
 
                                                     }
 
@@ -244,6 +254,7 @@ const UserClaimForm = ({ navigation, route }) => {
                                                     else if (item.type === 'date') {
 
                                                         return <>
+                                                        <Text style={styles.labelName}>{item.title}</Text>
                                                             <View key={item.id} style={[styles.inputBoxContainer, styles.dateCon]}>
                                                                 {console.log("date fld", item.id)}
                                                                 <Text>{date.toDateString()}</Text>
@@ -257,7 +268,10 @@ const UserClaimForm = ({ navigation, route }) => {
                                                     }
 
                                                     else {
-                                                        return <View key={item.id} style={styles.inputBoxContainer}>
+                                                        return( 
+                                                        <>
+                                                        <Text style={styles.labelName}>{item.title}</Text>
+                                                        <View key={item.id} style={styles.inputBoxContainer}>
                                                             {console.log("optional Txt fld", item.id)}
                                                             <TextInput
                                                                 style={[styles.inputText, styles.lableFont]}
@@ -271,6 +285,8 @@ const UserClaimForm = ({ navigation, route }) => {
                                                                 }}
                                                             />
                                                         </View>
+                                                        </>
+                                                )
 
                                                     }
 
@@ -438,6 +454,13 @@ const styles = StyleSheet.create({
         fontSize: 12,
         lineHeight: 18,
         marginBottom: 10,
+    },
+    labelName: {
+        fontSize: 12,
+        lineHeight: 18,
+        fontWeight: 'bold',
+        flex:1,
+        marginTop: 10,
     },
     storeName: {
         fontSize: 14,
