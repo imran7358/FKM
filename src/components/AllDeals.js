@@ -28,7 +28,7 @@ const AllDeals = ({ navigation }) => {
             if (data.response.hotdeals && data.response.hotdeals.length) {
                 setDeals([...deals, ...data.response.hotdeals]);
                 setSponsoredcount(data.response.sponsored_count)
-                // console.log(sponsored_count)
+                
             }
             else {
 

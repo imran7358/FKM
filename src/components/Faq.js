@@ -46,7 +46,7 @@ const [show, setShow] = useState(false);
 
                     {
                      cashback.length ? cashback && cashback.map((item,i)=> {
-                        // console.log('itemconsole',item.desc)
+                       
                    return( <>
                     <Text style={styles.head}>{item.heading}</Text>
                    <Text style={styles.allDesc}>{item.desc}</Text>
