@@ -32,6 +32,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                     otp: yup.string().required('Please enter OTP'),
                 })}
                 onSubmit={async (values) => {
+                    console.log("new data", values)
                     request.post(navigation,Config.API_URL + END_URL, {
                         apiAuth: Config.API_AUTH,
                         device_type: '4',
@@ -47,7 +48,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                             'Authorization': userToken,
                         },
                     }).then(({ data }) => {
-                        console.log(data)
+                        console.log("data", data)
                         if (data.status == 1 && data.error == 0) {
                             setSucess(data.msg)
                             setError('')
@@ -56,10 +57,11 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                             }, 3000);
                         }
                         else {
-                            setError(data.msg)
+                            setError(data.message)
                         }
                     }).catch((error) => {
-                        setError(error.msg)
+                        setError(error.message)
+                        console.log("error aaya", error)
                     });
                 }}
             >
@@ -89,8 +91,13 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                             {
                                 error ? <ErroLabel message={error} /> : null
                             }
+<<<<<<< HEAD
                              {
                                 sucess ? <SucessLbl message={sucess} /> : null
+=======
+                            {
+                                sucess ? <ErroLabel message={sucess} /> : null
+>>>>>>> 6b8f4d8 (splash testt)
                             }
                         </View>
 

@@ -35,14 +35,13 @@ const UserClaimForm = ({ navigation, route }) => {
     const [formField, setFormField] = useState({})
     const [allowed, setAllowed] = useState(false)
     const [emptyFields, setEmptyFields] = useState([])
-    const [error, setError] = useState(false);
-    const [sucess, setSucess] = useState(false);
-    const [message, setMessage] = useState('');
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
     useEffect(() => {
     }, [fileResponse, allowed, route.params.storeId])
 
     const getDetails = async () => {
-        request.post(navigation,Config.API_URL + END_URL, {
+        request.post(navigation, Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'device_type': 4,
             'store_id': route.params.storeId,
@@ -70,30 +69,19 @@ const UserClaimForm = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
-                Alert.alert('Claim Form Submitted')
-                console.log(data)
-                if(data.status=='1' && data.error=='0')
-               {
-                // Alert.alert("done")
-                setSucess(true);
-                setMessage(data.message)
-                setError(false);
-                setTimeout(() => {
-                    navigation.navigate("Profile")
-                }, 2000);
-               }
-               else
-               {
-                // Alert.alert("backend errror")
-                setMessage(data.message)
-                setError(true);
-                setSucess(false);
-               }
+                if(data.status == 1 && data.error == 0){
+                    setSuccess(data.message)
+                    setError('')
+                }
+                else {
+                    setError(data.message)
+                }
+                console.log("Claim Form", data)
                 // setFormField([{}]);
                 // setFileResponse([{}]);
 
             }).catch((error) => {
-                console.log(error.response);
+               setError(error.message)
             });
     }
 
@@ -125,17 +113,17 @@ const UserClaimForm = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
+    
     }, [date]);
 
     useEffect(() => {
 
-    }, [value, field, click]);
+    }, [field, click]);
 
     const submitForm = () => {
         let fdata = new FormData();
-
         fdata.append('store', click[0].store);
-        fdata.append('device_type', 'ios');
+        fdata.append('device_type', '4');
         fdata.append('apiAuth', Config.API_AUTH);
         fdata.append('store_id', route.params.storeId);
         fdata.append('clickid', value);
@@ -146,18 +134,18 @@ const UserClaimForm = ({ navigation, route }) => {
                 case "text":
                     if (formField[item.field_name]) {
                         fdata.append(item.field_name, formField[item.field_name]);
+
                     }
                     break;
                 case "date":
-                    if (date) {
+                       if(date){
                         fdata.append(item.field_name, moment(date).format('YYYY-MM-DD'));
-                    }
+                       }
                     break;
                 case "file":
-
-                    // if (fileResponse.length && fileResponse[item.field_name][0].uri) {
-                        fdata.append(item.field_name, fileResponse[item.field_name][0]);
-                    // } 
+                       if(fileResponse[item.field_name] && fileResponse[item.field_name][0]?.uri){
+                        fdata.append(item.field_name, fileResponse[item.field_name][0])
+                       }
                     break;
                 default:
                     if (formField[item.field_name]) {
@@ -166,7 +154,9 @@ const UserClaimForm = ({ navigation, route }) => {
                     break;
             }
         }
+        
         const submittedKeys = Object.keys(formField)
+        console.log("submited", submittedKeys)
         for (let i = 0; i < field.length; i++) {
             const item = field[i]
             if (!["file", "date"].includes(item.type) && item.is_mandatory == "1" && !submittedKeys.includes(item.field_name)) {
@@ -174,6 +164,7 @@ const UserClaimForm = ({ navigation, route }) => {
                 return;
             }
         }
+        console.log("form Data", fdata)
         sendFormReq(fdata);
     }
 
@@ -206,10 +197,8 @@ const UserClaimForm = ({ navigation, route }) => {
                                                 data={click}
                                                 maxHeight={300}
                                                 labelField="created_time"
-                                                valueField="created_time"
-                                                placeholder="Select item"
+                                                valueField="clickid"
                                                 placeholderTextColor="grey"
-                                                searchPlaceholder="Search..."
                                                 value={value}
                                                 onChange={e => {
                                                     setValue(e.clickid);
@@ -221,7 +210,6 @@ const UserClaimForm = ({ navigation, route }) => {
 
                                                     if (item.type === 'text') {
                                                         return <View style={styles.inputBoxContainer} key={item.id}>
-                                                            {console.log("Txt fld", item.id)}
                                                             <Text style={styles.labelName}>{item.title}</Text>
                                                             <TextInput
                                                                 style={[styles.inputText, styles.lableFont]}
@@ -240,26 +228,26 @@ const UserClaimForm = ({ navigation, route }) => {
                                                     else if (item.type === 'file') {
 
                                                         return (<>
-                                                        <Text style={styles.labelName}>{item.title}</Text>
-                                                        <View style={[styles.inputBoxContainer, styles.dateCon]} key={item.id}>
-                                                            {console.log("file fld", item.id)}
-                                                            <Text
-                                                                style={styles.uri}
-                                                                numberOfLines={1}
-                                                                ellipsizeMode={'middle'}>
-                                                                {fileResponse.hasOwnProperty(item.field_name) ? fileResponse[item.field_name][0].name : "Upload File"}
-                                                            </Text>
+                                                            <Text style={styles.labelName}>{item.title}</Text>
+                                                            <View style={[styles.inputBoxContainer, styles.dateCon]} key={item.id}>
+
+                                                                <Text
+                                                                    style={styles.uri}
+                                                                    numberOfLines={1}
+                                                                    ellipsizeMode={'middle'}>
+                                                                    {fileResponse.hasOwnProperty(item.field_name) ? fileResponse[item.field_name][0].name : "Upload File"}
+                                                                </Text>
 
 
-                                                            <TouchableOpacity onPress={(i1) => {
-                                                                handleDocumentSelection(i1, item.field_name)
-                                                            }}>
-                                                                <View style={styles.dateIcon}>
-                                                                    <Image source={require('../../assets/images/upload.png')} style={styles.dateIcon} />
-                                                                </View>
-                                                            </TouchableOpacity>
+                                                                <TouchableOpacity onPress={(i1) => {
+                                                                    handleDocumentSelection(i1, item.field_name)
+                                                                }}>
+                                                                    <View style={styles.dateIcon}>
+                                                                        <Image source={require('../../assets/images/upload.png')} style={styles.dateIcon} />
+                                                                    </View>
+                                                                </TouchableOpacity>
 
-                                                        </View>
+                                                            </View>
                                                         </>
                                                         )
 
@@ -267,11 +255,10 @@ const UserClaimForm = ({ navigation, route }) => {
 
 
                                                     else if (item.type === 'date') {
-
                                                         return <>
-                                                        <Text style={styles.labelName}>{item.title}</Text>
+                                                            <Text style={styles.labelName}>{item.title}</Text>
                                                             <View key={item.id} style={[styles.inputBoxContainer, styles.dateCon]}>
-                                                                {console.log("date fld", item.id)}
+
                                                                 <Text>{date.toDateString()}</Text>
                                                                 <TouchableOpacity onPress={() => setOpen(true)}>
                                                                     <View style={styles.dateIcon}>
@@ -283,25 +270,25 @@ const UserClaimForm = ({ navigation, route }) => {
                                                     }
 
                                                     else {
-                                                        return( 
-                                                        <>
-                                                        <Text style={styles.labelName}>{item.title}</Text>
-                                                        <View key={item.id} style={styles.inputBoxContainer}>
-                                                            {console.log("optional Txt fld", item.id)}
-                                                            <TextInput
-                                                                style={[styles.inputText, styles.lableFont]}
-                                                                placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
-                                                                value={formField[item.field_name]}
-                                                                placeholderTextColor="#666"
-                                                                onChangeText={(e) => {
-                                                                    const temp = { ...formField };
-                                                                    temp[item.field_name] = e;
-                                                                    setFormField(temp);
-                                                                }}
-                                                            />
-                                                        </View>
-                                                        </>
-                                                )
+                                                        return (
+                                                            <>
+                                                                <Text style={styles.labelName}>{item.title}</Text>
+                                                                <View key={item.id} style={styles.inputBoxContainer}>
+
+                                                                    <TextInput
+                                                                        style={[styles.inputText, styles.lableFont]}
+                                                                        placeholder={item.is_mandatory == '1' ? item.placeholder + ' ' + ('required') : item.placeholder}
+                                                                        value={formField[item.field_name]}
+                                                                        placeholderTextColor="#666"
+                                                                        onChangeText={(e) => {
+                                                                            const temp = { ...formField };
+                                                                            temp[item.field_name] = e;
+                                                                            setFormField(temp);
+                                                                        }}
+                                                                    />
+                                                                </View>
+                                                            </>
+                                                        )
 
                                                     }
 
@@ -327,15 +314,16 @@ const UserClaimForm = ({ navigation, route }) => {
                                                     <Text style={styles.allowedlbl}>Only (jpg/png/jpeg) images are allowed</Text>
                                                 </View> : null
                                             }
-                                            {
-                                                error ? <View>
-                                                    <Text>{error}</Text>
-                                                </View> : null
-                                            }
 
                                         </View>
 
                                     </View>
+                                    {
+                                        error ? <ErroLabel message={error} /> : null
+                                    }
+                                    {
+                                        success ? <SucessLbl message={success} /> : null
+                                    }
                                 </View>
                             </ScrollView>
                         </KeybaordAvoidingWrapper>
@@ -345,14 +333,6 @@ const UserClaimForm = ({ navigation, route }) => {
                                     <Text style={styles.loginTxt}>Submit</Text>
                                 </View>
                             </TouchableOpacity>
-                            {
-                                sucess ? 
-                                <SucessLbl message={message} /> : null
-                                }
-
-                               {
-                                error ? <ErroLabel message={message} /> : null
-                               }
                         </View>
                     </>
                     :
@@ -482,7 +462,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         lineHeight: 18,
         fontWeight: 'bold',
-        flex:1,
+        flex: 1,
         marginTop: 10,
     },
     storeName: {
