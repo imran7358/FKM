@@ -91,13 +91,8 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                             {
                                 error ? <ErroLabel message={error} /> : null
                             }
-<<<<<<< HEAD
                              {
                                 sucess ? <SucessLbl message={sucess} /> : null
-=======
-                            {
-                                sucess ? <ErroLabel message={sucess} /> : null
->>>>>>> 6b8f4d8 (splash testt)
                             }
                         </View>
 
