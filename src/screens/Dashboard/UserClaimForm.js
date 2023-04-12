@@ -35,8 +35,9 @@ const UserClaimForm = ({ navigation, route }) => {
     const [formField, setFormField] = useState({})
     const [allowed, setAllowed] = useState(false)
     const [emptyFields, setEmptyFields] = useState([])
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [sucess, setSucess] = useState(false);
+    const [message, setMessage] = useState('');
     useEffect(() => {
     }, [fileResponse, allowed, route.params.storeId])
 
@@ -61,7 +62,6 @@ const UserClaimForm = ({ navigation, route }) => {
     };
 
     const sendFormReq = async (formD) => {
-        console.log("formdata",formD)
         axios.post(Config.API_URL + POST_URL, formD,
             {
                 headers: {
@@ -70,8 +70,25 @@ const UserClaimForm = ({ navigation, route }) => {
                     'Accept': 'application/json',
                 },
             }).then(({ data }) => {
-                Alert.alert('okay')
-                console.log('final data',data)
+                Alert.alert('Claim Form Submitted')
+                console.log(data)
+                if(data.status=='1' && data.error=='0')
+               {
+                // Alert.alert("done")
+                setSucess(true);
+                setMessage(data.message)
+                setError(false);
+                setTimeout(() => {
+                    navigation.navigate("Profile")
+                }, 2000);
+               }
+               else
+               {
+                // Alert.alert("backend errror")
+                setMessage(data.message)
+                setError(true);
+                setSucess(false);
+               }
                 // setFormField([{}]);
                 // setFileResponse([{}]);
 
@@ -118,7 +135,7 @@ const UserClaimForm = ({ navigation, route }) => {
         let fdata = new FormData();
 
         fdata.append('store', click[0].store);
-        fdata.append('device_type', '4');
+        fdata.append('device_type', 'ios');
         fdata.append('apiAuth', Config.API_AUTH);
         fdata.append('store_id', route.params.storeId);
         fdata.append('clickid', value);
@@ -137,12 +154,10 @@ const UserClaimForm = ({ navigation, route }) => {
                     }
                     break;
                 case "file":
-                   console.log('fileName',fileResponse.field_name)
-                
-                    if (fileResponse.length && fileResponse[item.field_name][0].uri) {
+
+                    // if (fileResponse.length && fileResponse[item.field_name][0].uri) {
                         fdata.append(item.field_name, fileResponse[item.field_name][0]);
-                        
-                    }
+                    // } 
                     break;
                 default:
                     if (formField[item.field_name]) {
@@ -330,6 +345,14 @@ const UserClaimForm = ({ navigation, route }) => {
                                     <Text style={styles.loginTxt}>Submit</Text>
                                 </View>
                             </TouchableOpacity>
+                            {
+                                sucess ? 
+                                <SucessLbl message={message} /> : null
+                                }
+
+                               {
+                                error ? <ErroLabel message={message} /> : null
+                               }
                         </View>
                     </>
                     :
