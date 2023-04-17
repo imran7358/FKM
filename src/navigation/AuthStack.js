@@ -52,7 +52,7 @@ import RNRestart from 'react-native-restart';
 // WithdrawMoney
 import { View, Image, StyleSheet,ImageBackground, RefreshControl} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import FPL from '../screens/Fpl';
 //WithDrawRefferal
 import WithdrawRefferal from '../screens/Dashboard/WithdrawRefferal';
 import ChangePassword from '../screens/Dashboard/ChangePassword';
@@ -271,7 +271,7 @@ function Splashscreen({navigation})
 {
 setTimeout(()=> {
     navigation.replace('Home')
-},3500);
+},2500);
 return(
     <ImageBackground source={require('../assets/images/LOW-INTRO.gif')} style={{flex:1}} />
 )
@@ -352,6 +352,17 @@ const AuthStack = ({ navigation }) => {
 
 <Stack.Screen name="AboutUs" component={About} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+            <Stack.Screen name="FPL" component={FPL} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                title: 'FPL',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>

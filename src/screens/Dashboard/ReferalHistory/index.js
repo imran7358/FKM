@@ -6,6 +6,7 @@ import { useState } from 'react';
 import PendingCashback from './Pending';
 import Confirmed from './Confirmed';
 import Declined from './Declined';
+import Withdrawal from './Withdarawl';
 
 const OPTIONS = ["Pending", "Confirm", "Declined", "Withdrawal"];
 const ReferalHistory = ({ navigation }) => {
@@ -44,6 +45,16 @@ const ReferalHistory = ({ navigation }) => {
                             tab === 'Declined' ?
 
                                 <Declined setTop={(txt) => {
+                                    setDesc(txt);
+                                }} />
+
+                                : null
+                        }
+
+                          {
+                            tab === 'Withdrawal' ?
+
+                                <Withdrawal setTop={(txt) => {
                                     setDesc(txt);
                                 }} />
 

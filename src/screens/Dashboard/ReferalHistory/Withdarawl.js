@@ -1,136 +1,122 @@
-import React,{useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import Config from 'react-native-config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const END_URL = '/cashback/cashback-history';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import Config from 'react-native-config';
+const END_URL = '/cashback/referral-summary';
 import Loader from '../../../components/Loader';
+import { useSelector } from 'react-redux';
 import request from '../../../utils/request';
-const Withdrawal = ({setTop,navigation}) => {
-    const [allcb, setAllCb] = useState([]);
-    const [desc, setAllDesc] = useState([]);
-    const [loadMore, setLoadeMore] = useState(true);
+const Withdrawal = ({ setTop,navigation }) => {
+
+    const [decline, setDecline] = useState([]);
+    const [desc, setDesc] = useState('');
     const [loader, setLoader] = useState(false);
     const [page, setPage] = useState(1);
-    const [noData, setNoData] = useState('');
+    const [noData, setNoData] = useState(false);
 
-    const getPendingkHistory = async () => {
-        setLoader(false);
-        const userToken = await AsyncStorage.getItem("userToken");
+    const userToken = useSelector(state => {
+        return state.user.userToken;
+    });
+    const getDecline = async () => {
+        // Alert.alert('dec')
+        setLoader(true);
         request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
             device_type: Config.DEVICE_TYPE,
-            option: 'pending',
+            option: 'referral_withdrawal',
             page,
-        },
-            {
-                headers: {
-                    Authorization: userToken,
-                },
-            }).then(({ data }) => {
-                if (data.response.pending && data.response.pending.length){
-                    setAllCb(data.response.pending);
-                }
+        }, {
+            headers: {
+                Authorization: userToken,
+            }
+        }).then(({ data }) => {
+            if (data.response.decline && data.response.decline.length) {
+                setDecline([...decline, ...data.response.decline]);
+            }
+            else {
+               setNoData(true);
+            }
 
-                else {
-                    if (!data.response.pending.length){
-                        setNoData('No record found !');
-                    }
-                    setLoadeMore(false);
-                }
-                setTop(data.response.top_desc);
-            }).catch((error) => {
-                console.log(error);
-            }).finally(()=>{
-                setLoader(false);
-            });
-
-    };
-
+        }).catch((error) => {
+            console.log(error);
+        }).finally(() => {
+            setLoader(false);
+        });
+    }
     useEffect(() => {
-        getPendingkHistory();
-    },[page]);
+        getDecline();
+    }, [page])
 
 
     return (
+
         <View style={styles.container}>
-            <ScrollView horizontal={true}>
-             <View style={styles.recordCon}>
-             <View style={styles.headingCond}>
-                 <View style={styles.srNo}>
-                     <Text style={styles.barTxt}>SN</Text>
-                 </View>
-                 <View style={styles.storeName}>
-                     <Text style={styles.barTxt}>Store</Text>
-                 </View>
-                 <View style={styles.amount}>
-                     <Text style={styles.barTxt}>Amount</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Status</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Date</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Order Id</Text>
-                 </View>
-                 <View style={styles.status}>
-                     <Text style={styles.barTxt}>Expected</Text>
-                 </View>
-             </View>
-             <View style={styles.recordList}>
-            {
-                allcb.length ? allcb.map((item, i)=>{
-                    return  <View style={styles.innerReocrd}>
-                    <Text style={styles.srNo}>1</Text>
-                    <Text  style={styles.storeName}>{item.store_name}</Text>
-                    <Text style={styles.amount}>{item.amount}</Text>
-                    <Text style={styles.status}>{item.status}</Text>
-                    <Text style={styles.status}>{item.transaction_date}</Text>
-                    <Text style={styles.status}>xyxxcrew</Text>
-                    <Text style={styles.status}>xyxxcrew</Text>
+            <ScrollView>
+                <View style={styles.recordCon}>
+                    <View style={styles.headingCond}>
+                        <View style={styles.srNo}>
+                            <Text style={styles.barTxt}>Id</Text>
+                        </View>
+                        <View style={styles.storeName}>
+                            <Text style={styles.barTxt}>Store</Text>
+                        </View>
+                        <View style={styles.amount}>
+                            <Text style={styles.barTxt}>Amount</Text>
+                        </View>
+                        <View style={styles.status}>
+                            <Text style={styles.barTxt}>Time</Text>
+                        </View>
+
+                    </View>
+                    <View style={styles.recordList}>
+                        {
+                            decline.length ? decline.map((item, i) => {
+                                return <View style={styles.innerReocrd} key={i}>
+                                    <Text style={styles.srNo}>{item.id}</Text>
+                                    <Text style={styles.storeName}>{item.store}</Text>
+                                    <Text style={styles.amount}>{item.amount}</Text>
+                                    <Text style={styles.status}>{item.updated_time}</Text>
+                                </View>
+                            })
+                                : null
+                        }
+                    </View>
+
                 </View>
-                }) 
-                : null
-            }
-
-             </View>
-
-             </View>
-             </ScrollView>
-             {
-                    loader ?
+            </ScrollView>
+            {
+                loader ?
                     <View style={styles.loadContainer}>
                         <Loader />
                     </View>
                     : null
-                }
-                {
-                    <View style={styles.noData}>
-                    <Text>{noData}</Text>
-                  </View>
-                }
+            }
 
-            {
-                loadMore ?
-                <TouchableOpacity onPress={(e) => {
-                    setPage(page + 1);
-                }}>
-                    <View style={styles.loginButton}>
-                        <Text style={styles.loginTxt}>Load More</Text>
+
+{
+                noData ? <View style={styles.noDataFound}>
+                    <Text>No data Found</Text>
+                </View>
+                    : <View style={styles.loaderContainer}>
+                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                            <View>
+                                <Text style={styles.loadTxt}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                : null
             }
         </View>
+
+
     )
 
 }
 
 const styles = StyleSheet.create({
+    container: {
 
+    },
     bgWhite: {
         backgroundColor: '#fff',
     },
@@ -162,39 +148,31 @@ const styles = StyleSheet.create({
     innerReocrd: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         padding: 10,
     },
     srNo: {
-        width: 50,
+        width: '20%',
         justifyContent: 'center',
         alignContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
         textAlign: 'center',
     },
-    click: {
+    date: {
 
-        width: 100,
-        justifyContent: 'center',
-        alignContent: 'center',
-        alignItems:'center',
-
-    },
-    date:{
-
-        width: 100,
+        width: '30%',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
     },
     storeName: {
-        width: 100,
+        width: '25%',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
     },
     alterColor: {
-        backgroundColor: '#EDEDED',
+        backgroundColor: '#EDEDED'
     },
     historyTab: {
         flexDirection: 'row',
@@ -208,22 +186,18 @@ const styles = StyleSheet.create({
         color: '#666666',
     },
     activeTab: {
-       color: '#F27935',
-       fontWeight: '900',
-       borderColor: '#f27935',
-       borderBottomWidth: 1,
+        color: '#F27935',
+        fontWeight: '900',
+        borderColor: '#f27935',
+        borderBottomWidth: 1,
     },
     txtActive: {
         color: '#f27935',
         fontSize: 16,
         fontWeight: '900',
     },
-    status: {
-        width: 100,
-        textAlign: 'center',
-    },
     amount: {
-        width: 100,
+        width: '25%',
         textAlign: 'center',
     },
     loadContainer: {
@@ -249,6 +223,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 20,
     },
+    LoadMore: {
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#f27935',
+        borderWidth: 1,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        marginVertical: 25,
+    },
+    loadTxt: {
+        fontWeight: 'bold',
+        color: '#f27935',
+        fontSize: 16,
+        textTransform: 'uppercase',
+    },
+    loaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noDataFound:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 25,
+    },
+
 });
 
 export default Withdrawal;

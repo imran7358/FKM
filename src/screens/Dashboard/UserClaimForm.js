@@ -72,13 +72,18 @@ const UserClaimForm = ({ navigation, route }) => {
                 if(data.status == 1 && data.error == 0){
                     setSuccess(data.message)
                     setError('')
+                    setFormField([{}]);
+                    setFileResponse([{}]);
+
+                    setTimeout(() => {
+                        navigation.navigate('Profile')
+                    }, 2000);
                 }
                 else {
                     setError(data.message)
                 }
-                console.log("Claim Form", data)
-                // setFormField([{}]);
-                // setFileResponse([{}]);
+                // console.log("Claim Form", data)
+                
 
             }).catch((error) => {
                setError(error.message)

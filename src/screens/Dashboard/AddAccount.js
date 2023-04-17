@@ -224,7 +224,7 @@ const userToken = useSelector(state=> state.user.userToken);
                         Authorization: userToken,
                       },
                     }).then(({ data }) => {
-                     console.log(data)
+                     console.log("paytm",data)
                       if (data.status == 1 && data.error == 0) {
                         // setSuccess(data.message);
                         AsyncStorage.setItem('email', data.response.email);
@@ -235,6 +235,7 @@ const userToken = useSelector(state=> state.user.userToken);
                         setError(data.message)
                       }
                     }).catch((error) => {
+                      console.log("error",error)
                       setError(error.message);
                     }).finally(() => {
                     })

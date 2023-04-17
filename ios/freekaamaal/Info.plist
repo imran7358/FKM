@@ -73,6 +73,8 @@
 	</array>
 	<key>UIStatusBarStyle</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We are using this , so that it can help users to update their profile picture </string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

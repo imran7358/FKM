@@ -71,13 +71,22 @@ const EditProfile = ({navigation}) => {
         },
     }).then(({data})=>{
         console.log("updateInfo", data)
-        if(data.status == '1' && data.error =='0'){
+        if(data.status == '1' && data.error =='0')
+        {  
+            setSucess(data.message)
+            setError('')
             dispatch({
                 type: SIGNEDIN,
                 userToken: data.token,
                 userInfo: data.data,
             });
+            setTimeout(() => {
+                navigation.navigate("Profile")
+            }, 3000);
         }
+            else {
+                setError(data.message)
+            }
     }).catch((error)=>{
         console.log("Error", error)
     })
@@ -185,6 +194,12 @@ const getProfile = () =>{
               <Text style={styles.loginTxt}>Submit</Text>
             </View>
           </TouchableOpacity>
+          {
+                                error ? <ErroLabel message={error} /> : null
+                            }
+                             {
+                                sucess ? <SucessLbl message={sucess} /> : null
+                            }
         </View>
             </ScrollView>
         </SafeAreaView>

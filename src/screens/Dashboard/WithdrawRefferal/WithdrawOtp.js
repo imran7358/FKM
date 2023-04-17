@@ -14,7 +14,7 @@ import SucessLbl from '../../../components/SuccessCom';
 import { success } from 'react-codegen/utils';
 
 const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account }) => {
-    console.log("bosdika nav",navigation)
+    
     const [value, setValue] = useState('');
     const dispatch = useDispatch();
     const request_id = response.request_id;
@@ -71,7 +71,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                         'Authorization': userToken,
                     },
                 }).then(({ data }) => {
-                
+                console.log('finalotp',data)
                     if (data.status == 1 && data.error == 0) {
                         setSuccess(data.msg)
                         setError('')

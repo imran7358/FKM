@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = '/cashback/referral-summary';
@@ -19,6 +19,7 @@ const Declined = ({ setTop,navigation }) => {
         return state.user.userToken;
     });
     const getDecline = async () => {
+        // Alert.alert('dec')
         setLoader(true);
         request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,

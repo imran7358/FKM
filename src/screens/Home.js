@@ -106,8 +106,9 @@ const Home = ({ navigation }) => {
   };
   useEffect(() => {
     getSlider();
-    console.log('onload',freshchatUser)
+    // console.log('onload',freshchatUser)
     console.log('complete url',Config.API_URL + END_URL)
+    console.log('userInfo',userInfo.username)
   }, []);
   
   useEffect(() => {
