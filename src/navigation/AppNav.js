@@ -18,7 +18,7 @@ const AppNav = ({navigation}) => {
         }
   
         if (initialUrl.includes('Store')) {
-          Alert.alert(initialUrl);
+          // Alert.alert(initialUrl);
           navigation.navigate('Store');
         }
       };

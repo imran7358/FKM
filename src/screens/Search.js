@@ -95,7 +95,14 @@ const SearchPage = ({ route, navigation }) => {
                                 return <TouchableOpacity style={styles.storeImgCon} key={i} onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.name } })}>
                                     <View style={styles.storICon} >
                                         <Image source={{ uri: item.image }} style={{ width: 75, height: 35, resizeMode: 'contain' }} />
-                                        <Text style={styles.cbText}>₹{Number(item.cbrate).toFixed(0)} <Text style={styles.cbMessage}>Cashback</Text></Text>
+                                        {
+                                            item.is_cashback==1 ?
+                                            <Text style={styles.cbText}>{item.cashback_amount} <Text style={styles.cbMessage}></Text></Text>
+                                            :
+                                            null
+                                        }
+
+                                        
                                     </View>
                                 </TouchableOpacity>;
                             }) : <View style={styles.noDataFound}>

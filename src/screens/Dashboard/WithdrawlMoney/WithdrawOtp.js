@@ -50,7 +50,7 @@ const WidthdarawlOtp = ({ navigation, response, payType, couponSelected, account
                     }).then(({ data }) => {
                         console.log("data", data)
                         if (data.status == 1 && data.error == 0) {
-                            setSucess(data.msg)
+                            setSucess(data.message)
                             setError('')
                             setTimeout(() => {
                                 navigation.navigate("Profile")
