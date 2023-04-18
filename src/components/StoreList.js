@@ -83,18 +83,21 @@ const MyStore = ({navigation}) => {
 const styles = StyleSheet.create({
     catStore: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         flexWrap: 'wrap',
-        paddingHorizontal:10,
+        width: '100%',
+        display:'flex',
+        paddingHorizontal:20,
       },
     storICon: {
-        width: 109,
+        width: '100%',
         height: 50,
         backgroundColor: '#fff',
         borderRadius: 6,
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
+        padding:10,
     },
 
     active: {
@@ -120,14 +123,21 @@ const styles = StyleSheet.create({
     },
     storeImgCon: {
         justifyContent: 'center',
-        marginBottom: 20,
-        marginHorizontal:7,
+        display:'flex',
+        width:'100%',
+        marginVertical:10,
+        alignContent:'center',
+        alignItems:'center',
     },
     cbText: {
         fontWeight: '800',
         color: '#E22020',
         marginTop: 10,
-        fontSize:10,
+        fontSize:9,
+        justifyContent:'center',
+        display:'flex',
+        alignContent:'center',
+        alignItems:'center',
     },
     cbMessage: {
         fontWeight: '400',
