@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import Config from 'react-native-config';
+import { Dropdown } from 'react-native-element-dropdown';
 import request from '../../../utils/request';
 import { useSelector } from 'react-redux';
 import WidthdarawlOtp from './WithdrawOtp';
@@ -19,6 +20,7 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
     const [pipe, Resp] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false)
+    const [value, setValue] = useState('');
     // const sendAPIreq = (opt) => {
     //     setLoading(true);
     //     request.post(navigation, Config.API_URL + END_URL, {
@@ -56,7 +58,7 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
                     apiAuth: Config.API_AUTH,
                     device_type: '4',
                     option: 'cbrequest',
-                    account_ref_id: account[0].account_ref_id,
+                    account_ref_id:value,
                     wallet_type: payType,
                     amount:data.amount,
                 }, {
@@ -84,12 +86,30 @@ const WidthdarawlForm = ({ navigation, payType, account, label }) => {
 <Text style={styles.storeName}>Selectd Account</Text>
 <View style={styles.inputView}>
     <View style={styles.inputBoxContainer}>
-        <TextInput
-            autoCapitalize="none"
-            style={styles.inputText}
-            placeholderTextColor="#666"
-            value={account[0].name}
-        />
+    {
+           
+           account ?
+       <Dropdown
+                   style={styles.dropdown}
+                   placeholderStyle={styles.placeholderStyle}
+                   selectedTextStyle={styles.selectedTextStyle}
+                   inputSearchStyle={styles.inputSearchStyle}
+                   iconStyle={styles.iconStyle}
+                   data={account}
+                   maxHeight={300}
+                   labelField="name"
+                   valueField="name"
+                   placeholder="Select Account"
+                   placeholderTextColor="grey"
+                   searchPlaceholder="Search..."
+                   value={value}
+                   onChange={item => {
+                       setValue(item.account_ref_id);
+                   }}
+
+               />
+              : null
+          }
     </View>
 </View>
 <View style={styles.inputView}>

@@ -139,7 +139,7 @@ const CustomDrawer = ({navigation}) => {
                 </View>
                </View>
                </TouchableOpacity>
-
+{/* 
                <TouchableOpacity onPress={()=> navigation.navigate('FPL')}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
@@ -149,7 +149,7 @@ const CustomDrawer = ({navigation}) => {
                     <Text style={styles.menuTxt}>FPL</Text>
                 </View>
                </View>
-               </TouchableOpacity>
+               </TouchableOpacity> */}
                
                <TouchableOpacity onPress={()=> navigation.navigate('FAQ')}>
                <View style={styles.menuListCon}>
