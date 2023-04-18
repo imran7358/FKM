@@ -315,19 +315,20 @@ rate.length && rate.map((item, i) => {
             {
                 store.is_cashback == '1' ? <View>{userInfo ? <View style ={styles.container}>
                 <View style={styles.appButton}>
-                <TouchableOpacity onPress={async()=> { await Linking.openURL(store.store_landing_url)}}>
+                {/* <TouchableOpacity onPress={async()=> { await Linking.openURL(store.store_landing_url)}}> */}
+                <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: store.store_landing_url}})}>
                 <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
                 </TouchableOpacity>
             </View>
                 </View> : <View style ={styles.container}>
                         <View style={styles.appButton}>
                         <TouchableOpacity onPress={()=> { navigation.navigate('Login')}}>
-                        <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
+                        <Text style={styles.btnTxt}>Login & Earn Cashback</Text>
                         </TouchableOpacity>
                     </View>
                         </View> }</View> : <View style ={styles.container}>
                         <View style={styles.appButton}>
-                        <TouchableOpacity onPress={async()=> { await Linking.openURL(store.store_landing_url)}}>
+                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: store.store_landing_url}})}>
                         <Text style={styles.btnTxt}>Shop Now</Text>
                         </TouchableOpacity>
                     </View>

@@ -15,10 +15,8 @@ const TrendingCoupons = ({navigation,latetscoupons}) => {
     width={86}
     indicator={false}
     autoscroll ={false}
-    onPress={async(item) => {
-     
-      await Linking.openURL("https://"+item.url);
-    }}
+   
+    onPress={async(item) => navigation.navigate('coupnsDetails',{couponId: item.couponid })} 
   />
   : null
     )

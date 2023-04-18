@@ -175,13 +175,13 @@ const Home = ({ navigation }) => {
         <View style={[styles.mainContainer, styles.paddingZero, styles.margin20]}>
           <FAQ/>
         </View>
-        <View style={styles.videoContainer}>
+        {/* <View style={styles.videoContainer}>
         <YoutubeIframe 
         videoId='hkStK-PBO_k'
         height={250}
         width = '100%'
         />
-        </View>
+        </View> */}
       </ScrollView>
       
       {

@@ -6,6 +6,7 @@ import CashbackInner from './CbInner';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Underline } from 'react-native-feather';
 const END_URL = '/home/home';
+import YoutubeIframe from 'react-native-youtube-iframe';
 const FAQ = () => {
 const [cashback, setEarnCashback] = useState([]);
 const [title,setTitle] = useState()
@@ -43,13 +44,21 @@ const [show, setShow] = useState(false);
                </View>
                   {
                     show ?  <View style={styles.desc}>
-
+                    <View style={styles.videoContainer}>
+                    <YoutubeIframe 
+                    videoId='hkStK-PBO_k'
+                    height={180}
+                    width = '100%'
+                    />
+                    </View>
                     {
                      cashback.length ? cashback && cashback.map((item,i)=> {
                        
                    return( <>
+                   <View style={styles.faqdesc}>
                     <Text style={styles.head}>{item.heading}</Text>
                    <Text style={styles.allDesc}>{item.desc}</Text>
+                   </View>
                    </>)
                     }): null
                     }
@@ -66,6 +75,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         padding: 10,
     },
+    
     faqList: {
         backgroundColor: '#fff',
         borderRadius: 6,
@@ -125,6 +135,12 @@ const styles = StyleSheet.create({
         fontWeight:'600',
 
     },
+    videoContainer: {
+        justifyContent: 'center',
+        flex:1,
+        alignItems: 'center',
+        // padding:20,
+      },
     allDesc: {
         lineHeight: 26,
         fontSize:14,

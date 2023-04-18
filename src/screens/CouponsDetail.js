@@ -101,7 +101,8 @@ const CouponsDetails = ({navigation, route, props}) => {
             <View style={styles.linkContainer}>
             {
                 userInfo ?
-                <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>
+                // <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>
+                <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: couponsdetails.cb_landing_url}})}>  
                      <View style={styles.CbButton}>
                 <Text style={styles.ernCb}>Earn Cashback</Text>
                 </View>
@@ -116,7 +117,8 @@ const CouponsDetails = ({navigation, route, props}) => {
             
                 
                 <View></View>
-                <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>
+                {/* <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}> */}
+                <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: couponsdetails.noncb_landing_url}})}>
                 <View style={styles.CbButton1}>
                 <Text style={styles.sckipCb} >Skip  Cashback</Text>
                 </View>
@@ -126,7 +128,8 @@ const CouponsDetails = ({navigation, route, props}) => {
            <View style={styles.linkContainer}>
             
             
-            <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}>
+            {/* <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}> */}
+            <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: couponsdetails.noncb_landing_url}})}>
                 <View style={styles.CbButton1}>
                 
             <Text style={styles.sckipCb} >Shop Now</Text>

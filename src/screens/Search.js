@@ -54,7 +54,7 @@ const SearchPage = ({ route, navigation }) => {
 
                                             <View style={styles.productImageCon}>
                                                 <View style={styles.productImage}>
-                                                    <Image source={{ uri: item.deal_image }} style={{ height: 70, width: 70 }} />
+                                                    <Image source={{ uri: item.img_url }} style={{ height: 70, width: 70 }} />
                                                 </View>
                                             </View>
                                             <View style={styles.brandLogo}>

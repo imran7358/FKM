@@ -279,7 +279,7 @@ const ProductDetails = ({ navigation, route }) => {
             {
                 details.isCashback == '1' ? <View>{userInfo ? <View style={styles.container}>
                     <View style={styles.appButton}>
-                        <TouchableOpacity onPress={async () => { await Linking.openURL(details.landing_url) }}>
+                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: details.landing_url}})}>
                             <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
                         </TouchableOpacity>
                     </View>
@@ -291,7 +291,9 @@ const ProductDetails = ({ navigation, route }) => {
                     </View>
                 </View>}</View> : <View style={styles.container}>
                     <View style={styles.appButton}>
-                        <TouchableOpacity onPress={async () => { await Linking.openURL(details.landing_url) }}>
+                        {/* <TouchableOpacity onPress={async () => { await Linking.openURL(details.landing_url) }}> */}
+                        {/* navigation.navigate({name:'Details',params:{dealSlug:item.slug_url}}) */}
+                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: details.landing_url}})}>
                             <Text style={styles.btnTxt}>Shop Now</Text>
                         </TouchableOpacity>
                     </View>

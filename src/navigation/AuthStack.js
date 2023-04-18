@@ -37,6 +37,7 @@ import UserClaimForm from '../screens/Dashboard/UserClaimForm';
 import DealList from '../screens/DealList';
 // WithdrawMoney
 import WidthdarawlMoney from '../screens/Dashboard/WithdrawlMoney';
+import Inbrowser from '../screens/Inbrowser';
 import WidthdarawlForm from '../screens/Dashboard/WithdrawlMoney/WithdrawaForm';
 import MissingForm from '../screens/Dashboard/MissingForm';
 import MissingCashBackForm from '../screens/Dashboard/MissingForm/MissingCashback';
@@ -352,6 +353,18 @@ const AuthStack = ({ navigation }) => {
 
 <Stack.Screen name="AboutUs" component={About} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+<Stack.Screen name="Inbrowser" component={Inbrowser} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                title: ' ',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>

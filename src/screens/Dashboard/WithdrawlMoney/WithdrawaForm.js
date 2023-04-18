@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import Config from 'react-native-config';
 import request from '../../../utils/request';
 import { useSelector } from 'react-redux';
 import WidthdarawlOtp from './WithdrawOtp';
+import { Dropdown } from 'react-native-element-dropdown';
 const END_URL = '/cashback/withdraw-money';
 import { Formik } from 'formik';
 import * as yup from "yup"
@@ -27,6 +28,7 @@ const WidthdarawlForm = ({navigation,payType, coupon, account, label }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [sucess, setSuccess] = useState(false);
+    const [value, setValue] = useState('');
     const RadioButton = ({ onPress, selected, children }) => {
         return (
             <View style={styles.radioButtonContainer}>
@@ -56,7 +58,7 @@ const WidthdarawlForm = ({navigation,payType, coupon, account, label }) => {
             apiAuth: Config.API_AUTH,
             device_type: '4',
             option: 'cbrequest',
-            account_ref_id: account[0].account_ref_id,
+            account_ref_id: value,
             wallet_type: payType,
             amount:values.amount,
             code_reference: couponSelected,
@@ -87,15 +89,35 @@ const WidthdarawlForm = ({navigation,payType, coupon, account, label }) => {
                 {({values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit})=>(
 
 <View style={styles.innerContainer}>
-<Text style={styles.storeName}>Selectd Account</Text>
+<Text style={styles.storeName}>Selected Account</Text>
 <View style={styles.inputView}>
     <View style={styles.inputBoxContainer}>
-        <TextInput
-            autoCapitalize="none"
-            style={styles.inputText}
-            placeholderTextColor="#666"
-            value={account[0].name}
-        />
+         
+        
+        {
+           
+            account ?
+        <Dropdown
+                    style={styles.dropdown}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={account}
+                    maxHeight={300}
+                    labelField="name"
+                    valueField="name"
+                    placeholder="Select Account"
+                    placeholderTextColor="grey"
+                    searchPlaceholder="Search..."
+                    value={value}
+                    onChange={item => {
+                        setValue(item.account_ref_id);
+                    }}
+
+                />
+               : null
+           }
     </View>
 </View>
 <View style={styles.inputView}>
@@ -161,6 +183,29 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    dropdown: {
+        height: 45,
+        borderColor: '#ccc',
+        borderWidth: 0.5,
+        borderRadius: 3,
+        paddingHorizontal: 8,
+        backgroundColor: '#fff',
+        marginBottom: 15,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
     },
 
     cbform: {
