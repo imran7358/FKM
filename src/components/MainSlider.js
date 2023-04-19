@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
 import {FlatListSlider, indicatorContainerStyle} from 'react-native-flatlist-slider';
+const {width} = Dimensions.get('window');
+
 
 const MianSlider = ({navigation,slideImage}) => {
-
   return (
     slideImage.length ?
     <FlatListSlider
@@ -11,7 +12,7 @@ const MianSlider = ({navigation,slideImage}) => {
         showsHorizontalScrollIndicator={false}
         data={slideImage}
         // timer={50000}
-        width={350}
+        width={width}
         height={210}
         imageKey={'app_slider_image'}
         onPress={item => {
