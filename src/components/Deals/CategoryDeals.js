@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 160,
+        width: '100%',
         height: 130,
         backgroundColor: '#ffffff',
         borderRadius: 16,
