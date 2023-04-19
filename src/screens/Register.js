@@ -71,7 +71,7 @@ const ENDPOINT = "/user/register";
             email: yup.string().required('Please enter your Email id'),
             phone: yup.string().required("Please enter mobile number").matches(/^[0]?[6789]\d{9}$/
             , "Please enter valid phone"),
-            password:yup.string().required('Please Enter password').min(6,'Minimum 6 Chareter are required').max(8,'Maxmimum 8 Chareter are required')})}
+            password:yup.string().required('Please Enter password').min(6,'Minimum 6 Characters are required').max(8,'Maxmimum 8 Chareter are required')})}
             >
 
             {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (

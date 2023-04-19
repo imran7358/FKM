@@ -21,15 +21,16 @@ const userToken = useSelector(state => state.user.userToken);
 
 const getCashbackDeals = () => {
     setLoader(true);
-    request.post(navigation, Config.API_URL + END_URL, {
+    axios.post(Config.API_URL + END_URL, { 
         apiAuth: Config.API_AUTH,
-        device_type: Config.device_type,
-        page,
+        device_type:"4",
+        page:page
     },{
         headers: {
             Authorization: userToken,
         },
     }).then(({data})=>{
+        // console.log('agaya',data)
         setDeals([...deals, ...data.response.cashbackdeal]);
     }).catch((error)=>{
         console.log("Error Aaya hai", error)
@@ -39,6 +40,7 @@ const getCashbackDeals = () => {
 }
 
 useEffect(()=>{
+    console.log('page',page)
     getCashbackDeals();
 },[page])
 

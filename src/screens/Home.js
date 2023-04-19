@@ -238,6 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     height: 210,
+    width:350
   },
   liveDeals: {
     marginTop: 0,

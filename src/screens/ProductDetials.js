@@ -272,7 +272,12 @@ const ProductDetails = ({ navigation, route }) => {
                                 <Text style={styles.abtDeals}>About the Deals</Text>
                                 <CustomWebView source={{ html: details.description }} tagsStyles={ dealdesc } contentWidth={width - 80} />
                             </View>
-                            <RealtedDeals relatedProduct={relatedProduct} navigation={navigation} />
+                            {
+                                relatedProduct && relatedProduct.length>1 ?
+                                <RealtedDeals relatedProduct={relatedProduct} navigation={navigation} />
+                                : null
+                            }
+                            
                         </View>
                 }
             </ScrollView>
@@ -284,7 +289,7 @@ const ProductDetails = ({ navigation, route }) => {
                         </TouchableOpacity>
                     </View>
                 </View> : <View style={styles.container}>
-                    <View style={styles.appButton}>
+                    <View style={styles.appButton}>x
                         <TouchableOpacity onPress={() => { navigation.navigate('Login') }}>
                             <Text style={styles.btnTxt}>Login & Earn Cashback</Text>
                         </TouchableOpacity>

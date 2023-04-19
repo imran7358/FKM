@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import Config from 'react-native-config';
 import request from '../utils/request';
+import YoutubeIframe from 'react-native-youtube-iframe';
 const END_URL = '/user/userprofile';
 import { useSelector } from 'react-redux';
 import SucessLbl from '../components/SuccessCom';
@@ -69,7 +70,12 @@ const ReferEarn = () => {
             }
                     <Text style={[styles.headingTxt, styles.margin30]}>Easy Process</Text>
                     <View style={styles.processImg}>
-                        <Image source={require('../assets/images/processImg.png')} style={styles.prImg} />
+                    {/* <View style={styles.videoContainer}> */}
+                    <YoutubeIframe 
+                    videoId='OQhE_vE3RgE'
+                    height={180}
+                    width = '100%'
+                    />
                     </View>
                     {/* <Text style={[styles.headingTxt, styles.margin30]}>Frequently Asked Questions ?</Text> */}
                 </View>

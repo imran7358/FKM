@@ -518,7 +518,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4DXSHRYQG2;
+				DEVELOPMENT_TEAM = ZNGD55BHZ7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = freekaamaal/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FreeKaaMaal;
@@ -535,7 +535,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.freekaamaal.FKMAPP;
+				PRODUCT_BUNDLE_IDENTIFIER = com.freekaamaal.FKMAPPl;
 				PRODUCT_NAME = freekaamaal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -557,7 +557,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4DXSHRYQG2;
+				DEVELOPMENT_TEAM = ZNGD55BHZ7;
 				INFOPLIST_FILE = freekaamaal/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FreeKaaMaal;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";

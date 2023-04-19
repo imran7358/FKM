@@ -61,7 +61,7 @@ const CustomDrawer = ({navigation}) => {
                 { user.userInfo ? <View style={styles.profileName}>
                     <Text>Hi,</Text>
                     <Text style={styles.pName}>
-                       {user.userInfo.username}
+                       {user.userInfo.title}
                         </Text>
                 </View> : <View style={styles.profileName}>
                     <Text>Hii,</Text>
@@ -154,7 +154,7 @@ const CustomDrawer = ({navigation}) => {
                <TouchableOpacity onPress={()=> navigation.navigate('FAQ')}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
-                <PhoneCall style={styles.iconSize} width={18}/>
+                <HelpCircle style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
                     <Text style={styles.menuTxt}>Help & Support / FAQ's</Text>

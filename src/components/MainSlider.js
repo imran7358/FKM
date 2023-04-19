@@ -10,7 +10,8 @@ const MianSlider = ({navigation,slideImage}) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         data={slideImage}
-        width={400}
+        // timer={50000}
+        width={350}
         height={210}
         imageKey={'app_slider_image'}
         onPress={item => {

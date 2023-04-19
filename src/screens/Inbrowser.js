@@ -6,18 +6,9 @@ import { useRoute } from '@react-navigation/native';
 import {WebView} from 'react-native-webview';
 import { useSelector } from 'react-redux';
 const Inbrowser = ({ navigation,route}) => {
-    const LandingUrl  = route.params.LandingUrl; 
-  const userInfo = useSelector(state => state.user.userInfo);
-  useEffect(()=>{
-    console.log('LandingUrl',LandingUrl)
-    if(userInfo!='')
-    {
-    }
-    else
-      {
-        navigation.navigate('Login')
-      }
-  },[userInfo]);
+const LandingUrl  = route.params.LandingUrl; 
+ 
+ 
         return (
         <WebView
         style={{ flex: 1,resizeMode: 'cover',width: '100%' }}
