@@ -172,7 +172,7 @@ const Home = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={[styles.mainContainer, styles.paddingZero, styles.margin20]}>
+        <View style={[styles.mainContainer, styles.paddingZero, styles.margin20, styles.margin50]}>
           <FAQ/>
         </View>
       </ScrollView>
@@ -229,6 +229,10 @@ const styles = StyleSheet.create({
   },
   margin20: {
     marginTop: 30,
+  },
+
+  margin50: {
+    marginBottom: 50,
   },
 
   mainSlider: {
