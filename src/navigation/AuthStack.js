@@ -135,6 +135,7 @@ const BottomTabs = ({ navigation }) => {
             />
             <Tab.Screen name="Store" component={AllStores} options={{
                 BottomTabs: false,
+                unmountOnBlur: true,
                 title: 'All Store',
                 tabBarIcon: ({ focused }) => (
                     <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
@@ -215,6 +216,7 @@ const BottomTabs = ({ navigation }) => {
                         userToken ?  <Tab.Screen name="Profile" component={Profile}
                         options={{
                             BottomTabs: false,
+                            unmountOnBlur: true,
                             tabBarIcon: ({ focused }) => (
                                 <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
                                     <User style={{
@@ -654,7 +656,7 @@ const AuthStack = ({ navigation }) => {
                 }}
             />
             <Stack.Screen name="ReferEarn" component={ReferEarn} options={{
-                title: 'Refer Earnn',
+                title: 'Refer Earn',
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>

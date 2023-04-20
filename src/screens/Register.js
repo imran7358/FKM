@@ -46,7 +46,7 @@ const ENDPOINT = "/user/register";
                        pass:values.password,
                        phone: values.phone,
                        referral_code:values.referral,
-                       app_device_id: '4',
+                       device_type: '4',
                        app_device_id : app_device_id
                       });
                       if (data.token) {

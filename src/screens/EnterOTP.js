@@ -35,6 +35,7 @@ const EnterOTP = ({navigation}) => {
       const { data } = await axios.post(BASE_URL + ENDPOINT,{
         apiAuth: API_AUTH,
         phoneotp: otp,
+        device_type: '4',
       },{
         headers : {
           Authorization:token,
@@ -44,7 +45,7 @@ const EnterOTP = ({navigation}) => {
         setMessage(data.message);
         setTimeout(()=>{
           navigation.navigate('Login');
-        },4000);
+        },2500);
       }
       else {
 

@@ -185,7 +185,7 @@ const CustomDrawer = ({navigation}) => {
                </View> : null
                }
                <View style={styles.appVersion}>
-                <Text style={styles.apptxt}>App v2.9</Text>
+                <Text style={styles.apptxt}>App v1.0.0</Text>
                </View>
             </View>
         </View>

@@ -3,14 +3,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View,Alert, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import Config from 'react-native-config';
-import { AlertTriangle, Mail, Phone} from "react-native-feather";
+import { AlertTriangle, Mail, Phone, PhoneCall} from "react-native-feather";
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 const END_URL = '/cashback/home';
+import { LOGGEDOUT } from  '../../redux/actionTypes';
+import {store} from '../../redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const PROMO_CODE = '/cashback/userpromocode';
 const EmailVerification = '/user/emailverification';
 const PhoneVerification = '/user/phoneverification';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {fontSize, inputBox} from '../../assets/styles/common';
 import { color } from 'react-native-reanimated';
 import request from '../../utils/request';
@@ -21,6 +23,7 @@ const Profile = ({ navigation }) => {
     const userInfo = useSelector(state => {
         return state.user.userInfo;
     });
+   
     const [promo, setPromo] = useState('');
     const [summry, setSummary] = useState({
         confirmAmount: '',
@@ -44,6 +47,8 @@ const Profile = ({ navigation }) => {
     });
     const [sucess, setSucess] = useState(false);
     const [error, setError] = useState(false);
+    const dispatch = useDispatch();
+    const [showBars, setShowBars] = useState(false);
     const getDetails = async () => {
         request.post(navigation,Config.API_URL + END_URL, {
             apiAuth: Config.API_AUTH,
@@ -54,6 +59,7 @@ const Profile = ({ navigation }) => {
                     Authorization: userToken,
                 },
             }).then(({ data }) => {
+                console.log(data)
                 setSummary({
                     confirmAmount: data.response.user_summary.confirm_amount,
                     widthdrawlAmount: data.response.user_summary.withdrawal_amount,
@@ -70,9 +76,15 @@ const Profile = ({ navigation }) => {
                     user_email : data.response.userdata.email,
                     user_phone : data.response.userdata.phone,
                 })
+                setShowBars(true)
                 console.log(userdata)
 
             }).catch((error) => {
+                store.dispatch({
+                    type: LOGGEDOUT
+                })
+                Alert.alert('Session Expired')
+                navigation.pop()
                 console.log(error);
             });
 
@@ -171,20 +183,20 @@ const Profile = ({ navigation }) => {
                             <Image source={{ uri: userInfo.user_img_url }} style={{height:45, width:45,borderRadius:45}}/>
                         </View>
                         <View style={styles.profileInfoName}>
-                            <Text style={styles.pName} numberOfLines={1}>{userinfo.title}</Text>
+                            <Text style={styles.pName} numberOfLines={1}>{userInfo.title}</Text>
                             <Text style={styles.profileTax}>Check Out Your Cashback Summary</Text>
                         </View>
                     </View>
  {/* verification part */}
                    {   
-                    userdata.phone_verified == '0' ?
+                    showBars && userdata.phone_verified != '1' ?
                    <View style={styles.verifycontainer}>
                    <TouchableOpacity onPress={VerifyPhone}>
                     
                     <>
                     <View style={styles.verifycard}>
-                    <Mail style={styles.iconSize} width={15}/>
-                    <Text style={styles.verifyBar}>Your email is not verified,</Text><Text style ={styles.click}> Click here to verify</Text>
+                    <PhoneCall style={styles.iconSize} width={15}/>
+                    <Text style={styles.verifyBar}>Your phone is not verified,</Text><Text style ={styles.click}> Click here to verify</Text>
                     </View>
                     
                     </>
@@ -195,13 +207,13 @@ const Profile = ({ navigation }) => {
                    null
                    }
                    {   
-                    userdata.email_verified == '0' ?
+                   showBars && userdata.email_verified != '1' ?
                    <View style={styles.verifycontainer}>
                    <TouchableOpacity onPress={VerifyEmail}>
                     
                     <>
                     <View style={styles.verifycard}>
-                    <Phone style={styles.iconSize} width={15}/>
+                    <Mail style={styles.iconSize} width={15}/>
                     <Text style={styles.verifyBar}>Your Phone is not verified,</Text><Text style ={styles.click}> Click here to verify</Text>
                     </View>
                     
@@ -349,7 +361,7 @@ const Profile = ({ navigation }) => {
                                         <Image source={require('../../assets/images/referearn.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
-                                        <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Refer and earn</Text>
+                                        <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Refer and Earn</Text>
                                         <Text style={{fontSize:12}}>Refer to your friend and earn more</Text>
                                     </View>
                                 </View>
@@ -457,7 +469,7 @@ const Profile = ({ navigation }) => {
                                         <Image source={require('../../assets/images/addacount.png')} style={styles.icon} />
                                     </View>
                                     <View style={styles.menuNameTxt}>
-                                        <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Add account</Text>
+                                        <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Add Account</Text>
                                         <Text style={{fontSize:12}}>Add  account to withdraw </Text>
                                     </View>
                                 </View>
