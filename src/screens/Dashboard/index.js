@@ -478,6 +478,23 @@ const Profile = ({ navigation }) => {
                                 </View>
                             </TouchableOpacity>
                         </View>
+
+                        <View style={styles.menuList}>
+                            <TouchableOpacity style={styles.rowContainer} onPress={() => navigation.navigate('DeleteAccount')}>
+                                <View style={styles.menuName}>
+                                    <View style={styles.menuIcon}>
+                                        <Image source={require('../../assets/images/acc-delete.png')} style={styles.icon} />
+                                    </View>
+                                    <View style={styles.menuNameTxt}>
+                                        <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>Account Delete / DeActivate </Text>
+                                        <Text style={{fontSize:12}}>  Delete / DeActivate  </Text>
+                                    </View>
+                                </View>
+                                <Image source={require('../../assets/images/right-arrow.png')} style={styles.arrowIcon} />
+                                <View>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                         {/* <View style={styles.menuList}>
                             <View style={styles.menuName}>
                                 <View style={styles.menuIcon}>

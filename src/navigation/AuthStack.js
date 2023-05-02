@@ -32,6 +32,7 @@ import ClaimForm from '../screens/Dashboard/ClaimForm';
 import ReferralMoney from '../screens/Dashboard/ReferralMoney';
 import MissingCashback from '../screens/Dashboard/MissingCashbackHistory';
 import AddAccount from '../screens/Dashboard/AddAccount';
+import DeleteAccount from '../screens/Dashboard/DeleteAccount';
 import EditProfile from '../screens/EditProfile';
 import UserClaimForm from '../screens/Dashboard/UserClaimForm';
 import DealList from '../screens/DealList';
@@ -47,6 +48,7 @@ import AllCashback from '../screens/Cashback';
 import AllDeals from '../screens/Cashback/AllCashbackDeals';
 import AllCashbackStores from '../screens/Cashback/AllCashbackStore';
 import About from '../screens/About';
+import Policy from '../screens/Policy';
 import FAQ from '../screens/FAQ';
 import { useIsFocused } from '@react-navigation/native';
 import RNRestart from 'react-native-restart';
@@ -354,6 +356,18 @@ const AuthStack = ({ navigation }) => {
 
 
 <Stack.Screen name="AboutUs" component={About} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+
+            <Stack.Screen name="Policy" component={Policy} options={{
+                title: 'User Policy',
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
@@ -724,6 +738,16 @@ const AuthStack = ({ navigation }) => {
             }} />
             <Stack.Screen name="AddAccount" component={AddAccount} options={{
                 title: 'Add Account',
+                headerLeft: () => (
+                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
+                        <View style={styles.backArrow}>
+                            <Image source={require('../assets/images/backArrow.png')} style={styles.backIcon} />
+                        </View>
+                    </TouchableOpacity>
+                )
+            }} />
+            <Stack.Screen name="DeleteAccount" component={DeleteAccount} options={{
+                title: 'Deactivate / Delete ',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>

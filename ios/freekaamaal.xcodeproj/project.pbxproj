@@ -50,6 +50,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-freekaamaal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-freekaamaal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62E8247B182747B79DA314FD /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = freekaamaal/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		84EC93EA29FF9F9900A3B7D8 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-freekaamaal-freekaamaalTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-freekaamaal-freekaamaalTests.release.xcconfig"; path = "Target Support Files/Pods-freekaamaal-freekaamaalTests/Pods-freekaamaal-freekaamaalTests.release.xcconfig"; sourceTree = "<group>"; };
 		B6F95C5ED2344FE2B24C41F2 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -109,6 +110,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84EC93EA29FF9F9900A3B7D8 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-freekaamaal.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-freekaamaal-freekaamaalTests.a */,
@@ -518,7 +520,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZNGD55BHZ7;
+				DEVELOPMENT_TEAM = 4DXSHRYQG2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = freekaamaal/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FreeKaaMaal;
@@ -535,11 +537,15 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.freekaamaal.FKMAPP0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.freekaamaal.FKMAPP;
 				PRODUCT_NAME = freekaamaal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -553,7 +559,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZNGD55BHZ7;
+				DEVELOPMENT_TEAM = 4DXSHRYQG2;
 				INFOPLIST_FILE = freekaamaal/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FreeKaaMaal;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.shopping";
@@ -569,10 +575,14 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.freekaamaal.FKMAPP0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.freekaamaal.FKMAPP;
 				PRODUCT_NAME = freekaamaal;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

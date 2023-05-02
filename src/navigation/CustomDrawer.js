@@ -1,6 +1,6 @@
 import React, { useEffect,useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image,Linking} from 'react-native';
-import { Grid,ShoppingBag, Percent, PhoneCall, HelpCircle, LogOut, Tag} from "react-native-feather";
+import { Grid,ShoppingBag, Percent, PhoneCall, HelpCircle, LogOut, Tag, Key} from "react-native-feather";
 import { useDispatch } from 'react-redux';
 import { LOGGEDOUT } from '../redux/actionTypes';
 import { useSelector } from 'react-redux';
@@ -159,6 +159,19 @@ const CustomDrawer = ({navigation}) => {
                 <View style={styles.menuName}>
                     <Text style={styles.menuTxt}>Help & Support / FAQ's</Text>
                 </View>
+                
+               </View>
+               </TouchableOpacity>
+
+               <TouchableOpacity onPress={()=> navigation.navigate('Policy')}>
+               <View style={styles.menuListCon}>
+                <View style={styles.menuIcon}>
+                <Key style={styles.iconSize} width={18}/>
+                </View>
+                <View style={styles.menuName}>
+                    <Text style={styles.menuTxt}>User Policy</Text>
+                </View>
+                
                </View>
                </TouchableOpacity>
 
@@ -185,7 +198,7 @@ const CustomDrawer = ({navigation}) => {
                </View> : null
                }
                <View style={styles.appVersion}>
-                <Text style={styles.apptxt}>App v1.0.0</Text>
+                <Text style={styles.apptxt}>App v1.0.1</Text>
                </View>
             </View>
         </View>
