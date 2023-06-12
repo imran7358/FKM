@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "456012793915",
+    "project_id": "fkmapp-c286c",
+    "storage_bucket": "fkmapp-c286c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456012793915:android:a2a387f1eb6dacab2fb41e",
+        "android_client_info": {
+          "package_name": "com.freekaamaal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456012793915-07armg8p5dmta0o5f62osd725ujf98l4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjweG71aZTmt23L7qqPvk8OFjo7UzAfYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456012793915-07armg8p5dmta0o5f62osd725ujf98l4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
