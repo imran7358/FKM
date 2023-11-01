@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     prdLine: {
+        color:'black',
         fontSize: 11,
         lineHeight: 18,
     },
@@ -226,6 +227,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     innerPrice: {
+        
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -237,6 +239,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     priceTxt: {
+        color:'black',
         fontSize: 15,
         fontWeight: '800',
         marginLeft: 3,

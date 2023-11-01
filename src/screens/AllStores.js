@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+import { Platform,View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { centerContainer } from '../assets/styles/common';
 import Config from "react-native-config";
@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 const ENDPOINT = '/store/allstores';
 
 const AllStores = ({ navigation }) => {
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const [store, setStore] = useState([]);
     const [page, setPage] = useState(1)
     const [noData, setNoData] = useState(false)
@@ -15,7 +16,7 @@ const AllStores = ({ navigation }) => {
     const getStore = () => {
         axios.post(Config.API_URL + ENDPOINT, { 
             apiAuth: Config.API_AUTH,
-            device_type:"4",
+            device_type:deviceType,
             page:page
         }
         ).then(({ data }) => {
@@ -47,7 +48,7 @@ const AllStores = ({ navigation }) => {
                     <View style={styles.storeInner}>
                         {
                             store.length ? store.map((item, i) => {
-                                console.log("Store name", item)
+                                // console.log("Store name", item)
                                 return <View style={styles.storeBox} key={i}>
                                     <TouchableOpacity onPress={() => navigation.navigate({ name: 'StoreDetails', params: { storeSlug: item.store_slug } })}>
                                         <View style={styles.logoContinaer}>
@@ -87,7 +88,7 @@ const AllStores = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 24,
+        padding: Platform.OS=='ios' ? 24 : 10,
         backgroundColor: '#FFFFFF',
         flex: 2,
         justifyContent: 'center',

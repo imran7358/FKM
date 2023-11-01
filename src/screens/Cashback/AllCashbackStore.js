@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { View, Text,  StyleSheet, SafeAreaView, Image, TouchableOpacity} from "react-native";
+import { Platform,View, Text,  StyleSheet, SafeAreaView, Image, TouchableOpacity} from "react-native";
 import Config from "react-native-config";
 const END_URL = '/cashback/cashbackstore';
 import { useEffect, useState} from "react";
@@ -12,19 +12,24 @@ import All from "./All";
 import HundredCashback from "./HundredCashback";
 import PopularCashback from "./Popular";
 import NewestCashback from "./Newest";
-
+import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+import { cond } from "lodash";
+import { useIsFocused } from '@react-navigation/native';
 const AllStores = ({navigation})=> {
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const [success, setSucess] = useState(false);
     const [error, setError] = useState(false);
     const [loader, setLoader] = useState(false);
     const [store, setStore] = useState([]);
     const [page, setPage] = useState(1);
-    const cbTab = ["All","Hundredpercent", "Newest","Popular"];
+    const cbTab = ["All","Hundredpercent", "Newest","Popular","A-Z"];
     const [tab, setTab] = useState('All');
-
+    const isFocused = useIsFocused()
 const userToken = useSelector(state => state.user.userToken);
-useEffect(()=>{
-},[tab])
+useEffect(() => {
+    console.log('ABC');
+    tab==='A-Z' ? setTab('All')  : null
+  }, [isFocused]);
     return (
         <ScrollView>
         <View style={styles.container}>
@@ -66,6 +71,12 @@ useEffect(()=>{
                         </View>
                             : null
                         }
+                        {
+                            tab === "A-Z" ? 
+                            navigation.navigate('Stores')
+                            :
+                            null
+                            }
                 </View>
                 </ScrollView>
     )
@@ -88,6 +99,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
       },
       tabList: {
+        color:'black',
         fontSize:16,
         fontWeight: '500',
     },

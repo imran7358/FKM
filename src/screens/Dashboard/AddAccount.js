@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { Platform,View, Text, StyleSheet, TextInput, Button } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Alert } from 'react-native';
 import { Formik } from 'formik';
@@ -16,6 +16,7 @@ import request from '../../utils/request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddAccount = ({navigation}) => {
+  const deviceType = Platform.OS=='ios' ? 4 : 3 ;
 const userToken = useSelector(state=> state.user.userToken);
   const [value, setValue] = useState('Bank');
   const [success, setSuccess] = useState(false);
@@ -70,7 +71,7 @@ const userToken = useSelector(state=> state.user.userToken);
               onSubmit={async (values) => {
                 request.post(navigation,Config.API_URL + END_URL, {
                   apiAuth: Config.API_AUTH,
-                  device_type: 4,
+                  device_type: deviceType,
                   account_name: values.name,
                   phone: values.phone,
                   account_no: values.account,
@@ -214,7 +215,7 @@ const userToken = useSelector(state=> state.user.userToken);
                 onSubmit={async (values) => {
                   request.post(navigation,Config.API_URL + END_URL, {
                     apiAuth: Config.API_AUTH,
-                    device_type: 4,
+                    device_type: deviceType,
                     paytmname: values.accountHolder,
                     paytmphone: values.phone,
                     account_type: values.accountType,

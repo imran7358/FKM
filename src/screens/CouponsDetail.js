@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet,Linking, Button, TouchableOpacity, Image} from 'react-native';
+import {Platform,View, Text, StyleSheet,Linking, Button, TouchableOpacity, Image} from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import Clipboard from '@react-native-clipboard/clipboard';
+// import Clipboard from '@react-native-clipboard/clipboard';
+import {Clipboard} from 'react-native';
+
 import { useSelector } from 'react-redux';
 import Config from "react-native-config";
 import axios from 'axios';
@@ -14,6 +16,7 @@ import {
     commonMargin,
 } from '../assets/styles/common';
 const CouponsDetails = ({navigation, route, props}) => {
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const userToken = useSelector(state=> state.user.userToken);
     const userInfo = useSelector(state=> state.user.userInfo);
     const [couponsdetails, setCouponDetails] = useState({
@@ -67,7 +70,14 @@ const CouponsDetails = ({navigation, route, props}) => {
         console.log(route.params.couponId)
         getDetails();
     },[])
-
+    const openURL = async (url) => {
+        // Alert.alert('ok')
+        try {
+          await Linking.openURL(url);
+        } catch (error) {
+          console.error('Error opening URL: ', error);
+        }
+      };
     return (
        <ScrollView style={{backgroundColor: '#fff'}}>
          <View style={styles.container}>
@@ -102,7 +112,7 @@ const CouponsDetails = ({navigation, route, props}) => {
             {
                 userInfo ?
                 // <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.cb_landing_url)}>
-                <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: couponsdetails.cb_landing_url}})}>  
+                <TouchableOpacity onPress={() => openURL(couponsdetails.cb_landing_url)}>
                      <View style={styles.CbButton}>
                 <Text style={styles.ernCb}>Earn Cashback</Text>
                 </View>
@@ -118,7 +128,7 @@ const CouponsDetails = ({navigation, route, props}) => {
                 
                 <View></View>
                 {/* <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}> */}
-                <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: couponsdetails.noncb_landing_url}})}>
+                <TouchableOpacity onPress={() => openURL(couponsdetails.noncb_landing_url)}>
                 <View style={styles.CbButton1}>
                 <Text style={styles.sckipCb} >Skip  Cashback</Text>
                 </View>
@@ -129,7 +139,7 @@ const CouponsDetails = ({navigation, route, props}) => {
             
             
             {/* <TouchableOpacity onPress={() => Linking.openURL(couponsdetails.noncb_landing_url)}> */}
-            <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: couponsdetails.noncb_landing_url}})}>
+            <TouchableOpacity onPress={() => openURL(couponsdetails.noncb_landing_url)}>
                 <View style={styles.CbButton1}>
                 
             <Text style={styles.sckipCb} >Shop Now</Text>

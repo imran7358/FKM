@@ -51,6 +51,7 @@ const AllCashback = ({ setTop,navigation }) => {
         <View style={styles.container}>
             <View style={styles.recordCon}>
                 <View style={styles.headingCond}>
+                
                     <View style={styles.storeName}>
                         <Text style={styles.barTxt}>Store</Text>
                     </View>
@@ -70,6 +71,7 @@ const AllCashback = ({ setTop,navigation }) => {
 
                         return <View style={styles.recordList} key={i}>
                             <View style={styles.innerReocrd}>
+                            {/* <Text style={styles.storeName}>{i+1}</Text> */}
                                 <Text style={styles.storeName}>{item.store_name}</Text>
                                 <Text style={styles.amount}>{item.amount}</Text>
                                 <Text style={styles.status}>{item.status}</Text>
@@ -91,17 +93,22 @@ const AllCashback = ({ setTop,navigation }) => {
             </View>
 
             {
-                noData ? <View style={styles.noDataFound}>
-                    <Text>No data Found</Text>
-                </View>
-                    : <View style={styles.loaderContainer}>
-                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
-                            <View>
-                                <Text style={styles.loadTxt}>Load More</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-            }
+  noData ? (
+    <View style={styles.noDataFound}>
+      <Text>No data Found</Text>
+    </View>
+  ) : (
+    allcb.length ? (
+      <View style={styles.loaderContainer}>
+        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+          <View>
+            <Text style={styles.loadTxt}>Load More</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    ) : null
+  )
+}
 
         </View>
     );

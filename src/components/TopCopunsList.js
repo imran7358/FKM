@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     cpTxt: {
+        color:'black',
         textAlign: 'center',
         marginTop: 10,
         fontSize: 11,

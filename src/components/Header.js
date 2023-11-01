@@ -95,6 +95,7 @@ useEffect(()=>{
                             onChangeText={(txt) => handleSearchlength(txt)} 
                             autoComplete="off"
                             autoCapitalize="none"
+                            returnKeyType="search"
                             onSubmitEditing={(txt)=> handleSubmit(txt.nativeEvent.text)}
                             // onPress={()=> navigation.navigate("search")} returnKeyType="search"
                             />

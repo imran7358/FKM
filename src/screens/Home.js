@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback} from 'react';
-import { View, Text,Alert, SafeAreaView, StyleSheet, Image, TouchableOpacity, RefreshControl} from 'react-native';
+import { Platform, View, Text,Alert, SafeAreaView, StyleSheet, Image, TouchableOpacity, RefreshControl} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../components/Header';
 import DealsDay from '../components/dealDay';
@@ -19,8 +19,9 @@ import axios from 'axios';
 import YoutubeIframe from 'react-native-youtube-iframe';
 import { useSelector } from 'react-redux';
 import { MessageCircle } from 'react-native-feather';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const Home = ({ navigation }) => {
-  console.log(Config.API_URL)
+  const deviceType = Platform.OS=='ios' ? 4 : 3 ;
   const [slider, setSlider] = useState([]);
   const [sticky, setSticky] = useState(null);
   const [livedeals, setLiveDeals] = useState([]);
@@ -57,6 +58,7 @@ const Home = ({ navigation }) => {
       console.log(error);
   });
   const onRefresh = useCallback(() => {
+    // alert(Platform.OS)
     setReferesh(true);
     setTimeout(() => {
       getSlider(); 
@@ -67,7 +69,7 @@ const Home = ({ navigation }) => {
 
   const freshchatHandle = () => {
     if(userInfo!='')
-    {
+    { 
       Freshchat.showFAQs();
       Freshchat.showConversations();
     }
@@ -81,7 +83,7 @@ const Home = ({ navigation }) => {
     axios.post(Config.API_URL + END_URL, {
       'sponsored_count': '0',
       'apiAuth': Config.API_AUTH,
-      'device_type': 4,
+      'device_type': deviceType,
       page,
     }, {
       headers: {
@@ -107,8 +109,8 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     getSlider();
     // console.log('onload',freshchatUser)
-    console.log('complete url',Config.API_URL + END_URL)
-    console.log('userInfo',userInfo.username)
+    console.log('endPoint',Config.API_URL + END_URL)
+    console.log('deviceType',deviceType)
   }, []);
   
   useEffect(() => {
@@ -152,7 +154,7 @@ const Home = ({ navigation }) => {
                   <Text style={styles.topHeading}>Hot<Text style={{ fontWeight: '800' }}> Deals</Text></Text>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('DealList')}>
-                  <Text>View All</Text>
+                  <Text style={{color:'black'}}>View All</Text>
                 </TouchableOpacity>
               </View>
               <AllDeals style={styles.margin20} navigation={navigation} />
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingLeft:20,
     paddingRight:20,
-    paddingBottom: 0,
+    paddingBottom: 20,
   },
   mainContainer: {
     padding: 24,
@@ -229,6 +231,7 @@ const styles = StyleSheet.create({
   },
   margin20: {
     marginTop: 30,
+    marginBottom:50
   },
 
   mainSlider: {
@@ -257,6 +260,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   topHeading: {
+    color:'black',
     fontSize: 18,
     marginLeft: 10,
   },

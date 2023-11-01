@@ -1,3 +1,4 @@
+use_modular_headers!
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
@@ -20,6 +21,7 @@ end
 
 target 'freekaamaal' do
   config = use_native_modules!
+  pod 'FirebaseCoreInternal', :modular_headers => true
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -35,7 +37,7 @@ target 'freekaamaal' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => FlipperConfiguration.enabled,
+    :flipper_configuration => FlipperConfiguration.disabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )

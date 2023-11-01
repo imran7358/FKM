@@ -1,6 +1,6 @@
 import React, {useState, useEffect}from "react";
 import axios from "axios";
-import {View, Text, SafeAreaView, StyleSheet, Image} from "react-native";
+import {Platform,View, Text, SafeAreaView, StyleSheet, Image} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import TrendingStore from "../components/TrendingStore";
 import TrendingCoupons from "../components/TrendingCoupons";
@@ -9,6 +9,7 @@ import Config from 'react-native-config';
 const END_URL = "/coupons/all-coupons";
 
 const TopCoupons = ({navigation}) => {
+  const deviceType = Platform.OS=='ios' ? 4 : 3 ;
   const [store, setFeturedStores] = useState([]);
   const [trending, setTrending] = useState([]);
   const [latetscoupons, setLatestCoupons] = useState([]);
@@ -16,7 +17,7 @@ const TopCoupons = ({navigation}) => {
   const getAllCouponsData = () => {
     axios.post(Config.API_URL + END_URL,{
       apiAuth: Config.API_AUTH,
-      device_type: Config.DEVICE_TYPE,
+      device_type: deviceType,
     }).then(({data})=>{
       setFeturedStores(data.response.featured_stores);
       setTrending(data.response.trending_coupons);
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       },
       topHeading: {
+        color:'black',
         fontSize: 20,
         marginLeft: 10,
       },

@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     prdLine: {
+        color:'black',
         fontSize: 11,
         lineHeight: 18,
     },
@@ -132,6 +133,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     priceTxt: {
+        color:'black',
         fontSize: 15,
         fontWeight: '800',
         marginLeft: 3,
@@ -161,6 +163,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     topHeading: {
+        color:'black',
         fontSize: 18,
         marginLeft: 10,
     },

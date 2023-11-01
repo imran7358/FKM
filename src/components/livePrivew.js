@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   desc: {
+    color:'black',
     fontSize: 11,
     letterSpacing: 0,
     lineHeight: 18,
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
 },
 innerPrice: {
+    color:'black',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -104,6 +106,7 @@ rpImage: {
     resizeMode: 'contain',
 },
 priceTxt: {
+    color:'black',
     fontSize: 15,
     fontWeight: '800',
     marginLeft: 3,

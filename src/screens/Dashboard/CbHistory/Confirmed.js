@@ -98,17 +98,22 @@ const Confirmed = ({setTop,navigation}) => {
                 }
 
 {
-                noData ? <View style={styles.noDataFound}>
-                    <Text>No data Found</Text>
-                </View>
-                    : <View style={styles.loaderContainer}>
-                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
-                            <View>
-                                <Text style={styles.loadTxt}>Load More</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-            }
+  noData ? (
+    <View style={styles.noDataFound}>
+      <Text>No data Found</Text>
+    </View>
+  ) : (
+    confirmed.length ? (
+      <View style={styles.loaderContainer}>
+        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+          <View>
+            <Text style={styles.loadTxt}>Load More</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    ) : null
+  )
+}
         </View>
         
     )

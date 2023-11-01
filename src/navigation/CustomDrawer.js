@@ -1,15 +1,18 @@
 import React, { useEffect,useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image,Linking} from 'react-native';
+import { Platform,View, Text, TouchableOpacity, StyleSheet, Image,Linking, Alert} from 'react-native';
 import { Grid,ShoppingBag, Percent, PhoneCall, HelpCircle, LogOut, Tag, Key} from "react-native-feather";
 import { useDispatch } from 'react-redux';
 import { LOGGEDOUT } from '../redux/actionTypes';
 import { useSelector } from 'react-redux';
 import { Freshchat,FreshchatConfig} from 'react-native-freshchat-sdk';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const CustomDrawer = ({navigation}) => {
     
     const user = useSelector((state) => {
         return state.user;
       });
+  const userInfo = useSelector(state => state.user.userInfo);
+
 
     const dispatch = useDispatch();
     const logOut = async() =>{
@@ -34,6 +37,17 @@ const CustomDrawer = ({navigation}) => {
         useEffect(()=>{
 
         }, [user])
+        const freshchatHandle = () => {
+            if(userInfo!='')
+            { 
+              Freshchat.showFAQs();
+              Freshchat.showConversations();
+            }
+              else{
+                Alert.alert('Kindly login to chat with us')
+              }
+                
+          };
     return (
 
         <View style={{}}>
@@ -59,12 +73,12 @@ const CustomDrawer = ({navigation}) => {
                 }
                 
                 { user.userInfo ? <View style={styles.profileName}>
-                    <Text>Hi,</Text>
+                    <Text style={{ color:'black' }}>Hi,</Text>
                     <Text style={styles.pName}>
                        {user.userInfo.title}
                         </Text>
                 </View> : <View style={styles.profileName}>
-                    <Text>Hii,</Text>
+                    <Text style={{ color:'black' }}>Hii,</Text>
                     <Text style={styles.pName}>
                        Guest
                         </Text>
@@ -129,16 +143,7 @@ const CustomDrawer = ({navigation}) => {
                </View>
               </TouchableOpacity>
 
-<TouchableOpacity onPress={()=> navigation.navigate('AboutUs')}>
-               <View style={styles.menuListCon}>
-                <View style={styles.menuIcon}>
-                <PhoneCall style={styles.iconSize} width={18}/>
-                </View>
-                <View style={styles.menuName}>
-                    <Text style={styles.menuTxt}>About Us</Text>
-                </View>
-               </View>
-               </TouchableOpacity>
+
 {/* 
                <TouchableOpacity onPress={()=> navigation.navigate('FPL')}>
                <View style={styles.menuListCon}>
@@ -157,12 +162,21 @@ const CustomDrawer = ({navigation}) => {
                 <HelpCircle style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text style={styles.menuTxt}>Help & Support / FAQ's</Text>
+                    <Text style={styles.menuTxt}>FAQ's</Text>
                 </View>
                 
                </View>
                </TouchableOpacity>
-
+               <TouchableOpacity onPress={()=> {freshchatHandle()}}>
+               <View style={styles.menuListCon}>
+                <View style={styles.menuIcon}>
+                <HelpCircle style={styles.iconSize} width={18}/>
+                </View>
+                <View style={styles.menuName}>
+                    <Text style={styles.menuTxt}>Help & Support</Text>
+                </View>
+               </View>
+               </TouchableOpacity>
                <TouchableOpacity onPress={()=> navigation.navigate('Policy')}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
@@ -174,17 +188,18 @@ const CustomDrawer = ({navigation}) => {
                 
                </View>
                </TouchableOpacity>
-
-               {/* <TouchableOpacity onPress={async()=> { await Linking.openURL('https://m.freekaamaal.com/faq')}}>
+               <TouchableOpacity onPress={()=> navigation.navigate('AboutUs')}>
                <View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
-                <HelpCircle style={styles.iconSize} width={18}/>
+                <PhoneCall style={styles.iconSize} width={18}/>
                 </View>
                 <View style={styles.menuName}>
-                    <Text style={styles.menuTxt}>Help & Support</Text>
+                    <Text style={styles.menuTxt}>About Us</Text>
                 </View>
                </View>
-               </TouchableOpacity> */}
+               </TouchableOpacity>
+
+               
                {
                 user.userInfo ?<View style={styles.menuListCon}>
                 <View style={styles.menuIcon}>
@@ -209,7 +224,7 @@ const CustomDrawer = ({navigation}) => {
 const styles = StyleSheet.create({
 
     humburgerContainer: {
-        padding: 20,
+        padding: Platform.OS=='ios' ? 20 : null,
         paddingBottom: 0,
     },
     appVersion:{
@@ -258,6 +273,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     pName: {
+        color:'black',
         fontSize: 18,
         fontWeight: '900'
     },
@@ -278,6 +294,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     menuTxt : {
+        color:'black',
         fontSize: 16,
         fontWeight: '400',
     },

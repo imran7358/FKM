@@ -54,7 +54,7 @@ const MyStore = ({navigation}) => {
              tab.length ? tab.map((item,i)=>{
                 return <TouchableOpacity onPress={()=> setCatId(item.cate_id)} key={i}>
                     <View  style={item.cate_id == catId ? styles.active : styles.innerTab}>
-                    <Text  style={item.cate_id == catId ? [styles.active, styles.tabList] : styles.tabList}>{item.name}</Text>
+                    <Text  style={item.cate_id == catId ? [styles.active, styles.tabList1] : styles.tabList}>{item.name}</Text>
                 </View>
                 </TouchableOpacity>
             }) : null
@@ -107,7 +107,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
 
     },
+    tabList1:{
+        color:'#fff',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        marginHorizontal:5,
+    },
     tabList:{
+        color:'black',
         paddingHorizontal: 15,
         paddingVertical: 10,
         marginHorizontal:5,

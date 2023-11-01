@@ -135,10 +135,10 @@ const BottomTabs = ({ navigation }) => {
             //     },
             // }}
             />
-            <Tab.Screen name="Store" component={AllStores} options={{
+            <Tab.Screen name="AllCashbackStores" component={AllCashbackStores} options={{
                 BottomTabs: false,
                 unmountOnBlur: true,
-                title: 'All Store',
+                title: 'All Stores',
                 tabBarIcon: ({ focused }) => (
                     <View style={[styles.tabLink, focused ? styles.active : styles.tabLink]}>
                         <ShoppingBag style={{
@@ -332,6 +332,7 @@ const AuthStack = ({ navigation }) => {
 
 <Stack.Screen name="AllCashbackStores" component={AllCashbackStores} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                title:'All Stores',
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>
@@ -402,6 +403,7 @@ const AuthStack = ({ navigation }) => {
             }} />
             <Stack.Screen name="FAQ" component={FAQ} options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                title: "FAQ's",
                 headerLeft: () => (
                     <TouchableOpacity onPress={() => { navigation.goBack() }}>
                         <View style={styles.backArrow}>

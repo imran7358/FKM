@@ -99,18 +99,21 @@ const StoreDeals = ({ navigation ,route}) => {
                         </View>
                         : null
                 }
-            {
-                noData ? <View style={styles.noDataFound}>
-                    <Text>No data Found</Text>
-                </View>
-                    : <View style={styles.loaderContainer}>
-                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
-                            <View>
-                                <Text style={styles.loadTxt}>Load More</Text>
-                            </View>
-                        </TouchableOpacity>
+            {noData ? (
+            <View style={styles.noDataFound}>
+                <Text style={{ color: "black" }}>No data Found</Text>
+            </View>
+            ) : (
+                storeDeals.length>19 ? (
+                <View style={styles.loaderContainer}>
+                <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                    <View>
+                    <Text style={styles.loadTxt}>Load More</Text>
                     </View>
-            }
+                </TouchableOpacity>
+                </View>
+            ) : null
+            )}
         </View>
     );
 };
@@ -188,6 +191,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     prdLine: {
+        color:'black',
         fontSize: 10,
         lineHeight: 18,
     },
@@ -208,6 +212,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     priceTxt: {
+        color:'black',
         fontSize: 15,
         fontWeight: '800',
         marginLeft: 3,

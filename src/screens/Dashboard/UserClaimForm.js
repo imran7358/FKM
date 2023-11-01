@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, Platform, SafeAreaView, Alert } from 'react-native';
 import { ScrollView, TouchableOpacity, } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
-import axios, { all } from 'axios';
+import axios from 'axios';
 const END_URL = '/cashback/userclaimform';
 const POST_URL = '/cashback/userclaimdata';
 import { centerContainer, fontSize, inputBox } from '../../assets/styles/common';
@@ -61,15 +61,19 @@ const UserClaimForm = ({ navigation, route }) => {
     };
 
     const sendFormReq = async (formD) => {
+        console.log('formD',formD);
+        
         axios.post(Config.API_URL + POST_URL, formD,
             {
                 headers: {
-                    Authorization: userToken,
-                    "Content-Type": "multipart/form-data",
-                    'Accept': 'application/json',
-                },
+                          Authorization: userToken,
+                         'Content-Type': 'multipart/form-data',
+                         'Accept': 'application/json',
+                         },
             }).then(({ data }) => {
-                if(data.status == 1 && data.error == 0){
+                console.log('RecievedPacket',data);
+                if(data.status == 1 && data.error == 0)
+                {
                     setSuccess(data.message)
                     setError('')
                     setFormField([{}]);
@@ -86,6 +90,7 @@ const UserClaimForm = ({ navigation, route }) => {
                 
 
             }).catch((error) => {
+                setError('abcs')
                setError(error.message)
             });
     }

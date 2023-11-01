@@ -22,9 +22,9 @@ const AllCashback = ({navigation})=> {
             <View style={styles.headTop}>
             <View style={styles.headingArea}>
               <Image source={require('../../assets/images/hot-sale.png')} style={styles.hotSale} />
-              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '800' }}>Stores</Text></Text>
+              <Text style={styles.topHeading}>Cashback <Text style={{ fontWeight: '800',color:'black' }}>Stores</Text></Text>
             </View>
-            <TouchableOpacity onPress={()=> navigation.navigate("AllCashbackStores")}><Text>View All</Text></TouchableOpacity>
+            <TouchableOpacity onPress={()=> navigation.navigate("AllCashbackStores")}><Text style={{color:'black'}}>View All</Text></TouchableOpacity>
             </View>
             <View style ={styles.cashbackDeals}>
                <Stores navigation={navigation}/>
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
       },
       topHeading: {
+        color:'black',
         fontSize: 18,
         marginLeft: 10,
       },

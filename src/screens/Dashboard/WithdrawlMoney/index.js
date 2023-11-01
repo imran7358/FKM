@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Platform,View, Text, StyleSheet } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { centerContainer, fontSize, inputBox } from '../../../assets/styles/common';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -12,6 +12,7 @@ import WidthdarawlOtp from './WithdrawOtp';
 import ErroLabel from '../../../components/ErrorCom';
 
 const WidthdarawlMoney = ({ navigation }) => {
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const [value, setValue] = useState('');
     const [dataRes, setDataRes] = useState(null);
     const [error, setError] = useState(false);
@@ -28,7 +29,7 @@ const WidthdarawlMoney = ({ navigation }) => {
     const getAccount = async () => {
         request.post(navigation, Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
-            'device_type': '4',
+            'device_type': deviceType,
             'wallet_type': value,
         }, {
             headers: {

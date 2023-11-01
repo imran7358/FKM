@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button } from 'react-native';
+import { Platform,View, Text, StyleSheet, Image, TextInput, SafeAreaView, Button } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { centerContainer } from '../assets/styles/common';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import request from '../utils/request';
 
 const ProductCategories = ({ navigation }) => {
   console.log(Config.API_URL)
+  const deviceType = Platform.OS=='ios' ? 4 : 3 ;
   const [categories, allCategrioes] = useState([]);
   useEffect(() => {
     getCategories();
@@ -18,7 +19,7 @@ const ProductCategories = ({ navigation }) => {
   const getCategories = () => {
     request.post(navigation,Config.API_URL + END_URL, {
       apiAuth: Config.API_AUTH,
-      deviceType: '4',
+      deviceType: deviceType,
     }).then(({ data }) => {
       allCategrioes((data.response.allcategory));
     }).catch((error) => {
@@ -69,7 +70,7 @@ const ProductCategories = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    padding: Platform.OS=='ios' ? 30 : 8,
     backgroundColor: '#FFFFFF',
     flex: 1,
   },
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   catHeading: {
+    color : 'black',
     fontSize: 14,
     fontWeight: 'bold',
     marginTop: 15,

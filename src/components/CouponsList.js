@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     },
 
     couponDesc: {
+        color:'black',
         alignContent: 'center',
         textAlign: 'center',
         justifyContent: 'center',

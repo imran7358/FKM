@@ -240,7 +240,7 @@ const Profile = ({ navigation }) => {
                             </View>
                             <View style={[styles.cbTxt, styles.margin15]}>
                                 <Text style={styles.cbRupees}>₹{summry.wPendingAmount}</Text>
-                                <Text style={styles.cbBottomPara}>withdraw Pending</Text>
+                                <Text style={styles.cbBottomPara}>Withdraw Pending</Text>
                             </View>
                             <View style={styles.cbTxt}>
                                 <Text style={styles.cbRupees}>₹{Number(summry.available_amount).toFixed(2)}</Text>
@@ -266,7 +266,7 @@ const Profile = ({ navigation }) => {
                     </View>
                     {
                                 error && <View style={styles.errorMsg}>
-                                    <Text style={styles.errorLbl}>Invlaid promo code</Text>
+                                    <Text style={styles.errorLbl}>Invalid promo code</Text>
                                 </View>
                             }
 
@@ -595,7 +595,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     container: {
-        padding: 24,
+        padding: Platform.OS=='ios' ? 24 : 12,
+        // padding:24,
         backgroundColor: '#FFFFFF',
         flex: 1,
     },

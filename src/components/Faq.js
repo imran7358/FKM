@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, Image} from "react-native";
+import {Platform,View, Text, StyleSheet, Image} from "react-native";
 import Config from 'react-native-config';
 import axios from 'axios';
 import CashbackInner from './CbInner';
@@ -37,7 +37,7 @@ const [show, setShow] = useState(false);
               <TouchableOpacity onPress={()=> setShow(!show)}>
               <View style={styles.faqName}>
                     <Image source={require('../assets/images/cbWorks.png')} style={{height:35, width:35, resizeMode: 'contain', marginRight: 7,}}/>
-                    <Text style={{fontSize: 14, fontWeight: '500',}}>{title}</Text>
+                    <Text style={{fontSize: 14, fontWeight: '500',color:'black'}}>{title}</Text>
                 </View>
               </TouchableOpacity>
               <Image source={require('../assets/images/faqarrow.png')} style={styles.rArrow}/>
@@ -126,11 +126,13 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     head: {
+        color:'black',
+        // Platform.OS === 'android' ?
         backgroundColor: '#fff',
         marginBottom:10,
         marginTop:10,
         fontSize:15,
-        borderBottomWidth :5,
+        borderBottomWidth : Platform.OS=='ios' ? 5 : 0,
         borderBottomColor:'#000',
         fontWeight:'600',
 
@@ -142,6 +144,7 @@ const styles = StyleSheet.create({
         // padding:20,
       },
     allDesc: {
+        color:'black',
         lineHeight: 26,
         fontSize:14,
     }

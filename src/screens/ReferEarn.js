@@ -9,7 +9,9 @@ const END_URL = '/user/userprofile';
 import { useSelector } from 'react-redux';
 import SucessLbl from '../components/SuccessCom';
 import ErroLabel from '../components/ErrorCom';
-import Clipboard from '@react-native-clipboard/clipboard';
+// import Clipboard from '@react-native-clipboard/clipboard';
+import {Clipboard} from 'react-native';
+
 
 const ReferEarn = () => {
     const userToken = useSelector(state=> state.user.userToken);

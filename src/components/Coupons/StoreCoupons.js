@@ -65,7 +65,7 @@ const StoreCoupons = ({ navigation, couponsList, route}) => {
                                 </View>
                                 <View style={styles.endDays}>
                                     <Image source={require('../../assets/images/clock.png')} style={styles.clockimg} />
-                                    <Text>{item.expiry}</Text>
+                                    <Text style={{color:"black"}}>{item.expiry}</Text>
                                 </View>
 
                             </View>
@@ -73,15 +73,15 @@ const StoreCoupons = ({ navigation, couponsList, route}) => {
                                 <View style={styles.innerShare}>
                                     <View style={styles.viewCon}>
                                         <Image source={require('../../assets/images/eye.png')} style={styles.sharImg} />
-                                        <Text>{item.views} Views</Text>
+                                        <Text style={{color:"black"}}>{item.views} Views</Text>
                                     </View>
                                     <View style={styles.viewCon}>
                                         <Image source={require('../../assets/images/thumb.png')} style={styles.sharImg} />
-                                        <Text>{item.likes} Views</Text>
+                                        <Text style={{color:"black"}}>{item.likes} Views</Text>
                                     </View>
                                     <View style={styles.viewCon}>
                                         <Image source={require('../../assets/images/share.png')} style={styles.sharImg} />
-                                        <Text>Share</Text>
+                                        <Text style={{color:"black"}}>Share</Text>
                                     </View>
                                 </View>
                             </View>
@@ -103,18 +103,22 @@ const StoreCoupons = ({ navigation, couponsList, route}) => {
                     </View>
                     : null
             }
-            {
-                noData ? <View style={styles.noDataFound}>
-                    <Text>No data Found</Text>
-                </View>
-                    : <View style={styles.loaderContainer}>
-                        <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
-                            <View>
-                                <Text style={styles.loadTxt}>Load More</Text>
-                            </View>
-                        </TouchableOpacity>
+                        {noData ? (
+            <View style={styles.noDataFound}>
+                <Text style={{ color: "black" }}>No data Found</Text>
+            </View>
+            ) : (
+            coupons.length>19 ? (
+                <View style={styles.loaderContainer}>
+                <TouchableOpacity style={[styles.LoadMore, styles.padding]} onPress={() => setPage(page + 1)}>
+                    <View>
+                    <Text style={styles.loadTxt}>Load More</Text>
                     </View>
-            }
+                </TouchableOpacity>
+                </View>
+            ) : null
+            )}
+
         </View>
 
 
@@ -134,6 +138,7 @@ const styles = StyleSheet.create({
 
     },
     coupnHead: {
+        color:'black',
         fontSize: 14,
         fontWeight: 'bold',
         lineHeight: 21,

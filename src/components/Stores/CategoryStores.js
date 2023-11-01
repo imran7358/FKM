@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     logoTxt: {
+        color:'black',
         fontSize: 14,
         fontWeight: '800',
         marginTop: 20,

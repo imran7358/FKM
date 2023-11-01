@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight, Linking, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { Platform,View, Text, SafeAreaView, StyleSheet, Image, TouchableHighlight, Linking, TouchableOpacity, useWindowDimensions, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 const END_URL = '/deals/dealdetail';
@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 
 
 const ProductDetails = ({ navigation, route }) => {
-
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const { width } = useWindowDimensions();
     const dealdesc = { 
                      p: {
@@ -62,7 +62,7 @@ const ProductDetails = ({ navigation, route }) => {
             'page': '1',
             'apiAuth': Config.API_AUTH,
             'deal_slug': route.params.dealSlug,
-            'device_type': '4',
+            'device_type': deviceType,
         }, {
             headers: {
                 Authorization: userToken,
@@ -101,7 +101,14 @@ const ProductDetails = ({ navigation, route }) => {
     useEffect(() => {
 
     }, [showMore])
-
+    const openURL = async (url) => {
+        // Alert.alert('ok')
+        try {
+          await Linking.openURL(url);
+        } catch (error) {
+          console.error('Error opening URL: ', error);
+        }
+      };
     return (
         <SafeAreaView style={styles.bgWhite}>
             <ScrollView style={styles.bgWhite}>
@@ -179,14 +186,14 @@ const ProductDetails = ({ navigation, route }) => {
                                                         <View style={styles.cbInner}>
                                                             <View style={styles.cbRupee}>
                                                                 <View style={styles.cbInfoCon}>
-                                                                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                                                    <Text style={{ fontWeight: '900',color:'black', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
                                                                 </View>
                                                             </View>
 
                                                             <View style={styles.cbTxtCon}>
-                                                                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height: 20, }}>{item.cashback_tag}</Text>
+                                                                <Text style={{ fontSize: 14,color:'black', fontWeight: '900', marginBottom: 5, height: 20, }}>{item.cashback_tag}</Text>
                                                                 <View style={{ width: '100%', flexWrap: 'wrap', flex: 1 }}>
-                                                                    <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '100%' }}>{item.tag_desc}</Text>
+                                                                    <Text style={{ fontSize: 12,color:'black', flexWrap: 'wrap', width: '100%' }}>{item.tag_desc}</Text>
                                                                 </View>
                                                             </View>
                                                         </View>
@@ -202,14 +209,14 @@ const ProductDetails = ({ navigation, route }) => {
                                                         <View style={styles.cbInner}>
                                                             <View style={styles.cbRupee}>
                                                                 <View style={styles.cbInfoCon}>
-                                                                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                                                                    <Text style={{ fontWeight: '900',color:'black', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
                                                                 </View>
                                                             </View>
 
                                                             <View style={styles.cbTxtCon}>
-                                                                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height: 20, }}>{item.cashback_tag}</Text>
+                                                                <Text style={{ fontSize: 14, color:'black', fontWeight: '900', marginBottom: 5, height: 20, }}>{item.cashback_tag}</Text>
                                                                 <View style={{ width: '100%', flexWrap: 'wrap', flex: 1 }}>
-                                                                    <Text style={{ fontSize: 12, flexWrap: 'wrap', width: '100%' }}>{item.tag_desc}</Text>
+                                                                    <Text style={{ fontSize: 12, color:'black', flexWrap: 'wrap', width: '100%' }}>{item.tag_desc}</Text>
                                                                 </View>
                                                             </View>
                                                         </View>
@@ -272,14 +279,16 @@ const ProductDetails = ({ navigation, route }) => {
                                 <Text style={styles.abtDeals}>About the Deals</Text>
                                 <CustomWebView source={{ html: details.description }} tagsStyles={ dealdesc } contentWidth={width - 80} />
                             </View>
+                            {relatedProduct.length ?
                             <RealtedDeals relatedProduct={relatedProduct} navigation={navigation} />
+                            : "" }
                         </View>
                 }
             </ScrollView>
             {
                 details.isCashback == '1' ? <View>{userInfo ? <View style={styles.container}>
                     <View style={styles.appButton}>
-                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: details.landing_url}})}>
+                        <TouchableOpacity onPress={() => openURL(details.landing_url)}>
                             <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
                         </TouchableOpacity>
                     </View>
@@ -293,7 +302,7 @@ const ProductDetails = ({ navigation, route }) => {
                     <View style={styles.appButton}>
                         {/* <TouchableOpacity onPress={async () => { await Linking.openURL(details.landing_url) }}> */}
                         {/* navigation.navigate({name:'Details',params:{dealSlug:item.slug_url}}) */}
-                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: details.landing_url}})}>
+                        <TouchableOpacity onPress={() => openURL(store.landing_url)}>
                             <Text style={styles.btnTxt}>Shop Now</Text>
                         </TouchableOpacity>
                     </View>
@@ -351,6 +360,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     heading: {
+        color:'black',
         fontSize: 18,
         fontWeight: '700',
         lineHeight: 30,
@@ -402,6 +412,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     priceTxt: {
+        color:'black',
         fontSize: 19,
         fontWeight: 'bold',
         marginLeft: 3,
@@ -463,10 +474,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     claimHead: {
+        color:'black',
         fontSize: 16,
         fontWeight: 'bold'
     },
     claimPara: {
+        color:'black',
         fontSize: 14,
         marginTop: 5,
     },
@@ -492,6 +505,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     abtDeals: {
+        color:'black',
         fontSize: 18,
         fontWeight: '900',
     },

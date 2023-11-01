@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import {Platform,View, Text, StyleSheet, Image, TextInput} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Config from "react-native-config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,7 +24,7 @@ const EnterOTP = ({navigation}) => {
     const userToken = useSelector(state => {
         return state.user.userToken;
     });
-  
+  const deviceType = Platform.OS=='ios' ? 4 : 3 ;
   const [message , setMessage ] = useState(null); 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);

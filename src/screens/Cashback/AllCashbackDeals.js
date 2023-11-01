@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { View, Text,  StyleSheet, SafeAreaView, Image, TouchableOpacity} from "react-native";
+import { Platform,View, Text,  StyleSheet, SafeAreaView, Image, TouchableOpacity} from "react-native";
 import Config from "react-native-config";
 const END_URL = '/cashback/cashbackdeal';
 import { useEffect, useState} from "react";
@@ -10,6 +10,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Loader from "../../components/Loader";
 
 const AllDeals = ({navigation})=> {
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const [success, setSucess] = useState(false);
     const [error, setError] = useState(false);
     const [loader, setLoader] = useState(false);
@@ -23,7 +24,7 @@ const getCashbackDeals = () => {
     setLoader(true);
     axios.post(Config.API_URL + END_URL, { 
         apiAuth: Config.API_AUTH,
-        device_type:"4",
+        device_type:deviceType,
         page:page
     },{
         headers: {

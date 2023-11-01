@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
+import {Platform,View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Stores from '../components/Stores/CategoryStores';
 import Config from 'react-native-config';
@@ -10,7 +10,7 @@ const END_URL = '/category/category-detail';
 import Loader from '../components/Loader';
 import request from '../utils/request';
 const CategoryDetails = ({ navigation, route }) => {
-
+  const deviceType = Platform.OS=='ios' ? 4 : 3 ;
   const [deals, setShowDeals] = useState(false);
   const [stores, setShowStores] = useState(true);
   const [page, setPage] = useState(1);
@@ -204,11 +204,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   catHeading: {
+    color:'black',
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 10,
   },
   catPara: {
+    color:'black',
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 22,

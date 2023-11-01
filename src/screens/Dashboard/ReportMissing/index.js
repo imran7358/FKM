@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Image } from 'react-native';
+import { Platform,View, Text, StyleSheet, TextInput, Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -15,6 +15,7 @@ import DocumentPicker from 'react-native-document-picker';
 import KeybaordAvoidingWrapper from '../../../components/keyboardAvoidingWrapper';
 import request from '../../../utils/request';
 const MissingReport = ({ navigation, route }) => {
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const [value, setValue] = useState([]);
     const [loadMore, setLoadMore] = useState(true);
     const [loader, setLoader] = useState(false);
@@ -28,7 +29,7 @@ const MissingReport = ({ navigation, route }) => {
         const userToken = await AsyncStorage.getItem('userToken');
         request.post(navigation,Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
-            'device_type': 4,
+            'device_type': deviceType,
             'store_id': route.params.storeId,
         },
             {

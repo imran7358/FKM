@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight, Linking} from 'react-native';
+import { Platform,View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, TouchableHighlight, Linking, Alert} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Coupons from '../components/Coupons';
 import StoreDeals from '../components/Deals/StoreDeals';
@@ -13,7 +13,7 @@ import CustomWebView from 'react-native-render-html';
 
 
 const StoreDetails = ({ props, route, navigation }) => {
-
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
     const userInfo = useSelector(state => state.user.userInfo);
     const userToken = useSelector(state => state.user.userToken);
     const [deals, setShowDeals] = useState(true);
@@ -57,13 +57,21 @@ const StoreDetails = ({ props, route, navigation }) => {
         setShowDeals(false);
         setOpt('coupons');
     };
-
+    const openURL = async (url) => {
+        // Alert.alert('ok')
+        try {
+            // console.error('Error opening URL: ', url);
+          await Linking.openURL(url);
+        } catch (error) {
+          console.error('Error opening URL: ', error);
+        }
+      };
     useEffect(() => {
         setLoader(true);
         axios.post(Config.API_URL + END_URL, {
             'apiAuth': Config.API_AUTH,
             'store_slug': route.params.storeSlug,
-            'device_type': 4,
+            'device_type': deviceType,
             page,
             'option': opt,
 
@@ -172,8 +180,8 @@ const StoreDetails = ({ props, route, navigation }) => {
                         store.is_cashback == '1' ? <View style={styles.cashbackRates}>
                             <View style={styles.ratesContainer}>
                             <View style={styles.cbrateTxt}>
-                            <Text style={{ fontSize: 14, }}>Cashback</Text>
-                            <Text style={{ fontSize: 14, fontWeight: 'bold', marginLeft: 5, }}>Rates</Text>
+                            <Text style={{ fontSize: 14,color:'black' }}>Cashback</Text>
+                            <Text style={{ fontSize: 14, color:'black',fontWeight: 'bold', marginLeft: 5, }}>Rates</Text>
                         </View>
                         <TouchableOpacity onPress={()=> setToc(!toc)}>
                         <View style={styles.viewTc}><Text style={styles.cbTc}>Cashback T&C</Text></View>
@@ -194,14 +202,14 @@ rate.length && rate.map((item, i) => {
         <View style={styles.cbInner}>
             <View style={styles.cbRupee}>
                 <View style={styles.cbInfoCon}>
-                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                    <Text style={{ fontWeight: '900',color:'black', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
                 </View>
             </View>
 
             <View style={styles.cbTxt}>
-                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
+                <Text style={{ fontSize: 14, fontWeight: '900',color:'black', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
                 <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
-                <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
+                <Text style={{ fontSize: 12,color:'black', flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
                 </View>
             </View>
         </View>
@@ -218,14 +226,14 @@ rate.length && rate.map((item, i) => {
         <View style={styles.cbInner}>
             <View style={styles.cbRupee}>
                 <View style={styles.cbInfoCon}>
-                    <Text style={{ fontWeight: '900', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
+                    <Text style={{ fontWeight: '900',color:'black', fontSize: 12, color: '#fff', marginLeft: 3, }}>{item.rate}</Text>
                 </View>
             </View>
 
             <View style={styles.cbTxt}>
-                <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
+                <Text style={{ fontSize: 14,color:'black', fontWeight: '900', marginBottom: 5, height:20, }}>{item.cashback_tag}</Text>
                 <View style={{width:'100%', flexWrap:'wrap', flex:1}}>
-                <Text style={{ fontSize: 12, flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
+                <Text style={{ fontSize: 12,color:'black', flexWrap:'wrap', width:'100%'}}>{item.tag_desc}</Text>
                 </View>
             </View>
         </View>
@@ -260,8 +268,8 @@ rate.length && rate.map((item, i) => {
                         store.isClaim == '1' ?
                             <View style={styles.claimForm}>
                                 <View>
-                                    <Text style={{ fontSize: 14, fontWeight: '900', marginBottom: 5, }}>Cashback claim form</Text>
-                                    <Text> Fill up this form within 24 hrs</Text>
+                                    <Text style={{ fontSize: 14,color:'black', fontWeight: '900', marginBottom: 5, }}>Cashback claim form</Text>
+                                    <Text style={{color:'black'}}> Fill up this form within 24 hrs</Text>
                                 </View>
                                 <TouchableHighlight onPress={()=> navigation.navigate('ClaimForm')}>
                                 <View style={styles.claimFormbtn}>
@@ -316,7 +324,7 @@ rate.length && rate.map((item, i) => {
                 store.is_cashback == '1' ? <View>{userInfo ? <View style ={styles.container}>
                 <View style={styles.appButton}>
                 {/* <TouchableOpacity onPress={async()=> { await Linking.openURL(store.store_landing_url)}}> */}
-                <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: store.store_landing_url}})}>
+                <TouchableOpacity onPress={() => openURL(store.store_landing_url)}>
                 <Text style={styles.btnTxt}>Shop & Earn Cashback</Text>
                 </TouchableOpacity>
             </View>
@@ -328,7 +336,7 @@ rate.length && rate.map((item, i) => {
                     </View>
                         </View> }</View> : <View style ={styles.container}>
                         <View style={styles.appButton}>
-                        <TouchableOpacity onPress={() => navigation.navigate({ name: 'Inbrowser', params: { LandingUrl: store.store_landing_url}})}>
+                        <TouchableOpacity onPress={() => openURL(store.store_landing_url)}>
                         <Text style={styles.btnTxt}>Shop Now</Text>
                         </TouchableOpacity>
                     </View>
@@ -492,6 +500,7 @@ const styles = StyleSheet.create({
     },
 
     infoTxt: {
+        // color:'black',
         fontSize: 10,
         fontWeight: '900',
         color: '#f27935',
@@ -507,12 +516,13 @@ const styles = StyleSheet.create({
 
 
     infoPara: {
-
+        color:'black',
         fontSize: 11,
         marginTop: 7,
 
     },
     storePara: {
+        color:'black',
         fontSize: 12,
         lineHeight: 18,
         padding: 10,

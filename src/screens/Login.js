@@ -1,14 +1,16 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform,View, Text, StyleSheet, Image, TextInput, Alert} from 'react-native';
 import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import ErroLabel from '../components/ErrorCom';
 import KeybaordAvoidingWrapper from '../components/keyboardAvoidingWrapper';
-
-
+import messaging from '@react-native-firebase/messaging'
+// import { GoogleSignin,statusCodes } from 'react-native-google-signin';
+import auth from '@react-native-firebase/auth';
 import {
     centerContainer,
     fontSize,
@@ -20,12 +22,87 @@ import request from '../utils/request';
 import { useDispatch } from 'react-redux';
 import { SIGNEDIN } from '../redux/actionTypes';
 const ENDPOINT = '/user/login';
+const ENDURL = '/user/glogin';
 
 
 const Login = ({ navigation }) => {
+    const deviceType = Platform.OS=='ios' ? 4 : 3 ;
+    const [usrInfo,setUserInfo] = useState('');
+    const [guid,setGuid] = useState('');
+    const [googlemail,setGooglemail] = useState('');
+    const [accessToken,setAccessToken] = useState('');
+    const [idToken,setidToken] = useState('');
+    const [isauthenticate,setIsAuthenticate] = useState(false);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [app_device_id, setAppDeviceId] = useState('')
     const dispatch = useDispatch();
+
+    const getDeviceToken = async () => {
+        let token = await messaging().getToken();
+        setAppDeviceId(token)
+        console.log('deviceToken',token);
+    }
+    // Somewhere in your code
+// const signIn = async () => {
+//     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+//   // Get the users ID token
+//   await GoogleSignin.signOut();
+//   const { idToken } = await GoogleSignin.signIn();
+
+//   // Create a Google credential with the token
+//   const googleCredential = await auth.GoogleAuthProvider.credential(idToken);
+
+//   // Sign-in the user with the credential
+//   const res = await auth().signInWithCredential(googleCredential);
+//   const accessToken = await (await GoogleSignin.getTokens()).accessToken;
+//   const googleEmail = res.additionalUserInfo.profile.email;
+//   const guid = res.additionalUserInfo.profile.sub;
+
+//   setUserInfo(res);
+//   setAccessToken(accessToken);
+//   setidToken(idToken);
+//   console.log('response',usrInfo)
+//   console.log('guid',guid);
+//   console.log('email',googleEmail);
+//   console.log('accessToken',accessToken);
+//     googleLogin(guid,googleEmail,accessToken,idToken);
+//   };
+//   const googleLogin = ( guid,googleEmail,accessToken,idToken) => {
+   
+//     axios.post(Config.API_URL + ENDURL, {
+    
+//       'apiAuth': Config.API_AUTH,
+//       'device_type': deviceType,
+//       'app_device_id' : app_device_id,
+//       'guid' : guid,
+//       'email': googleEmail,
+//       'accesstoken' : accessToken,
+//       'infotoken' :idToken
+//     }).then(({ data }) => {
+//       console.log(data)
+//       if (data.status == '1' && data.error == '0') 
+//         {
+//             dispatch({
+//                 type: SIGNEDIN,
+//                 userToken: data.token,
+//                 userInfo: data.data,
+//             });
+//             navigation.navigate("Home");
+//         }
+//         else{
+//             Alert.alert(data.message)
+//         }
+//     }).catch((error) => {
+//       console.log(error);
+//     });
+//   };
+//         useEffect(()=>{
+//           getDeviceToken();
+//           GoogleSignin.configure({webClientId:
+//             '456012793915-07armg8p5dmta0o5f62osd725ujf98l4.apps.googleusercontent.com'});
+
+//         },[])
     return (
         <KeybaordAvoidingWrapper>
             <Formik initialValues={{
@@ -36,18 +113,20 @@ const Login = ({ navigation }) => {
                     try {
                         const { data } = await request.post(navigation, Config.API_URL + ENDPOINT, {
                             apiAuth: Config.API_AUTH,
-                            device_type: Config.device_type,
+                            device_type: deviceType,
                             app_device_id: '',
                             password: values.password,
                             email: values.email,
+                            app_device_id : app_device_id
                         });
-                        if (data.status == '1' && data.error == '0') {
+                        if (data.status == '1' && data.error == '0') 
+                        {
                             dispatch({
                                 type: SIGNEDIN,
                                 userToken: data.token,
                                 userInfo: data.data,
                             });
-                            navigation.navigate("Home")
+                            navigation.navigate("Home");
                         }
                         else {
                             setError(data.message);
@@ -124,6 +203,15 @@ const Login = ({ navigation }) => {
                                     <Text style={styles.loginTxt}>Login</Text>
                                 </View>
                             </TouchableOpacity>
+
+                            {/* <TouchableOpacity onPress={signIn}>
+                                <View style={styles.googleLogin}>
+                                    <Image source={require('../assets/images/googleLogin.png')}/>
+                                    <Text style={styles.googleLoginTxt}>Sign in with Google</Text>
+                                </View>
+                            </TouchableOpacity> */}
+
+                         
                             <View style={styles.newLogin}>
                                 <Text style={styles.font16}>New to FreeKaaMaal ?</Text>
                                 <Text style={[styles.font16, styles.RegisterLink]} onPress={() => navigation.navigate('Register')}>Register</Text>
@@ -199,6 +287,18 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
     },
+    googleButton: {
+        alignItems: centerContainer.alignCenter,
+        justifyContent: centerContainer.justifyCenter,
+        backgroundColor: '#F27935',
+        flex:1,
+        // width:100,
+        padding: 10,
+        marginTop: 30,
+        borderRadius: 6,
+        fontWeight: 'bold',
+        height: 50,
+    },
     loginButton: {
         alignItems: centerContainer.alignCenter,
         justifyContent: centerContainer.justifyCenter,
@@ -211,7 +311,7 @@ const styles = StyleSheet.create({
     },
     loginTxt: {
         fontSize: fontSize.headingFont,
-        fontWeight: '900',
+        fontWeight: '600',
         color: '#fff',
     },
 
@@ -239,13 +339,15 @@ const styles = StyleSheet.create({
     },
 
     googleLogin: {
-        backgroundColor: '#FFF3F0',
+        marginTop:10,
+        // backgroundColor: '#FFF3F0',
         padding: 10,
-        width: '47%',
+        // width: '47%',
         borderRadius: 6,
         fontSize: 14,
+        justifyContent:'center',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        // justifyContent: 'flex-start',
         flexDirection: 'row',
         paddingLeft: 15,
         height: 50,
