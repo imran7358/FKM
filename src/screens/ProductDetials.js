@@ -302,7 +302,7 @@ const ProductDetails = ({ navigation, route }) => {
                     <View style={styles.appButton}>
                         {/* <TouchableOpacity onPress={async () => { await Linking.openURL(details.landing_url) }}> */}
                         {/* navigation.navigate({name:'Details',params:{dealSlug:item.slug_url}}) */}
-                        <TouchableOpacity onPress={() => openURL(store.landing_url)}>
+                        <TouchableOpacity onPress={() => openURL(details.landing_url)}>
                             <Text style={styles.btnTxt}>Shop Now</Text>
                         </TouchableOpacity>
                     </View>

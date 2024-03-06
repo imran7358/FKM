@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import ErroLabel from '../components/ErrorCom';
 import KeybaordAvoidingWrapper from '../components/keyboardAvoidingWrapper';
 import messaging from '@react-native-firebase/messaging'
-// import { GoogleSignin,statusCodes } from 'react-native-google-signin';
+import { GoogleSignin,statusCodes } from 'react-native-google-signin';
 import auth from '@react-native-firebase/auth';
 import {
     centerContainer,
@@ -44,65 +44,65 @@ const Login = ({ navigation }) => {
         console.log('deviceToken',token);
     }
     // Somewhere in your code
-// const signIn = async () => {
-//     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-//   // Get the users ID token
-//   await GoogleSignin.signOut();
-//   const { idToken } = await GoogleSignin.signIn();
+const signIn = async () => {
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  // Get the users ID token
+  await GoogleSignin.signOut();
+  const { idToken } = await GoogleSignin.signIn();
 
-//   // Create a Google credential with the token
-//   const googleCredential = await auth.GoogleAuthProvider.credential(idToken);
+  // Create a Google credential with the token
+  const googleCredential = await auth.GoogleAuthProvider.credential(idToken);
 
-//   // Sign-in the user with the credential
-//   const res = await auth().signInWithCredential(googleCredential);
-//   const accessToken = await (await GoogleSignin.getTokens()).accessToken;
-//   const googleEmail = res.additionalUserInfo.profile.email;
-//   const guid = res.additionalUserInfo.profile.sub;
+  // Sign-in the user with the credential
+  const res = await auth().signInWithCredential(googleCredential);
+  const accessToken = await (await GoogleSignin.getTokens()).accessToken;
+  const googleEmail = res.additionalUserInfo.profile.email;
+  const guid = res.additionalUserInfo.profile.sub;
 
-//   setUserInfo(res);
-//   setAccessToken(accessToken);
-//   setidToken(idToken);
-//   console.log('response',usrInfo)
-//   console.log('guid',guid);
-//   console.log('email',googleEmail);
-//   console.log('accessToken',accessToken);
-//     googleLogin(guid,googleEmail,accessToken,idToken);
-//   };
-//   const googleLogin = ( guid,googleEmail,accessToken,idToken) => {
+  setUserInfo(res);
+  setAccessToken(accessToken);
+  setidToken(idToken);
+  console.log('response',usrInfo)
+  console.log('guid',guid);
+  console.log('email',googleEmail);
+  console.log('accessToken',accessToken);
+    googleLogin(guid,googleEmail,accessToken,idToken);
+  };
+  const googleLogin = ( guid,googleEmail,accessToken,idToken) => {
    
-//     axios.post(Config.API_URL + ENDURL, {
+    axios.post(Config.API_URL + ENDURL, {
     
-//       'apiAuth': Config.API_AUTH,
-//       'device_type': deviceType,
-//       'app_device_id' : app_device_id,
-//       'guid' : guid,
-//       'email': googleEmail,
-//       'accesstoken' : accessToken,
-//       'infotoken' :idToken
-//     }).then(({ data }) => {
-//       console.log(data)
-//       if (data.status == '1' && data.error == '0') 
-//         {
-//             dispatch({
-//                 type: SIGNEDIN,
-//                 userToken: data.token,
-//                 userInfo: data.data,
-//             });
-//             navigation.navigate("Home");
-//         }
-//         else{
-//             Alert.alert(data.message)
-//         }
-//     }).catch((error) => {
-//       console.log(error);
-//     });
-//   };
-//         useEffect(()=>{
-//           getDeviceToken();
-//           GoogleSignin.configure({webClientId:
-//             '456012793915-07armg8p5dmta0o5f62osd725ujf98l4.apps.googleusercontent.com'});
+      'apiAuth': Config.API_AUTH,
+      'device_type': deviceType,
+      'app_device_id' : app_device_id,
+      'guid' : guid,
+      'email': googleEmail,
+      'accesstoken' : accessToken,
+      'infotoken' :idToken
+    }).then(({ data }) => {
+      console.log(data)
+      if (data.status == '1' && data.error == '0') 
+        {
+            dispatch({
+                type: SIGNEDIN,
+                userToken: data.token,
+                userInfo: data.data,
+            });
+            navigation.navigate("Home");
+        }
+        else{
+            Alert.alert(data.message)
+        }
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+        useEffect(()=>{
+          getDeviceToken();
+          GoogleSignin.configure({webClientId:
+            '456012793915-07armg8p5dmta0o5f62osd725ujf98l4.apps.googleusercontent.com'});
 
-//         },[])
+        },[]);
     return (
         <KeybaordAvoidingWrapper>
             <Formik initialValues={{
@@ -204,12 +204,12 @@ const Login = ({ navigation }) => {
                                 </View>
                             </TouchableOpacity>
 
-                            {/* <TouchableOpacity onPress={signIn}>
+                             <TouchableOpacity onPress={signIn}>
                                 <View style={styles.googleLogin}>
                                     <Image source={require('../assets/images/googleLogin.png')}/>
                                     <Text style={styles.googleLoginTxt}>Sign in with Google</Text>
                                 </View>
-                            </TouchableOpacity> */}
+                            </TouchableOpacity> 
 
                          
                             <View style={styles.newLogin}>
